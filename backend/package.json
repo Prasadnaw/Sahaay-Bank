@@ -1,0 +1,20 @@
+﻿{
+  "name": "sahaay-bank-backend",
+  "version": "2.0.0",
+  "description": "Enterprise-ready REST API backend for Sahaay Accessible Digital Banking",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["banking", "upi", "qr-code", "accessibility", "a11y", "multilingual"],
+  "author": "DeepMind Advanced Agentic Coding",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

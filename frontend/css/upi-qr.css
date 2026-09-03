@@ -1,0 +1,230 @@
+﻿/* ==========================================================================
+   UPI PIN KEYPAD, QR CODE VIEWER & SCANNER
+   ========================================================================== */
+
+/* UPI PIN Modal Box */
+.upi-pin-box {
+  background: var(--surface);
+  border: 3px solid var(--navy);
+  border-radius: 14px;
+  padding: 28px 24px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+html.dark-theme .upi-pin-box { border-color: var(--gold); }
+html.contrast .upi-pin-box { border-color: var(--gold); background: #000; }
+
+.upi-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0B2531;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: .86rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.upi-dots-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px 0 16px 0;
+}
+
+.upi-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid var(--navy);
+  background: transparent;
+  transition: all 0.15s ease;
+}
+
+html.contrast .upi-dot { border-color: var(--gold); }
+
+.upi-dot.filled {
+  background: var(--navy);
+  transform: scale(1.15);
+}
+
+html.dark-theme .upi-dot.filled { background: var(--gold); }
+html.contrast .upi-dot.filled { background: var(--gold); }
+
+.upi-dot.error {
+  background: var(--danger);
+  border-color: var(--danger);
+  animation: shakeDots 0.4s ease;
+}
+
+@keyframes shakeDots {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.upi-keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 320px;
+  margin: 16px auto 0 auto;
+}
+
+.upi-key {
+  background: var(--bg);
+  color: var(--ink);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  min-height: 56px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+}
+
+.upi-key:hover {
+  background: var(--tag-bg);
+  border-color: var(--gold);
+}
+
+.upi-key:active {
+  transform: scale(0.95);
+}
+
+.upi-key.action-key {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.upi-key.submit-key {
+  background: var(--success);
+  color: #fff;
+  border-color: var(--success);
+}
+
+/* My QR Card */
+.qr-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.qr-frame {
+  background: #FFFFFF;
+  border: 4px solid var(--navy);
+  border-radius: 12px;
+  padding: 16px;
+  display: inline-block;
+  margin: 14px auto;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+html.contrast .qr-frame {
+  border-color: var(--gold);
+}
+
+/* QR Scanner Viewfinder & Laser */
+.qr-scanner-viewfinder {
+  border: 4px dashed var(--gold);
+  border-radius: 12px;
+  width: 240px;
+  height: 240px;
+  margin: 16px auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(194, 147, 51, 0.05);
+}
+
+.qr-scanner-laser {
+  position: absolute;
+  width: 90%;
+  height: 3px;
+  background: var(--danger);
+  box-shadow: 0 0 8px rgba(255, 42, 26, 0.8);
+  animation: laserScan 2s infinite alternate ease-in-out;
+}
+
+@keyframes laserScan {
+  0% { top: 15%; }
+  100% { top: 85%; }
+}
+
+/* Voice Confirmation Modal */
+.voice-confirm-box {
+  background: var(--surface);
+  border: 4px solid var(--gold);
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 580px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+.voice-confirm-action-icon {
+  font-size: 3.2rem;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.voice-confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+/* Help Page Grid */
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.help-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.help-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cmd-chip {
+  background: var(--tag-bg);
+  color: var(--tag-ink);
+  font-weight: 800;
+  font-size: .85rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: 4px 4px 4px 0;
+  display: inline-block;
+  border: 1px solid currentColor;
+}

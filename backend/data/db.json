@@ -1,0 +1,108 @@
+﻿{
+    "account":  {
+                    "accountHolder":  "Asha Patel",
+                    "accountNumber":  "4417",
+                    "upiId":  "asha.patel@sahaay",
+                    "balance":  39404.50,
+                    "isFrozen":  false,
+                    "upiPin":  "1234"
+                },
+    "transactions":  [
+                         {
+                             "id":  639240739957828861,
+                             "date":  "Today",
+                             "description":  "UPI Payment to afsgs@upi",
+                             "type":  "Debit",
+                             "amount":  424,
+                             "tag":  "UPI"
+                         },
+                         {
+                             "id":  639240735148058360,
+                             "date":  "Today",
+                             "description":  "UPI Payment to rahul@sahaay",
+                             "type":  "Debit",
+                             "amount":  500,
+                             "tag":  "UPI"
+                         },
+                         {
+                             "id":  639240734285284220,
+                             "date":  "Today",
+                             "description":  "UPI Payment to rahul@sahaay",
+                             "type":  "Debit",
+                             "amount":  500,
+                             "tag":  "UPI"
+                         },
+                         {
+                             "id":  639240710506723207,
+                             "date":  "Today",
+                             "description":  "UPI Payment to chai point (chaipoint@upi)",
+                             "type":  "Debit",
+                             "amount":  23,
+                             "tag":  "UPI"
+                         },
+                         {
+                             "id":  639240704139402334,
+                             "date":  "Today",
+                             "description":  "UPI Payment to Pooja Verma (pooja@upi)",
+                             "type":  "Debit",
+                             "amount":  342,
+                             "tag":  "UPI"
+                         },
+                         {
+                             "id":  639240695438690000,
+                             "date":  "Today",
+                             "description":  "UPI Payment to SuperMart",
+                             "type":  "Debit",
+                             "amount":  420,
+                             "tag":  "UPI"
+                         },
+                         {
+                             "id":  639240681000225575,
+                             "date":  "Today",
+                             "description":  "UPI Payment to gb",
+                             "type":  "Debit",
+                             "amount":  567,
+                             "tag":  "UPI"
+                         },
+                         {
+                             "id":  1,
+                             "date":  "2 Sep 2026",
+                             "description":  "Salary Credit — TechCorp",
+                             "type":  "Credit",
+                             "amount":  15000.00,
+                             "tag":  "SALARY"
+                         },
+                         {
+                             "id":  2,
+                             "date":  "1 Sep 2026",
+                             "description":  "Electricity Bill — BESCOM",
+                             "type":  "Debit",
+                             "amount":  1240.00,
+                             "tag":  "UTILITY"
+                         },
+                         {
+                             "id":  3,
+                             "date":  "30 Aug 2026",
+                             "description":  "Grocery Store — Big Bazaar",
+                             "type":  "Debit",
+                             "amount":  2300.00,
+                             "tag":  "GROCERY"
+                         },
+                         {
+                             "id":  4,
+                             "date":  "28 Aug 2026",
+                             "description":  "Personal Transfer — Rahul Sharma",
+                             "type":  "Debit",
+                             "amount":  500.00,
+                             "tag":  "TRANSFER"
+                         },
+                         {
+                             "id":  5,
+                             "date":  "25 Aug 2026",
+                             "description":  "Pharmacy Medicine — Apollo",
+                             "type":  "Debit",
+                             "amount":  2200.00,
+                             "tag":  "HEALTH"
+                         }
+                     ]
+}
