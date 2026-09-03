@@ -122,6 +122,26 @@ window.SahaayA11y = (function(){
     window.SahaayVoice.announce(active ? 'Reduced motion speed enabled' : 'Standard motion restored');
   }
 
+  function setPlainLanguage(active) {
+    const plainBtn = document.getElementById('tool-plain');
+    const chk = document.getElementById('cfg-plain');
+    if(plainBtn) plainBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    if(chk) chk.checked = active;
+    document.querySelectorAll('[data-standard]').forEach(el => {
+      el.textContent = active ? el.getAttribute('data-plain') : el.getAttribute('data-standard');
+    });
+    window.SahaayVoice.announce(active ? 'Plain language mode enabled' : 'Standard language restored');
+  }
+
+  function setHoverSelect(active) {
+    hoverSelectActive = active;
+    const hoverBtn = document.getElementById('tool-hover');
+    const chk = document.getElementById('cfg-hover');
+    if(hoverBtn) hoverBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    if(chk) chk.checked = active;
+    window.SahaayVoice.announce(active ? 'Hover select active (1.2s dwell)' : 'Hover select disabled');
+  }
+
   function init(){
     // Themes
     document.getElementById('themeLightBtn')?.addEventListener('click', () => applyTheme('light'));
@@ -191,7 +211,7 @@ window.SahaayA11y = (function(){
 
     document.addEventListener('click', (e) => {
       if(!twoClickMode) return;
-      const btn = e.target.closest('button:not(.a11y-btn):not(.modal-close-btn):not(.osk-key):not(.upi-key)');
+      const btn = e.target.closest('button:not(.a11y-btn):not(.modal-close-btn):not(.osk-key):not(.upi-key):not(.select-pre-login-btn):not(#backToAssessmentBtn):not(#skipAssessmentDirectBtn)');
       if(btn){
         if(armedButton !== btn){
           e.preventDefault();
@@ -379,6 +399,83 @@ window.SahaayA11y = (function(){
 
     // Initialize smart tags state
     setSmartTags(false);
+
+    // Onboarding Wizard Event Handlers
+    document.getElementById('tool-wizard')?.addEventListener('click', openOnboardingWizard);
+    document.getElementById('closeOnboardingBtn')?.addEventListener('click', closeOnboardingWizard);
+    document.getElementById('skipOnboardingBtn')?.addEventListener('click', () => applyProfile('standard'));
+    document.getElementById('replayWizardPromptBtn')?.addEventListener('click', () => {
+      const promptText = 'Welcome to Sahaay Bank. Would you like assistance setting up accessibility features for your session? Speak: "Blind", "Low Vision", "Motor", "Senior", or "Skip".';
+      window.SahaayVoice.speakText(promptText, 'en-IN', () => {
+        window.SahaayVoice.startListening();
+      });
+    });
+
+    document.querySelectorAll('.select-profile-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applyProfile(btn.dataset.profile);
+      });
+    });
+
+    document.querySelectorAll('.onboarding-profile-card').forEach(card => {
+      card.addEventListener('click', () => {
+        applyProfile(card.dataset.profile);
+      });
+    });
+  }
+
+  function applyProfile(profileName) {
+    closeOnboardingWizard();
+    localStorage.setItem('sahaay_a11y_profile', profileName);
+
+    if (profileName === 'blind') {
+      setVoiceAlerts(true);
+      setTwoClickSafe(true);
+      window.SahaayVoice.setVoiceOutput(true);
+      window.SahaayVoice.enableContinuousHandsFree(true);
+      window.SahaayApp.showToast('Blind Assistance Profile Active');
+    } else if (profileName === 'low_vision') {
+      setScale(4); // A++ maximum text scale
+      applyTheme('contrast');
+      setSmartTags(true);
+      setClickRead(true);
+      setTwoClickSafe(false);
+      setHoverSelect(false);
+      window.SahaayApp.showToast('Low Vision Profile Active');
+    } else if (profileName === 'motor') {
+      setHoverSelect(true);
+      setTwoClickSafe(true);
+      window.SahaayApp.showToast('Motor Assistance Profile Active');
+    } else if (profileName === 'senior') {
+      setPlainLanguage(true);
+      setTwoClickSafe(false);
+      setHoverSelect(false);
+      document.getElementById('disableTimeoutBtn')?.click();
+      window.SahaayApp.showToast('Senior Citizen Profile Active');
+    } else {
+      applyTheme('fresh');
+      setTwoClickSafe(false);
+      setHoverSelect(false);
+      setPlainLanguage(false);
+      setScale(1);
+      window.SahaayApp.showToast('Standard Theme Active');
+    }
+  }
+
+  function openOnboardingWizard() {
+    const modal = document.getElementById('a11yOnboardingModal');
+    if (!modal) return;
+    modal.classList.add('open');
+    const promptText = 'Welcome to Sahaay Bank. Would you like assistance setting up accessibility features for your visit? You can choose a profile, or speak: "Blind", "Low Vision", "Motor Assistance", "Senior Citizen", or "Skip".';
+    window.SahaayVoice.speakText(promptText, 'en-IN', () => {
+      window.SahaayVoice.startListening();
+    });
+  }
+
+  function closeOnboardingWizard() {
+    const modal = document.getElementById('a11yOnboardingModal');
+    modal?.classList.remove('open');
   }
 
   return {
@@ -389,6 +486,9 @@ window.SahaayA11y = (function(){
     setTwoClickSafe,
     setSmartTags,
     setVoiceAlerts,
+    applyProfile,
+    openOnboardingWizard,
+    closeOnboardingWizard,
     isClickRead: () => clickReadActive,
     isTwoClickSafe: () => twoClickMode
   };

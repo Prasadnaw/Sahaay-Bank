@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
   Sahaay Bank Native Windows Zero-Dependency HTTP & REST API Server
 .DESCRIPTION
@@ -89,6 +89,68 @@ while ($listener.IsListening) {
       if ($rawUrl -eq "/api/health") {
         $responseJson = '{"status":"UP","engine":"Windows .NET HttpListener"}'
       }
+      elseif ($rawUrl -eq "/api/auth/login" -and $method -eq "POST") {
+        $db = Get-Db
+        $userInp = if ($reqData -and $reqData.username) { $reqData.username.ToString().Trim() } else { "" }
+        $passInp = if ($reqData -and $reqData.password) { $reqData.password.ToString().Trim() } else { "" }
+
+        $foundUser = $null
+        if ($db.users) {
+          foreach ($u in $db.users) {
+            if ($u.username.ToLower() -eq $userInp.ToLower() -and $u.password -eq $passInp) {
+              $foundUser = $u
+              break
+            }
+          }
+        }
+
+        if ($foundUser) {
+          $db.account.accountHolder = $foundUser.name
+          $db.account.accountNumber = $foundUser.accountNumber
+          $db.account.upiId = $foundUser.upiId
+          $db.account.balance = $foundUser.balance
+          $db.account.upiPin = $foundUser.upiPin
+          Save-Db $db
+
+          $safeUser = [ordered]@{
+            id = $foundUser.id
+            username = $foundUser.username
+            name = $foundUser.name
+            phone = $foundUser.phone
+            accountNumber = $foundUser.accountNumber
+            upiId = $foundUser.upiId
+            balance = $foundUser.balance
+            accessibilityProfile = $foundUser.accessibilityProfile
+          }
+          $responseJson = @{
+            success = $true
+            message = "Authentication successful"
+            user = $safeUser
+          } | ConvertTo-Json
+        } else {
+          $res.StatusCode = 401
+          $responseJson = @{
+            success = $false
+            error = "Invalid username or password. Check credentials."
+          } | ConvertTo-Json
+        }
+      }
+      elseif ($rawUrl -eq "/api/users" -and $method -eq "GET") {
+        $db = Get-Db
+        $safeUsers = @()
+        if ($db.users) {
+          foreach ($u in $db.users) {
+            $safeUsers += [ordered]@{
+              username = $u.username
+              name = $u.name
+              accountNumber = $u.accountNumber
+              upiId = $u.upiId
+              accessibilityProfile = $u.accessibilityProfile
+            }
+          }
+        }
+        $responseJson = @{ success = $true; data = $safeUsers } | ConvertTo-Json
+      }
       elseif ($rawUrl -eq "/api/account" -and $method -eq "GET") {
         $db = Get-Db
         $safeAccount = [ordered]@{
@@ -177,6 +239,8 @@ while ($listener.IsListening) {
         ".js"   { "application/javascript; charset=utf-8" }
         ".json" { "application/json; charset=utf-8" }
         ".svg"  { "image/svg+xml" }
+        ".pptx" { "application/vnd.openxmlformats-officedocument.presentationml.presentation" }
+        ".pdf"  { "application/pdf" }
         default { "application/octet-stream" }
       }
       $res.ContentType = $contentType

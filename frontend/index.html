@@ -58,6 +58,10 @@
   <aside class="a11y-bar" id="mainA11yBar" role="region" aria-label="Accessibility settings and assistive tools">
     <span class="label" data-i18n="assistiveToolsLabel">Assistive Tools:</span>
 
+    <button class="a11y-btn" id="tool-wizard" aria-haspopup="dialog" style="background:var(--gold); color:var(--navy-dark); font-weight:800; border-color:var(--gold);" title="Open Accessibility Setup Wizard for Disabilities">
+      ♿ <span>Setup Wizard</span>
+    </button>
+
     <div class="a11y-group" id="tool-text-size" role="group" aria-label="Text size scale">
       <button class="a11y-btn" id="textSmaller" aria-label="Decrease text size (A minus)">A−</button>
       <button class="a11y-btn" id="textReset" aria-label="Reset text size to standard (A)">A</button>
@@ -121,9 +125,135 @@
   <div id="liveRegion" class="sr-only" role="status" aria-live="polite"></div>
   <div id="liveRegionAssertive" class="sr-only" role="alert" aria-live="assertive"></div>
 
+  <!-- DEDICATED PRE-LOGIN VIEW: ACCESSIBILITY & DISABILITY ASSESSMENT -->
+  <main id="accessibilityAssessmentView" class="main-content" style="max-width:880px; margin:24px auto;" role="main" aria-labelledby="preLoginTitle" data-readable>
+    <div class="panel" style="padding:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:var(--navy-dark); font-weight:800; font-size:.84rem; padding:4px 12px; border-radius:20px;">
+          <span>♿ STEP 1 OF 2: DISABILITY & ASSISTANCE SETUP</span>
+        </div>
+        <button type="button" class="btn-secondary" id="skipAssessmentDirectBtn" style="padding:6px 14px; font-weight:700;">
+          Skip to Standard Login →
+        </button>
+      </div>
+
+      <h1 id="preLoginTitle" style="font-size:1.8rem; margin:0 0 8px 0; color:var(--navy);">Welcome to Sahaay Accessible Banking</h1>
+      <p style="font-size:1.05rem; color:var(--ink); margin:0 0 16px 0; line-height:1.5;">
+        Please tell us or select how you would like to interact with Sahaay Bank. We will personalize your screen, controls, and login method according to your assistance needs.
+      </p>
+
+      <!-- Live Voice Guided Setup Box -->
+      <div class="wizard-speech-banner" id="preLoginSpeechBanner" style="margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:1.8rem;">🎙️</span>
+          <div>
+            <strong style="font-size:1.02rem;">Hands-Free Voice Selection Active:</strong>
+            <p style="margin:2px 0 0 0; font-size:.92rem;" id="preLoginSpeechStatus">Listening... Speak: <strong>"Blind"</strong>, <strong>"Low Vision"</strong>, <strong>"Motor"</strong>, <strong>"Senior"</strong>, or <strong>"Standard"</strong></p>
+          </div>
+        </div>
+        <button type="button" class="btn-secondary" id="replayPreLoginVoiceBtn" style="min-height:38px; padding:6px 12px; font-size:.88rem;">🔊 Listen Again</button>
+      </div>
+
+      <!-- 5 Disability Decision Cards -->
+      <div class="onboarding-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+        <!-- 1. BLIND / NON-VISUAL -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="blind" role="button" tabindex="0" aria-label="Select Blind or Non-Visual Assistance Profile">
+          <div>
+            <div class="profile-badge">👁️ BLIND / NON-VISUAL</div>
+            <h3 style="margin-top:6px;">Blind / Non-Visual</h3>
+            <p>Full voice navigation without needing sight.</p>
+            <ul class="profile-features-list">
+              <li>🎙️ <strong>Continuous Hands-Free Voice Assistant</strong></li>
+              <li>🔊 <strong>Full Text-to-Speech narration</strong></li>
+              <li>🛡️ <strong>Two-Click Safe Mode</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> Voice Sign-In & Audio Code</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="blind" style="width:100%; margin-top:12px;">
+            🎙️ Choose Blind Profile (Say "Blind")
+          </button>
+        </div>
+
+        <!-- 2. LOW VISION -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="low_vision" role="button" tabindex="0" aria-label="Select Low Vision and High Contrast Profile">
+          <div>
+            <div class="profile-badge">🔍 LOW VISION</div>
+            <h3 style="margin-top:6px;">Low Vision & Partial Sight</h3>
+            <p>Maximum visibility with enlarged fonts and contrast.</p>
+            <ul class="profile-features-list">
+              <li>🔠 <strong>A++ Maximum Text Scaling (125%)</strong></li>
+              <li>👁️ <strong>AAA High Contrast (Yellow on Black)</strong></li>
+              <li>🏷️ <strong>Highlighted Financial Data</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> Large High-Contrast Math Challenge</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="low_vision" style="width:100%; margin-top:12px;">
+            👁️ Choose Low Vision (Say "Low Vision")
+          </button>
+        </div>
+
+        <!-- 3. MOTOR ASSISTANCE -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="motor" role="button" tabindex="0" aria-label="Select Motor and Tremor Assistance Profile">
+          <div>
+            <div class="profile-badge">🖐️ MOTOR ASSISTANCE</div>
+            <h3 style="margin-top:6px;">Motor & Tremor Support</h3>
+            <p>Designed for tremors, weakness, or limited hand dexterity.</p>
+            <ul class="profile-features-list">
+              <li>⏱️ <strong>Hover Select (Dwell Clicking 1.2s)</strong></li>
+              <li>🛡️ <strong>Two-Click Safe Mode</strong></li>
+              <li>⌨️ <strong>Large On-Screen Virtual Keyboard</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> 1-Tap Accessible Verification</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="motor" style="width:100%; margin-top:12px;">
+            🖐️ Choose Motor Profile (Say "Motor")
+          </button>
+        </div>
+
+        <!-- 4. SENIOR CITIZEN -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="senior" role="button" tabindex="0" aria-label="Select Senior Citizen and Simplified Profile">
+          <div>
+            <div class="profile-badge">👵 SENIOR CITIZEN</div>
+            <h3 style="margin-top:6px;">Senior Citizen & Relaxed</h3>
+            <p>Stress-free banking with simple everyday terms.</p>
+            <ul class="profile-features-list">
+              <li>📖 <strong>Plain Everyday Words (No Jargon)</strong></li>
+              <li>⏳ <strong>Zero Session Timeout Pressure</strong></li>
+              <li>🐢 <strong>Reduced Motion & Smooth Flow</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> SMS One-Time Code (OTP)</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="senior" style="width:100%; margin-top:12px;">
+            👵 Choose Senior Profile (Say "Senior")
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. STANDARD OPTION -->
+      <div style="margin-top:20px; padding:16px; background:var(--bg); border:1px solid var(--border); border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <strong style="color:var(--navy);">Standard Banking Experience:</strong>
+          <div style="font-size:.88rem; color:var(--ink-soft);">Proceed with standard password login and clean modern theme.</div>
+        </div>
+        <button type="button" class="btn-secondary select-pre-login-btn" data-profile="standard" style="padding:8px 18px; font-weight:700;">
+          ✨ Continue with Standard Mode (Say "Standard")
+        </button>
+      </div>
+    </div>
+  </main>
+
   <!-- LOGIN VIEW -->
-  <main id="loginView" class="main-content" style="max-width:540px; margin:30px auto;" data-readable>
+  <main id="loginView" class="main-content" style="max-width:540px; margin:30px auto; display:none;" data-readable>
     <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button type="button" id="backToAssessmentBtn" class="btn-secondary" style="padding:4px 10px; font-size:.85rem; font-weight:700;">
+          ← Change Assistance Setup
+        </button>
+        <span id="activeLoginProfileBadge" style="font-size:.78rem; font-weight:800; background:var(--gold); color:var(--navy-dark); padding:3px 8px; border-radius:4px;">
+          STANDARD
+        </span>
+      </div>
+
       <h1 data-i18n="loginHeading" data-standard="Sign in to your account" data-plain="Sign In to Your Money">Sign in to your account</h1>
       
       <div class="pw-solution-box" role="region" aria-label="Password accessibility explanation">
@@ -899,6 +1029,104 @@
       <h2>Live Continuous Accessibility Audit</h2>
       <div id="auditResultsList" style="display:flex; flex-direction:column; gap:10px; margin:16px 0;"></div>
       <button class="btn-primary" id="runAuditAgainBtn" style="width:100%;">🔄 Re-Run Live Tests Now</button>
+    </div>
+  </div>
+
+  <!-- ACCESSIBLE ONBOARDING SETUP WIZARD (PERSONS WITH DISABILITIES) -->
+  <div class="modal-overlay" id="a11yOnboardingModal" role="dialog" aria-modal="true" aria-labelledby="a11yWizardTitle">
+    <div class="modal" style="max-width:740px; max-height:88vh; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:var(--navy-dark); font-weight:800; font-size:.82rem; padding:4px 10px; border-radius:20px; margin-bottom:8px;">
+            <span>♿ ASSISTIVE ONBOARDING</span>
+          </div>
+          <h2 id="a11yWizardTitle" style="margin:0; font-size:1.45rem;">Personalize Your Accessible Experience</h2>
+        </div>
+        <button class="modal-close-btn" id="closeOnboardingBtn" aria-label="Skip accessibility setup and close dialog">✕</button>
+      </div>
+
+      <div class="wizard-speech-banner" id="wizardSpeechBanner">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:1.4rem;">🎙️</span>
+          <div>
+            <strong>Voice Guided Setup Active:</strong>
+            <p style="margin:2px 0 0 0; font-size:.9rem;" id="wizardSpeechPrompt">Listening... Speak <strong>"Blind"</strong>, <strong>"Low Vision"</strong>, <strong>"Motor"</strong>, <strong>"Senior"</strong>, or <strong>"Skip"</strong></p>
+          </div>
+        </div>
+        <button type="button" class="btn-secondary" id="replayWizardPromptBtn" style="min-height:36px; padding:4px 10px; font-size:.84rem;">🔊 Repeat Voice Prompt</button>
+      </div>
+
+      <p class="field-hint" style="margin:12px 0 16px 0; font-size:.94rem;">Choose your preferred banking assistance profile below. All options can also be adjusted later in Settings or Toolbar:</p>
+
+      <div class="onboarding-cards-grid">
+        <!-- Profile 1: Blind / Non-Visual -->
+        <div class="onboarding-profile-card" data-profile="blind">
+          <div class="profile-badge">👁️ FULL VOICE & DOUBLE-TAP</div>
+          <h3>Blind / Non-Visual Assistance</h3>
+          <p>Controls entire website using natural voice commands and screen reader narration.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>Hands-Free Mic Always On</strong> — No need to click buttons, just speak</li>
+            <li>✓ <strong>Full Text-to-Speech</strong> — Every screen element and balance is read aloud</li>
+            <li>✓ <strong>Two-Click Safe Mode</strong> — 1st tap announces element; 2nd tap confirms action</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="blind" style="width:100%; margin-top:8px;">
+            🎙️ Activate Blind Profile (Or say "Blind")
+          </button>
+        </div>
+
+        <!-- Profile 2: Low Vision / Partial Sight -->
+        <div class="onboarding-profile-card" data-profile="low_vision">
+          <div class="profile-badge">🔍 HIGH VISIBILITY</div>
+          <h3>Low Vision & High Contrast</h3>
+          <p>Maximizes on-screen legibility with enlarged text, high-contrast themes, and highlighted data.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>A++ Maximum Text Size</strong> — 125% scale with crisp high-legibility fonts</li>
+            <li>✓ <strong>AAA High Contrast Theme</strong> — Glowing yellow text on pure black background</li>
+            <li>✓ <strong>Highlight Key Info</strong> — Bright yellow marker effect on balances & accounts</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="low_vision" style="width:100%; margin-top:8px;">
+            👁️ Activate Low Vision (Or say "Low Vision")
+          </button>
+        </div>
+
+        <!-- Profile 3: Motor & Physical Assistance -->
+        <div class="onboarding-profile-card" data-profile="motor">
+          <div class="profile-badge">🖐️ MOTOR & TREMOR SAFE</div>
+          <h3>Motor & Mobility Support</h3>
+          <p>Designed for tremors, reduced dexterity, or hands-free dwell mouse navigation.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>Hover Select (Dwell Clicking)</strong> — Hover over buttons to click automatically</li>
+            <li>✓ <strong>Two-Click Safe Mode</strong> — Protects against accidental clicks & slips</li>
+            <li>✓ <strong>Large Virtual Keyboard</strong> — Full tactile on-screen QWERTY typing</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="motor" style="width:100%; margin-top:8px;">
+            🖐️ Activate Motor Profile (Or say "Motor")
+          </button>
+        </div>
+
+        <!-- Profile 4: Senior Citizen / Cognitive Ease -->
+        <div class="onboarding-profile-card" data-profile="senior">
+          <div class="profile-badge">👵 SENIOR CITIZEN CARE</div>
+          <h3>Senior Citizen & Simplified</h3>
+          <p>Gentle, stress-free banking with everyday terminology and zero time pressure.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>Plain Everyday Language</strong> — Jargon replaced with simple words</li>
+            <li>✓ <strong>Reduced Motion & Low Speed</strong> — Eliminates fast moving elements</li>
+            <li>✓ <strong>No Session Timeout</strong> — Takes away 15-minute time pressure countdowns</li>
+            <li>✓ <strong>Masked Balance by Default</strong> — Protects money numbers from public view</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="senior" style="width:100%; margin-top:8px;">
+            👵 Activate Senior Profile (Or say "Senior")
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-top:1px solid var(--border); padding-top:14px;">
+        <span style="font-size:.88rem; color:var(--ink-soft);">Prefer standard settings? You can proceed directly:</span>
+        <button type="button" class="btn-secondary" id="skipOnboardingBtn" style="padding:8px 18px; font-weight:700;">
+          ✨ Skip Setup & Continue (Or say "Skip")
+        </button>
+      </div>
     </div>
   </div>
 

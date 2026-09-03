@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Sahaay Bank Multilingual Voice Action & Conversational Form Engine
  * Robust, fully functional voice-guided banking assistant
  */
@@ -29,13 +29,25 @@ window.SahaayVoice = (function(){
     reason: ''
   };
 
+  let continuousHandsFree = false;
+  let continuousHandsFreeTimer = null;
+
   function resetMicButton() {
     isListening = false;
     const voiceMicBtn = document.getElementById('voiceActionMicBtn');
     const voiceMicBtnText = document.getElementById('voiceMicBtnText');
     voiceMicBtn?.classList.remove('listening');
     if (voiceMicBtnText) {
-      voiceMicBtnText.textContent = 'Start Voice Action';
+      voiceMicBtnText.textContent = continuousHandsFree ? '🎙️ Hands-Free Listening...' : 'Start Voice Action';
+    }
+    // If continuous hands-free mode is on (Blind Profile), automatically re-arm mic after speech finishes
+    if (continuousHandsFree && !awaitingConfirmation) {
+      clearTimeout(continuousHandsFreeTimer);
+      continuousHandsFreeTimer = setTimeout(() => {
+        if (!isListening && continuousHandsFree) {
+          startListening();
+        }
+      }, 3500);
     }
   }
 
@@ -80,8 +92,15 @@ window.SahaayVoice = (function(){
     }
   }
 
+  let isSpeaking = false;
+
   function speakText(text, lang = currentVoiceLang, onEndCallback = null) {
     if ('speechSynthesis' in window) {
+      isSpeaking = true;
+      if (voiceRecognition && isListening) {
+        try { voiceRecognition.stop(); } catch(e){}
+        resetMicButton();
+      }
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = lang;
@@ -96,6 +115,16 @@ window.SahaayVoice = (function(){
       function done() {
         if (!called) {
           called = true;
+          isSpeaking = false;
+          // Re-arm continuous listening after a brief cooldown so echo does not trigger voice recognition
+          if (continuousHandsFree && !awaitingConfirmation) {
+            clearTimeout(continuousHandsFreeTimer);
+            continuousHandsFreeTimer = setTimeout(() => {
+              if (!isListening && continuousHandsFree && !isSpeaking) {
+                startListening();
+              }
+            }, 750);
+          }
           if (onEndCallback) onEndCallback();
         }
       }
@@ -104,11 +133,12 @@ window.SahaayVoice = (function(){
       u.onerror = done;
 
       // Fallback timeout in case onend doesn't fire
-      const safetyTime = Math.max(2000, text.length * 85);
+      const safetyTime = Math.max(2200, text.length * 90);
       setTimeout(done, safetyTime);
 
       window.speechSynthesis.speak(u);
     } else {
+      isSpeaking = false;
       if (onEndCallback) setTimeout(onEndCallback, 100);
     }
   }
@@ -277,10 +307,21 @@ window.SahaayVoice = (function(){
         };
 
         voiceRecognition.onerror = (err) => {
-          console.warn('Speech recognition error:', err);
+          console.warn('Speech recognition error:', err.error);
+          if (err.error === 'no-speech') {
+            if (continuousHandsFree) {
+              clearTimeout(continuousHandsFreeTimer);
+              continuousHandsFreeTimer = setTimeout(() => {
+                if (!isListening && continuousHandsFree) {
+                  startListening();
+                }
+              }, 800);
+            }
+            return;
+          }
           resetMicButton();
           if(voiceLiveStatusBox) {
-            voiceLiveStatusBox.innerHTML = `<span>💡 Tap Start Voice Action to speak.</span>`;
+            voiceLiveStatusBox.innerHTML = `<span>💡 Tap Start Voice Action or say a command.</span>`;
           }
         };
 
@@ -316,14 +357,11 @@ window.SahaayVoice = (function(){
   }
 
   function startListening() {
+    if (isListening) return;
     if (!voiceRecognition) {
-      let promptHint = 'balance';
-      if (convTransfer.active) {
-        promptHint = convTransfer.step === 'awaiting_amount' ? '500' : 'rahul@sahaay';
-      }
       const simulatedSpeech = prompt(
         `Voice Command Input (${currentVoiceLang}):\nSay or type a command:`,
-        promptHint
+        'Sign in'
       );
       if (simulatedSpeech) handleVoiceInput(simulatedSpeech);
       resetMicButton();
@@ -333,26 +371,24 @@ window.SahaayVoice = (function(){
       voiceRecognition.lang = currentVoiceLang || 'en-IN';
       voiceRecognition.start();
     } catch (err) {
-      console.warn('Voice restart/busy:', err);
-      let promptHint = 'balance';
-      if (convTransfer.active) {
-        promptHint = convTransfer.step === 'awaiting_amount' ? '500' : 'rahul@sahaay';
+      console.warn('Voice recognition state:', err.name);
+      if (err.name !== 'InvalidStateError') {
+        resetMicButton();
       }
-      const simulatedSpeech = prompt(
-        `Voice Command Input (${currentVoiceLang}):\nSay or type a command:`,
-        promptHint
-      );
-      if (simulatedSpeech) handleVoiceInput(simulatedSpeech);
-      resetMicButton();
     }
   }
 
   function handleVoiceInput(transcript) {
     resetMicButton();
-    if(!transcript) return;
+    if(!transcript || isSpeaking) return;
 
     const normalized = normalizeSpokenUpi(transcript);
     const lower = normalized.toLowerCase().trim();
+
+    const liveBox = document.getElementById('voiceLiveStatusBox');
+    if (liveBox) {
+      liveBox.innerHTML = `<span>🗣️ Heard: "<strong>${transcript}</strong>"</span>`;
+    }
 
     const detected = detectLanguage(transcript);
     if (detected !== currentVoiceLang) {
@@ -370,6 +406,124 @@ window.SahaayVoice = (function(){
       window.SahaayI18n.applyLanguageToUI(targetLang);
       const switchedMsg = targetLang === 'hi-IN' ? 'पूरी स्क्रीन की भाषा हिन्दी में बदल दी गई है।' : 'All page text changed to English.';
       speakText(switchedMsg, targetLang);
+      return;
+    }
+
+    // 2. Pre-Login Disability Setup & Onboarding Triggers
+    if (/\b(blind|andha|drishtihin|दृष्टिहीन|non visual|non-visual|blind profile)\b/i.test(lower)) {
+      if (window.SahaayApp && window.SahaayApp.selectDisabilityAndProceed) {
+        window.SahaayApp.selectDisabilityAndProceed('blind');
+      } else {
+        window.SahaayA11y.applyProfile('blind');
+      }
+      return;
+    }
+    if (/\b(low vision|low-vision|partial sight|kam dikhta|कम दिखना|chashma|zoom|contrast|high contrast)\b/i.test(lower)) {
+      if (window.SahaayApp && window.SahaayApp.selectDisabilityAndProceed) {
+        window.SahaayApp.selectDisabilityAndProceed('low_vision');
+      } else {
+        window.SahaayA11y.applyProfile('low_vision');
+      }
+      return;
+    }
+    if (/\b(motor|tremor|physical|hands|dwell|hover select|trembling)\b/i.test(lower)) {
+      if (window.SahaayApp && window.SahaayApp.selectDisabilityAndProceed) {
+        window.SahaayApp.selectDisabilityAndProceed('motor');
+      } else {
+        window.SahaayA11y.applyProfile('motor');
+      }
+      return;
+    }
+    if (/\b(senior|senior citizen|old|buzurg|बुजुर्ग|elderly)\b/i.test(lower)) {
+      if (window.SahaayApp && window.SahaayApp.selectDisabilityAndProceed) {
+        window.SahaayApp.selectDisabilityAndProceed('senior');
+      } else {
+        window.SahaayA11y.applyProfile('senior');
+      }
+      return;
+    }
+    if (/\b(standard|skip|default|skip setup|continue)\b/i.test(lower)) {
+      const preLoginView = document.getElementById('accessibilityAssessmentView');
+      if (preLoginView && preLoginView.style.display !== 'none') {
+        window.SahaayApp.selectDisabilityAndProceed('standard');
+        return;
+      }
+    }
+    if (/\b(accessibility setup|setup wizard|onboarding|a11y setup)\b/i.test(lower)) {
+      window.SahaayA11y.openOnboardingWizard();
+      return;
+    }
+
+    // 3. SIGN IN / LOGIN VOICE COMMAND (ACCESSIBLE VOICE LOGIN)
+    if (/\b(sign in|signin|log in|login|sign-in|log-in|enter dashboard|dakhil|aage badho|aage chalo|submit login|open account|sign in to dashboard|signin to dashboard|login to dashboard|log in to dashboard|login karo|sign in karo|dashboard kholo|dashboard)\b/i.test(lower) ||
+        (/\b(proceed|submit|enter)\b/i.test(lower) && !convTransfer.active && !awaitingConfirmation)) {
+      const loginView = document.getElementById('loginView');
+      const preLoginView = document.getElementById('accessibilityAssessmentView');
+
+      if (preLoginView && preLoginView.style.display !== 'none') {
+        speakText('Proceeding to dashboard...', currentVoiceLang);
+        window.SahaayApp.selectDisabilityAndProceed('blind');
+        setTimeout(() => {
+          window.SahaayApp.attemptLogin(true);
+        }, 600);
+        return;
+      }
+
+      speakText(currentVoiceLang === 'hi-IN' ? 'डैशबोर्ड में साइन इन किया जा रहा है...' : 'Signing in to your dashboard...', currentVoiceLang);
+      window.SahaayApp?.showToast('Voice Command: Signing in...');
+      setTimeout(() => {
+        window.SahaayApp?.attemptLogin(true);
+      }, 350);
+      return;
+    }
+
+    // 4. FILL DEMO CREDENTIALS VOICE COMMAND
+    if (/\b(fill demo|demo credentials|auto fill|autofill|demo bharo|demo|credentials)\b/i.test(lower)) {
+      document.getElementById('autoFillDemoBtn')?.click();
+      const chk = document.getElementById('captchaCheckbox');
+      if (chk && chk.offsetParent !== null) chk.checked = true;
+      speakText('Demo credentials and verification prepared. Say "Sign in" to log in.', currentVoiceLang);
+      return;
+    }
+
+    // 5. CHECK HUMAN VERIFICATION BOX COMMAND
+    if (/\b(check box|checkbox|verify human|i am human|human verify|tick box|tik karo)\b/i.test(lower)) {
+      const chk = document.getElementById('captchaCheckbox');
+      if (chk) {
+        chk.checked = true;
+        const err = document.getElementById('captchaError');
+        if (err) err.hidden = true;
+        speakText('Human verification confirmed. Say "Sign in" to proceed.', currentVoiceLang);
+        window.SahaayApp.showToast('Human verification checked');
+      }
+      return;
+    }
+
+    // 6. PLAY / ENTER AUDIO CAPTCHA CODE
+    if (/\b(play audio|listen audio|audio code|code sunao|play code)\b/i.test(lower)) {
+      document.getElementById('playAudioCodeBtn')?.click();
+      return;
+    }
+    const codeMatch = lower.match(/\b(code is|audio code is|digits are)\s*(\d{4})\b/i);
+    if (codeMatch) {
+      const audioInp = document.getElementById('captchaAudioInput');
+      if (audioInp) {
+        audioInp.value = codeMatch[2];
+        speakText(`Audio code ${codeMatch[2]} entered. Say "Sign in" to submit.`, currentVoiceLang);
+        window.SahaayApp.showToast(`Audio code: ${codeMatch[2]}`);
+      }
+      return;
+    }
+
+    // 7. ENTER MATH CAPTCHA ANSWER
+    const mathMatch = lower.match(/\b(answer is|answer|sum is|total is|uttar)\s*(\d+)\b/i);
+    if (mathMatch) {
+      const mathInp = document.getElementById('captchaInput');
+      if (mathInp) {
+        mathInp.value = mathMatch[2];
+        speakText(`Math answer ${mathMatch[2]} entered. Say "Sign in" to submit.`, currentVoiceLang);
+        window.SahaayApp.showToast(`Math answer: ${mathMatch[2]}`);
+      }
       return;
     }
 
@@ -569,10 +723,10 @@ window.SahaayVoice = (function(){
       ? `मैंने "${transcript}" सुना। कृपया 'पैसे भेजें', 'बैलेंस', या 'सहायता' बोलें।`
       : `I heard "${transcript}". Say "Send money", "Check balance", or say "Help" for options.`;
     speakText(confused, currentVoiceLang);
-    window.SahaayApp.showToast(confused);
-    const liveBox = document.getElementById('voiceLiveStatusBox');
-    if (liveBox) {
-      liveBox.innerHTML = `<span>💡 Heard: "<strong>${transcript}</strong>". Say "Send money", "Balance", or "Help".</span>`;
+    window.SahaayApp?.showToast(confused);
+    const fallbackLiveBox = document.getElementById('voiceLiveStatusBox');
+    if (fallbackLiveBox) {
+      fallbackLiveBox.innerHTML = `<span>💡 Heard: "<strong>${transcript}</strong>". Say "Send money", "Balance", or "Help".</span>`;
     }
   }
 
@@ -703,6 +857,15 @@ window.SahaayVoice = (function(){
     savedBeneficiaries,
     isVoiceOutputEnabled: () => voiceOutputEnabled,
     setVoiceOutput: (val) => { voiceOutputEnabled = !!val; },
+    enableContinuousHandsFree: (val) => {
+      continuousHandsFree = !!val;
+      const voiceMicBtnText = document.getElementById('voiceMicBtnText');
+      if (voiceMicBtnText) {
+        voiceMicBtnText.textContent = continuousHandsFree ? '🎙️ Hands-Free Listening...' : 'Start Voice Action';
+      }
+      if (val) startListening();
+    },
+    isContinuousHandsFree: () => continuousHandsFree,
     getLang: () => currentVoiceLang,
     setLang: (l) => { currentVoiceLang = l; }
   };

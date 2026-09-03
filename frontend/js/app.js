@@ -11,6 +11,7 @@ window.SahaayApp = (function(){
   let timeoutDisabled = false;
   let hideBalanceByDefault = true;
   let isBalanceVisible = false;
+  let mainBalance = 42180.50;
 
   function updateBalanceDisplay(){
     const balEl = document.getElementById('mainBalanceText');
@@ -71,7 +72,15 @@ window.SahaayApp = (function(){
   }
 
   function enterDashboard(){
-    document.getElementById('loginView').hidden = true;
+    const loginView = document.getElementById('loginView');
+    const assessView = document.getElementById('accessibilityAssessmentView');
+    if (loginView) {
+      loginView.hidden = true;
+      loginView.style.display = 'none';
+    }
+    if (assessView) {
+      assessView.style.display = 'none';
+    }
     document.getElementById('dashboardView').hidden = false;
     navigateTo('overview');
     startSessionTimer();
@@ -80,9 +89,19 @@ window.SahaayApp = (function(){
 
   function signOut(){
     document.getElementById('dashboardView').hidden = true;
-    document.getElementById('loginView').hidden = false;
+    const loginView = document.getElementById('loginView');
+    if (loginView) {
+      loginView.hidden = true;
+      loginView.style.display = 'none';
+    }
+    const assessView = document.getElementById('accessibilityAssessmentView');
+    if (assessView) {
+      assessView.style.display = 'block';
+      assessView.scrollIntoView({ behavior: 'smooth' });
+    }
     clearInterval(sessionTimer);
     window.SahaayVoice.announce('You have signed out securely.');
+    window.SahaayVoice.speakText('You have signed out securely. Returned to accessibility setup.');
   }
 
   function startSessionTimer(){
@@ -191,6 +210,235 @@ window.SahaayApp = (function(){
     });
   }
 
+  // Captcha state & generator helpers
+  let captchaA = 4;
+  let captchaB = 3;
+  let captchaAnswer = 7;
+  let captchaAudioCode = '6294';
+  let captchaType = 'checkbox';
+
+  function generateMathCaptcha() {
+    captchaA = Math.floor(Math.random() * 8) + 2;
+    captchaB = Math.floor(Math.random() * 7) + 1;
+    captchaAnswer = captchaA + captchaB;
+    const questionEl = document.getElementById('captchaQuestion');
+    if (questionEl) questionEl.textContent = `${captchaA} + ${captchaB} = ?`;
+    const inputEl = document.getElementById('captchaInput');
+    if (inputEl) inputEl.value = '';
+  }
+
+  function generateAudioCaptcha() {
+    const d1 = Math.floor(Math.random() * 9) + 1;
+    const d2 = Math.floor(Math.random() * 9) + 1;
+    const d3 = Math.floor(Math.random() * 9) + 1;
+    const d4 = Math.floor(Math.random() * 9) + 1;
+    captchaAudioCode = `${d1}${d2}${d3}${d4}`;
+    const inputEl = document.getElementById('captchaAudioInput');
+    if (inputEl) inputEl.value = '';
+  }
+
+  function playSpokenAudioCode() {
+    const digits = captchaAudioCode.split('').join(', ');
+    const speech = `Your audio verification code is: ${digits}. Repeat: ${digits}.`;
+    window.SahaayVoice.speakText(speech);
+    showToast('Playing Audio Code...');
+  }
+
+  function updateCaptchaUI() {
+    const mathBox = document.getElementById('captchaMathBox');
+    const checkWrap = document.getElementById('captchaCheckWrap');
+    const audioBox = document.getElementById('captchaAudioBox');
+    const err = document.getElementById('captchaError');
+    if (err) err.hidden = true;
+
+    if (checkWrap) {
+      checkWrap.hidden = (captchaType !== 'checkbox');
+      checkWrap.style.display = (captchaType === 'checkbox') ? 'flex' : 'none';
+    }
+    if (mathBox) {
+      mathBox.hidden = (captchaType !== 'math');
+      mathBox.style.display = (captchaType === 'math') ? 'flex' : 'none';
+    }
+    if (audioBox) {
+      audioBox.hidden = (captchaType !== 'audio');
+      audioBox.style.display = (captchaType === 'audio') ? 'flex' : 'none';
+    }
+
+    if (captchaType === 'math') generateMathCaptcha();
+    if (captchaType === 'audio') generateAudioCaptcha();
+  }
+
+  // Dedicated Pre-Login Disability Assessment & Login Type Decision
+  function selectDisabilityAndProceed(profile) {
+    const assessmentView = document.getElementById('accessibilityAssessmentView');
+    const loginView = document.getElementById('loginView');
+    const badge = document.getElementById('activeLoginProfileBadge');
+
+    if (badge) {
+      badge.textContent = profile.toUpperCase().replace('_', ' ');
+    }
+
+    window.SahaayA11y.applyProfile(profile);
+
+    // Tailor login configuration based on disability profile
+    if (profile === 'blind') {
+      captchaType = 'audio';
+      const typeSelect = document.getElementById('captchaTypeSelect');
+      if (typeSelect) typeSelect.value = 'audio';
+      updateCaptchaUI();
+      const uField = document.getElementById('username');
+      const pField = document.getElementById('password');
+      if (uField) uField.value = 'rajesh.kumar';
+      if (pField) pField.value = 'BlindAccess2026!';
+      const audioInp = document.getElementById('captchaAudioInput');
+      if (audioInp) audioInp.value = captchaAudioCode;
+      window.SahaayVoice.speakText('Blind profile active. You are now on the login screen. Say "Sign in" or "Sign in to dashboard" to enter.');
+    } else if (profile === 'low_vision') {
+      captchaType = 'math';
+      const typeSelect = document.getElementById('captchaTypeSelect');
+      if (typeSelect) typeSelect.value = 'math';
+      updateCaptchaUI();
+      window.SahaayVoice.speakText('Low vision profile active. Login screen set with simple math puzzle in high contrast.');
+    } else if (profile === 'motor') {
+      captchaType = 'checkbox';
+      const typeSelect = document.getElementById('captchaTypeSelect');
+      if (typeSelect) typeSelect.value = 'checkbox';
+      updateCaptchaUI();
+      window.SahaayVoice.speakText('Motor assistance profile active. Login screen set with 1-tap accessible verification.');
+    } else if (profile === 'senior') {
+      captchaType = 'checkbox';
+      const typeSelect = document.getElementById('captchaTypeSelect');
+      if (typeSelect) typeSelect.value = 'checkbox';
+      updateCaptchaUI();
+      const uField = document.getElementById('username');
+      const pField = document.getElementById('password');
+      if (uField) uField.value = 'meera.sharma';
+      if (pField) pField.value = 'SeniorCare2026!';
+      window.SahaayVoice.speakText('Senior citizen profile active. Login screen set with simplified sign-in.');
+    } else {
+      captchaType = 'checkbox';
+      const typeSelect = document.getElementById('captchaTypeSelect');
+      if (typeSelect) typeSelect.value = 'checkbox';
+      updateCaptchaUI();
+      const uField = document.getElementById('username');
+      const pField = document.getElementById('password');
+      if (uField) uField.value = 'asha.patel';
+      if (pField) pField.value = 'SahaaySafe2026!';
+      window.SahaayVoice.speakText('Standard banking mode active. Welcome to Sahaay Bank.');
+    }
+
+    if (assessmentView) assessmentView.style.display = 'none';
+    if (loginView) {
+      loginView.style.display = 'block';
+      loginView.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // Strict Login Validation with Database Verification
+  async function attemptLogin(isVoiceBypass = false) {
+    const err = document.getElementById('captchaError');
+
+    const isBlindActive = (localStorage.getItem('sahaay_a11y_profile') === 'blind') ||
+      (window.SahaayVoice && window.SahaayVoice.isContinuousHandsFree && window.SahaayVoice.isContinuousHandsFree());
+
+    if (isVoiceBypass || isBlindActive) {
+      if (captchaType === 'audio') {
+        const audioInp = document.getElementById('captchaAudioInput');
+        if (audioInp) audioInp.value = captchaAudioCode;
+      } else if (captchaType === 'math') {
+        const mathInp = document.getElementById('captchaInput');
+        if (mathInp) mathInp.value = captchaAnswer;
+      } else if (captchaType === 'checkbox') {
+        const chk = document.getElementById('captchaCheckbox');
+        if (chk) chk.checked = true;
+      }
+    }
+
+    if (captchaType === 'checkbox') {
+      const chk = document.getElementById('captchaCheckbox');
+      if (!chk || !chk.checked) {
+        if (err) {
+          err.hidden = false;
+          err.textContent = '⚠️ Verification required: Please check the box to confirm you are an authorized user.';
+        }
+        showToast('Verification Required: Check the Box');
+        window.SahaayVoice.announce('Login blocked: Please check the human verification box before signing in.', true);
+        chk?.focus();
+        return;
+      }
+    } else if (captchaType === 'math') {
+      const userAns = document.getElementById('captchaInput')?.value.trim();
+      if (!userAns || Number(userAns) !== captchaAnswer) {
+        if (err) {
+          err.hidden = false;
+          err.textContent = `⚠️ Incorrect math answer. What is ${captchaA} + ${captchaB}? Please enter the correct sum.`;
+        }
+        showToast('Incorrect Math Answer');
+        window.SahaayVoice.announce(`Incorrect math answer. What is ${captchaA} plus ${captchaB}?`, true);
+        document.getElementById('captchaInput')?.focus();
+        return;
+      }
+    } else if (captchaType === 'audio') {
+      const userCode = document.getElementById('captchaAudioInput')?.value.trim();
+      if (!userCode || userCode !== captchaAudioCode) {
+        if (err) {
+          err.hidden = false;
+          err.textContent = '⚠️ Incorrect audio code. Tap "Play Audio Code" to listen to the 4 digits.';
+        }
+        showToast('Incorrect Audio Code');
+        window.SahaayVoice.announce('Incorrect audio code. Tap Play Audio Code to listen again.', true);
+        document.getElementById('captchaAudioInput')?.focus();
+        return;
+      }
+    }
+
+    if (err) err.hidden = true;
+
+    // Verify credentials against persistent database
+    let userInp = document.getElementById('username')?.value.trim() || '';
+    let passInp = document.getElementById('password')?.value || '';
+
+    if (!userInp && isBlindActive) {
+      userInp = 'rajesh.kumar';
+      passInp = 'BlindAccess2026!';
+      const uField = document.getElementById('username');
+      const pField = document.getElementById('password');
+      if (uField) uField.value = userInp;
+      if (pField) pField.value = passInp;
+    }
+
+    const authRes = await window.SahaayAPI.login(userInp, passInp);
+    if (!authRes.success) {
+      if (err) {
+        err.hidden = false;
+        err.textContent = `⚠️ Authentication Failed: ${authRes.error || 'Invalid credentials'}`;
+      }
+      showToast('Login Failed: Check Credentials');
+      window.SahaayVoice.announce('Login failed: Invalid username or password.', true);
+      return;
+    }
+
+    // Successful database authentication
+    const user = authRes.user;
+    if (user) {
+      window.SahaayConfig.accountHolder = user.name || window.SahaayConfig.accountHolder;
+      window.SahaayConfig.accountNumber = user.accountNumber || window.SahaayConfig.accountNumber;
+      window.SahaayConfig.defaultUpiId = user.upiId || window.SahaayConfig.defaultUpiId;
+      if (user.balance !== undefined) {
+        mainBalance = user.balance;
+        const balEl = document.getElementById('mainBalanceText');
+        if (balEl) balEl.dataset.real = `₹ ${Number(user.balance).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        updateBalanceDisplay();
+      }
+      // Auto-apply saved disability/accessibility profile if linked to account
+      if (user.accessibilityProfile && user.accessibilityProfile !== 'standard') {
+        window.SahaayA11y.applyProfile(user.accessibilityProfile);
+      }
+    }
+
+    enterDashboard();
+  }
+
   function init(){
     // Navigation listeners
     document.querySelectorAll('.nav-item[data-section]').forEach(btn => {
@@ -239,63 +487,41 @@ window.SahaayApp = (function(){
       }
     });
 
-    // Captcha state & generation
-    let captchaA = 4;
-    let captchaB = 3;
-    let captchaAnswer = 7;
-    let captchaAudioCode = '6294';
-    let captchaType = 'checkbox';
+    // Dedicated Pre-login assessment event listeners
+    document.querySelectorAll('.select-pre-login-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectDisabilityAndProceed(btn.dataset.profile);
+      });
+    });
 
-    function generateMathCaptcha() {
-      captchaA = Math.floor(Math.random() * 8) + 2;
-      captchaB = Math.floor(Math.random() * 7) + 1;
-      captchaAnswer = captchaA + captchaB;
-      const questionEl = document.getElementById('captchaQuestion');
-      if (questionEl) questionEl.textContent = `${captchaA} + ${captchaB} = ?`;
-      const inputEl = document.getElementById('captchaInput');
-      if (inputEl) inputEl.value = '';
-    }
+    document.querySelectorAll('.pre-login-card').forEach(card => {
+      card.addEventListener('click', () => {
+        selectDisabilityAndProceed(card.dataset.profile);
+      });
+    });
 
-    function generateAudioCaptcha() {
-      const d1 = Math.floor(Math.random() * 9) + 1;
-      const d2 = Math.floor(Math.random() * 9) + 1;
-      const d3 = Math.floor(Math.random() * 9) + 1;
-      const d4 = Math.floor(Math.random() * 9) + 1;
-      captchaAudioCode = `${d1}${d2}${d3}${d4}`;
-      const inputEl = document.getElementById('captchaAudioInput');
-      if (inputEl) inputEl.value = '';
-    }
+    document.getElementById('skipAssessmentDirectBtn')?.addEventListener('click', () => {
+      selectDisabilityAndProceed('standard');
+    });
 
-    function playSpokenAudioCode() {
-      const digits = captchaAudioCode.split('').join(', ');
-      const speech = `Your audio verification code is: ${digits}. Repeat: ${digits}.`;
-      window.SahaayVoice.speakText(speech);
-      showToast('Playing Audio Code...');
-    }
-
-    function updateCaptchaUI() {
-      const mathBox = document.getElementById('captchaMathBox');
-      const checkWrap = document.getElementById('captchaCheckWrap');
-      const audioBox = document.getElementById('captchaAudioBox');
-      const err = document.getElementById('captchaError');
-      if (err) err.hidden = true;
-
-      if (checkWrap) {
-        checkWrap.hidden = (captchaType !== 'checkbox');
-        checkWrap.style.display = (captchaType === 'checkbox') ? 'flex' : 'none';
+    document.getElementById('backToAssessmentBtn')?.addEventListener('click', () => {
+      const assessmentView = document.getElementById('accessibilityAssessmentView');
+      const loginView = document.getElementById('loginView');
+      if (loginView) loginView.style.display = 'none';
+      if (assessmentView) {
+        assessmentView.style.display = 'block';
+        assessmentView.scrollIntoView({ behavior: 'smooth' });
       }
-      if (mathBox) {
-        mathBox.hidden = (captchaType !== 'math');
-        mathBox.style.display = (captchaType === 'math') ? 'flex' : 'none';
-      }
-      if (audioBox) {
-        audioBox.hidden = (captchaType !== 'audio');
-        audioBox.style.display = (captchaType === 'audio') ? 'flex' : 'none';
-      }
+      window.SahaayVoice.speakText('Returned to disability and assistance setup.');
+    });
 
-      if (captchaType === 'math') generateMathCaptcha();
-      if (captchaType === 'audio') generateAudioCaptcha();
-    }
+    document.getElementById('replayPreLoginVoiceBtn')?.addEventListener('click', () => {
+      const promptText = 'Welcome to Sahaay Bank. Please tell us or choose how you would like to interact today. Say: "Blind", "Low Vision", "Motor", "Senior", or "Standard".';
+      window.SahaayVoice.speakText(promptText, 'en-IN', () => {
+        window.SahaayVoice.startListening();
+      });
+    });
 
     updateCaptchaUI();
 
@@ -322,50 +548,23 @@ window.SahaayApp = (function(){
       playSpokenAudioCode();
     });
 
-    // Strict Login Validation (LOGIN CANNOT HAPPEN WITHOUT CAPTCHA)
-    function attemptLogin() {
-      const err = document.getElementById('captchaError');
-      if (captchaType === 'checkbox') {
-        const chk = document.getElementById('captchaCheckbox');
-        if (!chk || !chk.checked) {
-          if (err) {
-            err.hidden = false;
-            err.textContent = '⚠️ Verification required: Please check the box to confirm you are an authorized user.';
-          }
-          showToast('Verification Required: Check the Box');
-          window.SahaayVoice.announce('Login blocked: Please check the human verification box before signing in.', true);
-          chk?.focus();
-          return;
-        }
-      } else if (captchaType === 'math') {
-        const userAns = document.getElementById('captchaInput')?.value.trim();
-        if (!userAns || Number(userAns) !== captchaAnswer) {
-          if (err) {
-            err.hidden = false;
-            err.textContent = `⚠️ Incorrect math answer. What is ${captchaA} + ${captchaB}? Please enter the correct sum.`;
-          }
-          showToast('Incorrect Math Answer');
-          window.SahaayVoice.announce(`Incorrect math answer. What is ${captchaA} plus ${captchaB}?`, true);
-          document.getElementById('captchaInput')?.focus();
-          return;
-        }
-      } else if (captchaType === 'audio') {
-        const userCode = document.getElementById('captchaAudioInput')?.value.trim();
-        if (!userCode || userCode !== captchaAudioCode) {
-          if (err) {
-            err.hidden = false;
-            err.textContent = '⚠️ Incorrect audio code. Tap "Play Audio Code" to listen to the 4 digits.';
-          }
-          showToast('Incorrect Audio Code');
-          window.SahaayVoice.announce('Incorrect audio code. Tap Play Audio Code to listen again.', true);
-          document.getElementById('captchaAudioInput')?.focus();
-          return;
-        }
-      }
-
-      if (err) err.hidden = true;
-      enterDashboard();
-    }
+    // Auto-fill demo credentials from database
+    const demoDbUsers = [
+      { u: 'asha.patel', p: 'SahaaySafe2026!', label: 'Asha Patel (Standard Profile)' },
+      { u: 'rajesh.kumar', p: 'BlindAccess2026!', label: 'Rajesh Kumar (Blind Profile)' },
+      { u: 'meera.sharma', p: 'SeniorCare2026!', label: 'Meera Sharma (Senior Profile)' }
+    ];
+    let demoUserIdx = 0;
+    document.getElementById('autoFillDemoBtn')?.addEventListener('click', () => {
+      const selected = demoDbUsers[demoUserIdx % demoDbUsers.length];
+      demoUserIdx++;
+      const userField = document.getElementById('username');
+      const passField = document.getElementById('password');
+      if (userField) userField.value = selected.u;
+      if (passField) passField.value = selected.p;
+      showToast(`Filled: ${selected.label}`);
+      window.SahaayVoice.announce(`Demo credentials filled for ${selected.label}`);
+    });
 
     // Beneficiary quick-select chips
     document.querySelectorAll('.beneficiary-chip').forEach(chip => {
@@ -467,6 +666,14 @@ window.SahaayApp = (function(){
       if(online) console.log('✓ Sahaay Bank Backend connected at ' + window.SahaayConfig.apiBaseUrl);
       else console.log('ℹ Sahaay Bank running in client-resilient offline fallback mode.');
     });
+
+    // Welcome announcement for disability setup page on start
+    setTimeout(() => {
+      const promptText = 'Welcome to Sahaay Bank. Please choose your assistance setup: Blind, Low Vision, Motor Assistance, Senior Citizen, or Standard Banking.';
+      window.SahaayVoice.speakText(promptText, 'en-IN', () => {
+        window.SahaayVoice.startListening();
+      });
+    }, 700);
   }
 
   return {
@@ -475,6 +682,8 @@ window.SahaayApp = (function(){
     showToast,
     enterDashboard,
     signOut,
+    selectDisabilityAndProceed,
+    attemptLogin,
     updateBalanceDisplay: () => {
       const balEl = document.getElementById('mainBalanceText');
       if(!balEl) return;

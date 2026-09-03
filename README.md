@@ -1,4 +1,4 @@
-# Sahaay Bank — Accessible Digital Banking (Full-Stack Architecture)
+﻿# Sahaay Bank — Accessible Digital Banking (Full-Stack Architecture)
 
 Sahaay Bank is a modern, WCAG 2.2 AAA compliant digital banking application built with complete separation between frontend and backend.
 
@@ -57,5 +57,3 @@ npm start
 
 ### Option 3: Standalone Frontend
 Simply open `frontend/index.html` directly in any browser. The built-in resilient client (`frontend/js/api.js`) will seamlessly manage state even without a backend!
-
-# Sahaay-Bank

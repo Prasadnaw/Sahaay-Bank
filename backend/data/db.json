@@ -1,4 +1,42 @@
 ﻿{
+    "users":  [
+                  {
+                      "id":  "USR-1001",
+                      "username":  "asha.patel",
+                      "password":  "SahaaySafe2026!",
+                      "name":  "Asha Patel",
+                      "phone":  "9876544417",
+                      "accountNumber":  "4417",
+                      "upiId":  "asha.patel@sahaay",
+                      "balance":  39404.50,
+                      "upiPin":  "1234",
+                      "accessibilityProfile":  "standard"
+                  },
+                  {
+                      "id":  "USR-1002",
+                      "username":  "rajesh.kumar",
+                      "password":  "BlindAccess2026!",
+                      "name":  "Rajesh Kumar",
+                      "phone":  "9811223344",
+                      "accountNumber":  "8821",
+                      "upiId":  "rajesh@sahaay",
+                      "balance":  28500.00,
+                      "upiPin":  "5678",
+                      "accessibilityProfile":  "blind"
+                  },
+                  {
+                      "id":  "USR-1003",
+                      "username":  "meera.sharma",
+                      "password":  "SeniorCare2026!",
+                      "name":  "Meera Sharma",
+                      "phone":  "9822334455",
+                      "accountNumber":  "3390",
+                      "upiId":  "meera@sahaay",
+                      "balance":  64200.75,
+                      "upiPin":  "9900",
+                      "accessibilityProfile":  "senior"
+                  }
+              ],
     "account":  {
                     "accountHolder":  "Asha Patel",
                     "accountNumber":  "4417",

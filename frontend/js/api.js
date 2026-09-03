@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Sahaay Bank REST API Client
  * Connects to live backend when available with transparent local fallback.
  */
@@ -131,7 +131,40 @@ window.SahaayAPI = (function(){
     return { success: true, isFrozen: localState.isFrozen };
   }
 
+  async function login(username, password){
+    if(await checkBackendHealth()){
+      try {
+        const res = await fetch(`${BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if(res.ok && data.success) {
+          return data;
+        } else {
+          return { success: false, error: data.error || 'Invalid credentials' };
+        }
+      } catch(e){}
+    }
+    // Transparent resilient local fallback credentials
+    const validUsers = [
+      { username: 'asha.patel', password: 'SahaaySafe2026!', name: 'Asha Patel', balance: 39404.50, upiId: 'asha.patel@sahaay', accountNumber: '4417', accessibilityProfile: 'standard' },
+      { username: 'rajesh.kumar', password: 'BlindAccess2026!', name: 'Rajesh Kumar', balance: 28500.00, upiId: 'rajesh@sahaay', accountNumber: '8821', accessibilityProfile: 'blind' },
+      { username: 'meera.sharma', password: 'SeniorCare2026!', name: 'Meera Sharma', balance: 64200.75, upiId: 'meera@sahaay', accountNumber: '3390', accessibilityProfile: 'senior' }
+    ];
+    const match = validUsers.find(u => u.username.toLowerCase() === username.trim().toLowerCase() && u.password === password);
+    if(match){
+      return {
+        success: true,
+        user: match
+      };
+    }
+    return { success: false, error: 'Invalid username or password' };
+  }
+
   return {
+    login,
     getAccount,
     getTransactions,
     verifyUpiPin,
