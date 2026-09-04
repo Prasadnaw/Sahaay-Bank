@@ -1681,3 +1681,647 @@ body.is-mobile-app .mobile-bottom-nav {
   transform: scale(0.92);
 }
 
+/* Dynamic Balance Update Flash Animation */
+@keyframes balanceFlashAnim {
+  0% { transform: scale(1); filter: brightness(1); }
+  25% { transform: scale(1.08); filter: brightness(1.3); color: #10B981 !important; }
+  60% { transform: scale(1.04); color: #E8B648; }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+.balance-updated-flash {
+  animation: balanceFlashAnim 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
+/* ==========================================================================
+   SAHAAY BANK — MODERN TRANSACTION ANALYTICS & GRAPH STYLES
+   ========================================================================== */
+
+/* Time Period Filter Pills */
+.analytics-time-pills-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 16px;
+  background: rgba(11, 28, 36, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  scrollbar-width: none;
+}
+
+.analytics-time-pills-row::-webkit-scrollbar {
+  display: none;
+}
+
+.analytics-period-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94A3B8;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.analytics-period-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #F1F7F9;
+}
+
+.analytics-period-pill.active {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border-color: #10B981;
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
+}
+
+/* Glassmorphic KPI Grid */
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 16px;
+}
+
+@media (min-width: 820px) {
+  .analytics-kpi-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.analytics-kpi-card {
+  background: rgba(16, 42, 54, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.analytics-kpi-card:hover {
+  border-color: rgba(232, 182, 72, 0.3);
+  transform: translateY(-2px);
+}
+
+.kpi-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.kpi-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.credit-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+}
+
+.debit-badge {
+  background: rgba(244, 63, 94, 0.15);
+  color: #F43F5E;
+}
+
+.net-badge {
+  background: rgba(99, 102, 241, 0.18);
+  color: #818CF8;
+}
+
+.avg-badge {
+  background: rgba(232, 182, 72, 0.15);
+  color: #E8B648;
+}
+
+.kpi-amount {
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.credit-amt {
+  color: #10B981 !important;
+}
+
+.debit-amt {
+  color: #F43F5E !important;
+}
+
+.avg-amt {
+  color: #F1F7F9 !important;
+}
+
+.kpi-subtitle {
+  font-size: 0.74rem;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.kpi-savings-rate {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #10B981;
+}
+
+.kpi-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin: 6px 0;
+  overflow: hidden;
+}
+
+.kpi-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* Modern Spline Chart Box */
+.modern-chart-card {
+  margin: 0 16px 16px 16px;
+  background: rgba(16, 42, 54, 0.7);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 18px 16px 12px 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chart-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-sub {
+  font-size: 0.78rem;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+
+/* Series Toggle Controls */
+.analytics-series-toggle {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.analytics-series-btn {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #94A3B8;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.analytics-series-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Chart Legend */
+.chart-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 6px;
+  font-size: 0.76rem;
+  color: #CBD5E1;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.green {
+  background: #10B981;
+  box-shadow: 0 0 6px #10B981;
+}
+
+.legend-dot.red {
+  background: #F43F5E;
+  box-shadow: 0 0 6px #F43F5E;
+}
+
+.legend-hint {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: #64748B;
+  font-style: italic;
+}
+
+/* SVG Chart Canvas */
+.chart-canvas-container {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+}
+
+.chart-inner-canvas-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.modern-cashflow-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.chart-line-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 0;
+  animation: drawChartPath 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes drawChartPath {
+  0% { stroke-dashoffset: 2000; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+.chart-point {
+  cursor: pointer;
+  transition: r 0.2s ease, stroke-width 0.2s ease;
+}
+
+/* Interactive Floating Glass Tooltip */
+.chart-floating-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(10, 24, 32, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(232, 182, 72, 0.35);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(232, 182, 72, 0.15);
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  color: #FFFFFF;
+  min-width: 180px;
+  z-index: 100;
+  transform: translateY(-8px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  opacity: 0;
+}
+
+.chart-floating-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tooltip-date-header {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #E8B648;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 4px;
+}
+
+.tooltip-metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.74rem;
+  margin-bottom: 3px;
+}
+
+.tooltip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tooltip-dot.credit-dot {
+  background: #10B981;
+}
+
+.tooltip-dot.debit-dot {
+  background: #F43F5E;
+}
+
+.tooltip-label {
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.tooltip-val {
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.tooltip-val.credit-val {
+  color: #10B981;
+}
+
+.tooltip-val.debit-val {
+  color: #F43F5E;
+}
+
+.tooltip-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 6px 0;
+}
+
+.tooltip-subtext {
+  font-size: 0.68rem;
+  color: #64748B;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* Category Breakdown Card */
+.analytics-section-card {
+  margin: 0 16px 16px 16px;
+  background: rgba(16, 42, 54, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.analytics-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.analytics-card-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.analytics-card-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(244, 63, 94, 0.15);
+  color: #F43F5E;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.category-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-breakdown-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.category-info-col {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.category-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-icon {
+  font-size: 1.1rem;
+}
+
+.category-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #F1F7F9;
+}
+
+.category-amount-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-amount {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #F43F5E;
+}
+
+.category-pct {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #94A3B8;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.category-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.category-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.empty-cat-msg {
+  text-align: center;
+  padding: 16px;
+  color: #94A3B8;
+  font-size: 0.85rem;
+}
+
+/* AI Financial Intelligence Card */
+.analytics-ai-card {
+  margin: 0 16px 24px 16px;
+  background: linear-gradient(135deg, rgba(16, 42, 54, 0.9) 0%, rgba(17, 24, 39, 0.95) 100%);
+  border: 1px solid rgba(232, 182, 72, 0.3);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(232, 182, 72, 0.08);
+}
+
+.ai-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ai-card-badge {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #E8B648;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-voice-listen-btn {
+  background: rgba(232, 182, 72, 0.15);
+  border: 1px solid rgba(232, 182, 72, 0.35);
+  color: #FFD400;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.ai-voice-listen-btn:hover {
+  background: rgba(232, 182, 72, 0.25);
+  transform: scale(1.03);
+}
+
+.ai-card-content {
+  color: #E2E8F0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.ai-insight-headline {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+}
+
+.ai-insight-body strong {
+  color: #10B981;
+}
+
+/* Passbook CTA Quick Switch Banner */
+.mobile-analytics-cta-banner {
+  margin: 10px 16px 14px 16px;
+  background: linear-gradient(135deg, rgba(16, 56, 76, 0.8) 0%, rgba(16, 185, 129, 0.15) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-analytics-cta-banner:active {
+  transform: scale(0.98);
+  background: rgba(16, 185, 129, 0.22);
+}
+
+.mobile-analytics-cta-banner .cta-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-analytics-cta-banner .cta-icon {
+  font-size: 1.4rem;
+}
+
+.mobile-analytics-cta-banner .cta-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.mobile-analytics-cta-banner .cta-sub {
+  font-size: 0.74rem;
+  color: #94A3B8;
+}
+
+.mobile-analytics-cta-banner .cta-arrow {
+  font-size: 1.1rem;
+  color: #10B981;
+  font-weight: 800;
+}
+
+/* Desktop Section Analytics Styles */
+#section-analytics .analytics-kpi-grid {
+  padding: 0 0 20px 0;
+}
+
+#section-analytics .modern-chart-card {
+  margin: 0 0 20px 0;
+}
+
+#section-analytics .analytics-section-card {
+  margin: 0 0 20px 0;
+}
+
+#section-analytics .analytics-ai-card {
+  margin: 0 0 20px 0;
+}

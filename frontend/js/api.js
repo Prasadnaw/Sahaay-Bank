@@ -196,6 +196,7 @@ window.SahaayAPI = (function () {
       upiPin: formData.upiPin || '1234',
       accessibilityProfile: formData.accessibilityProfile || 'standard',
       isFrozen: false,
+      profilePhoto: formData.photo || formData.profilePhoto || null,
       faceVerification: {
         enrolled: !!formData.faceTemplate,
         template: formData.faceTemplate || null
@@ -215,7 +216,8 @@ window.SahaayAPI = (function () {
       upiId: newUpi,
       balance: 0.00,
       accessibilityProfile: formData.accessibilityProfile || 'standard',
-      faceEnrolled: !!formData.faceTemplate
+      faceEnrolled: !!formData.faceTemplate,
+      profilePhoto: formData.photo || formData.profilePhoto || null
     };
 
     try {
@@ -276,7 +278,8 @@ window.SahaayAPI = (function () {
         upiId: found.upiId,
         balance: found.balance,
         accessibilityProfile: found.accessibilityProfile,
-        faceEnrolled: !!(found.faceVerification && found.faceVerification.enrolled)
+        faceEnrolled: !!(found.faceVerification && found.faceVerification.enrolled),
+        profilePhoto: found.profilePhoto || null
       };
 
       try {
@@ -334,7 +337,8 @@ window.SahaayAPI = (function () {
         upiId: found.upiId,
         balance: found.balance,
         accessibilityProfile: found.accessibilityProfile,
-        faceEnrolled: true
+        faceEnrolled: true,
+        profilePhoto: found.profilePhoto || null
       };
       try {
         localStorage.setItem(TOKEN_KEY, authToken);
@@ -360,9 +364,57 @@ window.SahaayAPI = (function () {
       username: u.username,
       name: u.name,
       accessibilityProfile: u.accessibilityProfile,
+      profilePhoto: u.profilePhoto || null,
       hasTemplate: !!(u.faceVerification && u.faceVerification.template),
       template: (u.faceVerification && u.faceVerification.template) || null
     }));
+  }
+
+  async function enrollFace(template, photo = null) {
+    if (await checkBackendHealth()) {
+      try {
+        const res = await fetch(`${BASE_URL}/auth/enroll-face`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ template, photo })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          if (currentUser) {
+            currentUser.faceEnrolled = true;
+            if (photo) currentUser.profilePhoto = photo;
+            try { localStorage.setItem(USER_KEY, JSON.stringify(currentUser)); } catch (e) {}
+          }
+          return data;
+        }
+      } catch (e) {}
+    }
+
+    // Local DB fallback
+    const db = getLocalDb();
+    const u = currentUser ? db.users.find(usr => usr.id === currentUser.id || usr.username === currentUser.username) : db.users[0];
+    if (u) {
+      u.faceVerification = {
+        enrolled: true,
+        template: template
+      };
+      if (photo) {
+        u.profilePhoto = photo;
+      }
+      saveLocalDb(db);
+      if (currentUser) {
+        currentUser.faceEnrolled = true;
+        if (photo) currentUser.profilePhoto = photo;
+        try { localStorage.setItem(USER_KEY, JSON.stringify(currentUser)); } catch (e) {}
+      }
+      return {
+        success: true,
+        message: 'Face biometric verification and profile photo enrolled successfully.',
+        profilePhoto: photo || null,
+        user: currentUser
+      };
+    }
+    return { success: false, error: 'User session not active' };
   }
 
   async function getAccount() {
@@ -394,7 +446,8 @@ window.SahaayAPI = (function () {
         balance: u.balance,
         isFrozen: !!u.isFrozen,
         accessibilityProfile: u.accessibilityProfile || 'standard',
-        faceEnrolled: !!(u.faceVerification && u.faceVerification.enrolled)
+        faceEnrolled: !!(u.faceVerification && u.faceVerification.enrolled),
+        profilePhoto: u.profilePhoto || null
       }
     };
   }
@@ -785,6 +838,7 @@ window.SahaayAPI = (function () {
     register,
     login,
     faceLogin,
+    enrollFace,
     getFaceProfiles,
     logout,
     getAccount,

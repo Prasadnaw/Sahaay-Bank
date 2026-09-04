@@ -51,6 +51,9 @@
       <button type="button" class="mobile-icon-btn" id="mobileServerBtn" aria-label="Server Connection Settings" title="Server Settings">
         ⚙️
       </button>
+      <button type="button" id="mobileHeaderAvatarBtn" class="mobile-icon-btn" aria-label="User Profile & Face Setup" title="Profile & Face Setup" style="width:36px; height:36px; border-radius:50%; overflow:hidden; padding:0; border:2px solid var(--accent); background:var(--navy); color:#fff; font-size:.82rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; cursor:pointer;">
+        <span id="mobileHeaderAvatarContent">AP</span>
+      </button>
     </div>
   </header>
 
@@ -60,10 +63,16 @@
     <div class="drawer-header">
       <button type="button" class="drawer-close-btn" id="appDrawerCloseBtn" aria-label="Close Drawer">✕</button>
       <div class="drawer-profile-row">
-        <div class="drawer-avatar" id="drawerAvatar">AP</div>
+        <div style="position:relative; cursor:pointer;" id="drawerAvatarWrapper" title="Tap to capture profile photo & setup face biometric">
+          <div class="drawer-avatar" id="drawerAvatar" style="overflow:hidden;">AP</div>
+          <span style="position:absolute; bottom:-2px; right:-2px; background:#10B981; color:#fff; border-radius:50%; width:20px; height:20px; font-size:.7rem; display:flex; align-items:center; justify-content:center; border:2px solid var(--navy-dark);" title="Setup Face ID & Photo">📸</span>
+        </div>
         <div class="drawer-user-info">
           <div class="drawer-user-name" id="drawerUserName">Asha Patel</div>
-          <span class="drawer-user-badge" id="drawerUserBadge">✓ Verified Account</span>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:2px;">
+            <span class="drawer-user-badge" id="drawerUserBadge">✓ Verified Account</span>
+            <button type="button" id="drawerFaceSetupBadgeBtn" style="background:rgba(232,182,72,0.18); border:1px solid #E8B648; color:#FFD400; font-size:.72rem; padding:2px 8px; border-radius:10px; cursor:pointer; font-weight:700;">📸 Face Setup</button>
+          </div>
         </div>
       </div>
       <div class="drawer-upi-row">
@@ -89,8 +98,14 @@
       <button type="button" class="drawer-nav-item" id="drawerNavHistory">
         <span class="drawer-nav-icon">📜</span> <span>Passbook &amp; Ledger</span>
       </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavAnalytics">
+        <span class="drawer-nav-icon">📊</span> <span>Analytics &amp; Cashflow</span>
+      </button>
 
       <div class="drawer-nav-section-title">Security &amp; Assistive</div>
+      <button type="button" class="drawer-nav-item" id="drawerNavFaceSetup">
+        <span class="drawer-nav-icon">📸</span> <span>Setup Face Biometric & Photo</span>
+      </button>
       <button type="button" class="drawer-nav-item" id="drawerNavFreeze">
         <span class="drawer-nav-icon">❄️</span> <span id="drawerFreezeLabel">Freeze Account</span>
       </button>
@@ -230,8 +245,8 @@
   <div id="liveRegion" class="sr-only" role="status" aria-live="polite"></div>
   <div id="liveRegionAssertive" class="sr-only" role="alert" aria-live="assertive"></div>
 
-  <!-- DEDICATED PRE-LOGIN VIEW: ACCESSIBILITY & DISABILITY ASSESSMENT -->
-  <main id="accessibilityAssessmentView" class="main-content" style="max-width:880px; margin:24px auto;" role="main" aria-labelledby="preLoginTitle" data-readable>
+  <!-- DEDICATED PRE-LOGIN VIEW: ACCESSIBILITY & DISABILITY ASSESSMENT (ACCESSIBLE VIA 'CHANGE ASSISTANCE SETUP') -->
+  <main id="accessibilityAssessmentView" class="main-content" style="max-width:880px; margin:24px auto; display:none;" role="main" aria-labelledby="preLoginTitle" data-readable>
     <div class="panel" style="padding:24px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
         <div style="display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:var(--navy-dark); font-weight:800; font-size:.84rem; padding:4px 12px; border-radius:20px;">
@@ -348,14 +363,14 @@
   </main>
 
   <!-- LOGIN VIEW -->
-  <main id="loginView" class="main-content" style="max-width:540px; margin:30px auto; display:none;" data-readable>
+  <main id="loginView" class="main-content" style="max-width:540px; margin:30px auto; display:block;" data-readable>
     <div class="panel">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <button type="button" id="backToAssessmentBtn" class="btn-secondary" style="padding:4px 10px; font-size:.85rem; font-weight:700;">
-          ← Change Assistance Setup
+          ♿ Assistance &amp; Disability Setup
         </button>
         <span id="activeLoginProfileBadge" style="font-size:.78rem; font-weight:800; background:var(--gold); color:var(--navy-dark); padding:3px 8px; border-radius:4px;">
-          STANDARD
+          DEMO READY
         </span>
       </div>
 
@@ -374,10 +389,10 @@
       <!-- 1. LOGIN FORM CONTAINER -->
       <div id="loginFormContainer">
         <div class="pw-solution-box" role="region" aria-label="Password accessibility explanation">
-          <strong data-i18n="pwSolutionTitle">♿ Accessible Password Support:</strong>
-          <p style="margin:4px 0 8px 0; font-size:.88rem;" data-i18n="pwSolutionDesc">Pasting is strictly allowed. You can use password managers or assisted filling.</p>
-          <button type="button" class="btn-secondary" id="autoFillDemoBtn" style="min-height:40px; padding:6px 14px; font-size:.9rem;">
-            ⚡ <span data-i18n="autoFillBtn">1-Tap Fill Demo Credentials</span>
+          <strong data-i18n="pwSolutionTitle">🔒 Secure Biometric &amp; Password Sign-In:</strong>
+          <p style="margin:4px 0 8px 0; font-size:.88rem;" data-i18n="pwSolutionDesc">Enter your account credentials or sign in with Face Biometric ID. Pasting and assistive filling are supported.</p>
+          <button type="button" class="btn-secondary" id="autoFillDemoBtn" style="min-height:38px; padding:6px 14px; font-size:.88rem;">
+            ⚡ <span data-i18n="autoFillBtn">Demo Accounts (Optional Quick Fill)</span>
           </button>
         </div>
 
@@ -389,12 +404,12 @@
         <div id="panelPassword" role="tabpanel">
           <div class="field">
             <label for="username" data-i18n="lblUsername">Username or Customer ID</label>
-            <input type="text" id="username" autocomplete="username" value="asha.patel">
+            <input type="text" id="username" autocomplete="username" placeholder="Enter username or customer ID" value="">
           </div>
           <div class="field">
             <label for="password" data-i18n="lblPassword">Password</label>
             <div class="pw-wrap">
-              <input type="password" id="password" autocomplete="current-password" value="SahaaySafe2026!" onpaste="return true;">
+              <input type="password" id="password" autocomplete="current-password" placeholder="Enter your password" value="" onpaste="return true;">
               <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password in plain text" data-i18n="pwToggle">Show</button>
             </div>
           </div>
@@ -412,7 +427,7 @@
             <!-- OPTION 1: 1-Tap Accessible Checkbox (SHOWS ALONE WHEN SELECTED) -->
             <div id="captchaCheckWrap" class="captcha-challenge-row" style="padding:12px; background:var(--bg); border-radius:6px; border:1.5px solid var(--border);">
               <label style="display:flex; align-items:center; gap:12px; cursor:pointer; font-weight:700;">
-                <input type="checkbox" id="captchaCheckbox" style="width:24px; height:24px; cursor:pointer;" aria-label="Confirm you are an authorized human user">
+                <input type="checkbox" id="captchaCheckbox" style="width:24px; height:24px; cursor:pointer;" aria-label="Confirm you are an authorized human user" checked>
                 <span style="font-size:.95rem;">I confirm I am an authorized human user</span>
               </label>
             </div>
@@ -593,7 +608,7 @@
             <div class="card-balance-block">
               <div class="card-balance-label">Available Balance</div>
               <div class="card-balance-amount">
-                <span id="mobileCardBalance">₹ ••••••</span>
+                <span id="mobileCardBalance">₹ 39,404.50</span>
                 <button type="button" class="card-eye-btn" id="mobileToggleBalanceBtn" aria-label="Toggle balance visibility">👁️</button>
               </div>
             </div>
@@ -625,10 +640,17 @@
             <div class="mobile-action-icon-wrap icon-wrap-deposit">➕</div>
             <span class="mobile-action-label">Deposit</span>
           </div>
+          <div class="mobile-action-pill" id="mobileActionAnalytics" role="button" tabindex="0" aria-label="Transaction Analysis and Cashflow Graph">
+            <div class="mobile-action-icon-wrap icon-wrap-analytics" style="background:linear-gradient(135deg, #10B981 0%, #059669 100%); color:#fff;">📊</div>
+            <span class="mobile-action-label">Analysis</span>
+          </div>
         </div>
 
         <!-- Secondary Feature Strip -->
         <div class="mobile-secondary-strip">
+          <button type="button" class="mobile-chip-btn" id="mobileChipAnalytics" aria-label="Transaction Cashflow Trends">
+            <span>📊</span> <span>Trends</span>
+          </button>
           <button type="button" class="mobile-chip-btn" id="mobileChipVoice" aria-label="Voice Assistant">
             <span>🎙️</span> <span>Voice</span>
           </button>
@@ -725,7 +747,7 @@
                 <input type="number" id="mobileAmountInput" class="mobile-amount-input" placeholder="0" min="1" step="any" required>
               </div>
               <div class="mobile-avail-bal-hint">
-                Available: <span id="mobileTransferAvailBal">₹ ••••••</span>
+                Available: <span id="mobileTransferAvailBal">₹ 39,404.50</span>
               </div>
               <div id="mobileAmountError" class="mobile-form-error" hidden>⚠️ Enter a valid amount within your balance.</div>
             </div>
@@ -789,11 +811,23 @@
         <div class="mobile-passbook-banner">
           <div>
             <div class="mobile-passbook-bal-label">Savings Account (•••• 4417)</div>
-            <div class="mobile-passbook-bal-amount" id="mobilePassbookBalance">₹ ••••••</div>
+            <div class="mobile-passbook-bal-amount" id="mobilePassbookBalance">₹ 39,404.50</div>
           </div>
           <button type="button" class="mobile-refresh-btn" id="mobileRefreshTxBtn" title="Refresh Statement">
             🔄
           </button>
+        </div>
+
+        <!-- Analytics Quick Switch Banner -->
+        <div class="mobile-analytics-cta-banner" id="mobilePassbookAnalyticsCtaBtn" role="button" tabindex="0" title="Open Cashflow Analytics">
+          <div class="cta-left">
+            <span class="cta-icon">📊</span>
+            <div>
+              <div class="cta-title">View Cashflow &amp; Trend Graph</div>
+              <div class="cta-sub">Interactive Credit vs. Debit analysis</div>
+            </div>
+          </div>
+          <span class="cta-arrow">→</span>
         </div>
 
         <!-- Live Search Bar -->
@@ -924,6 +958,129 @@
         </div>
       </div>
 
+      <!-- ========================================================
+           SCREEN 6: MOBILE TRANSACTION ANALYSIS & CASHFLOW
+           ======================================================== -->
+      <div class="mobile-subview" id="mobileViewAnalytics" hidden>
+        <div class="mobile-subview-header">
+          <button type="button" class="mobile-subview-back-btn" id="mobileAnalyticsBackBtn" aria-label="Back to Home">
+            ←
+          </button>
+          <div class="mobile-subview-title-wrap">
+            <h2 class="mobile-subview-title">📊 Cashflow &amp; Trends</h2>
+            <span class="mobile-subview-subtitle">Credit vs. Debit Intelligence</span>
+          </div>
+          <button type="button" class="mobile-subview-icon-btn" id="mobileAnalyticsRefreshBtn" title="Refresh Analytics">
+            🔄
+          </button>
+        </div>
+
+        <!-- Period Selection Pills -->
+        <div class="analytics-time-pills-row">
+          <button type="button" class="analytics-period-pill" data-period="7D">7 Days</button>
+          <button type="button" class="analytics-period-pill active" data-period="30D">30 Days</button>
+          <button type="button" class="analytics-period-pill" data-period="MONTH">This Month</button>
+          <button type="button" class="analytics-period-pill" data-period="ALL">All Time</button>
+        </div>
+
+        <!-- Glassmorphic KPI Summary Grid -->
+        <div class="analytics-kpi-grid">
+          <!-- Inflow Card -->
+          <div class="analytics-kpi-card kpi-credit">
+            <div class="kpi-top-row">
+              <span class="kpi-badge credit-badge">↗ Inflow</span>
+              <span class="kpi-icon-circle">🟢</span>
+            </div>
+            <div class="kpi-amount credit-amt" id="mobileAnalyticsKpiCredit">+₹ 0.00</div>
+            <div class="kpi-subtitle">Total Credit Received</div>
+          </div>
+
+          <!-- Outflow Card -->
+          <div class="analytics-kpi-card kpi-debit">
+            <div class="kpi-top-row">
+              <span class="kpi-badge debit-badge">↘ Outflow</span>
+              <span class="kpi-icon-circle">🔴</span>
+            </div>
+            <div class="kpi-amount debit-amt" id="mobileAnalyticsKpiDebit">−₹ 0.00</div>
+            <div class="kpi-subtitle">Total Money Spent</div>
+          </div>
+
+          <!-- Net Cashflow Card -->
+          <div class="analytics-kpi-card kpi-net">
+            <div class="kpi-top-row">
+              <span class="kpi-badge net-badge">⚡ Net Cashflow</span>
+              <span class="kpi-savings-rate" id="mobileAnalyticsSavingsPct">0%</span>
+            </div>
+            <div class="kpi-amount" id="mobileAnalyticsKpiNet">₹ 0.00</div>
+            <div class="kpi-progress-track">
+              <div class="kpi-progress-bar" id="mobileAnalyticsSavingsBar" style="width:0%;"></div>
+            </div>
+            <div class="kpi-subtitle">Net Retained Surplus</div>
+          </div>
+
+          <!-- Avg Daily Burn Rate -->
+          <div class="analytics-kpi-card kpi-avg">
+            <div class="kpi-top-row">
+              <span class="kpi-badge avg-badge">📅 Daily Velocity</span>
+            </div>
+            <div class="kpi-amount avg-amt" id="mobileAnalyticsKpiAvgSpend">₹ 0.00 / day</div>
+            <div class="kpi-subtitle">Avg Expense Rate</div>
+          </div>
+        </div>
+
+        <!-- Interactive Modern Spline Chart Box -->
+        <div class="modern-chart-card">
+          <div class="chart-header-row">
+            <div>
+              <div class="chart-title">Cashflow Dynamics</div>
+              <div class="chart-sub">Comparing credits &amp; debits over time</div>
+            </div>
+            <!-- Series Toggle Pills -->
+            <div class="analytics-series-toggle">
+              <button type="button" class="analytics-series-btn active" data-series="ALL">All</button>
+              <button type="button" class="analytics-series-btn" data-series="CREDIT">Inflow</button>
+              <button type="button" class="analytics-series-btn" data-series="DEBIT">Outflow</button>
+            </div>
+          </div>
+
+          <!-- Chart Legend -->
+          <div class="chart-legend-row">
+            <span class="legend-item"><span class="legend-dot green"></span> Credit / Income</span>
+            <span class="legend-item"><span class="legend-dot red"></span> Debit / Expense</span>
+            <span class="legend-hint">Touch / hover graph for details</span>
+          </div>
+
+          <!-- SVG Chart Container -->
+          <div class="chart-canvas-container" id="mobileAnalyticsChartWrap">
+            <!-- Dynamic SVG injected via SahaayAnalytics.renderAnalytics() -->
+          </div>
+        </div>
+
+        <!-- Category Breakdown Card -->
+        <div class="analytics-section-card">
+          <div class="analytics-card-header">
+            <div class="analytics-card-title">🏷️ Spending by Category</div>
+            <span class="analytics-card-tag">Outflow</span>
+          </div>
+          <div class="category-breakdown-list" id="mobileAnalyticsCategoriesList">
+            <!-- Dynamic rows injected here -->
+          </div>
+        </div>
+
+        <!-- AI Financial Health & Advisory Insights -->
+        <div class="analytics-ai-card" id="mobileAnalyticsAiCard">
+          <div class="ai-card-header">
+            <div class="ai-card-badge">🤖 AI Financial Intelligence</div>
+            <button type="button" class="ai-voice-listen-btn" id="mobileAnalyticsVoiceReadBtn" title="Read financial summary aloud">
+              🔊 Listen
+            </button>
+          </div>
+          <div id="mobileAnalyticsAiAdvice" class="ai-card-content">
+            <!-- Dynamic summary text -->
+          </div>
+        </div>
+      </div>
+
     </main>
 
     <div class="app-shell">
@@ -931,6 +1088,7 @@
         <ul>
           <li><button class="nav-item" data-section="overview" id="navOverviewBtn" aria-current="page">📊 <span data-i18n="navOverview">Overview</span></button></li>
           <li><button class="nav-item" data-section="transactions" id="navTransactionsBtn">📑 <span data-i18n="navTransactions">Transactions</span></button></li>
+          <li><button class="nav-item" data-section="analytics" id="navAnalyticsBtn">📈 <span data-i18n="navAnalytics">Analysis &amp; Trends</span></button></li>
           <li><button class="nav-item" data-section="transfer" id="navTransferBtn">💸 <span data-i18n="navTransfer">Send & UPI</span></button></li>
           <li><button class="nav-item" data-section="help" id="navHelpBtn">❓ <span data-i18n="navHelp">Help & Commands</span></button></li>
           <li><button class="nav-item" data-section="settings" id="navSettingsBtn">⚙️ <span data-i18n="navSettings">Settings</span></button></li>
@@ -945,9 +1103,9 @@
           <div class="panel">
             <h2 id="balanceHeading" data-standard="Available Balance" data-plain="Money You Have Right Now" data-i18n="balanceHeading">Available Balance</h2>
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:6px 0 10px 0;">
-              <p class="balance-figure" id="mainBalanceText" data-real="₹ 42,180.50" style="margin:0;">₹ •••••• <span class="smart-tag" style="display:none;">[AVAILABLE]</span></p>
+              <p class="balance-figure" id="mainBalanceText" data-real="₹ 39,404.50" style="margin:0;">₹ 39,404.50 <span class="smart-tag" style="display:none;">[AVAILABLE]</span></p>
               <button type="button" class="btn-secondary" id="toggleBalanceVisibilityBtn" style="min-height:36px; padding:4px 12px; font-size:.85rem; font-weight:700;" aria-label="Show or hide account balance">
-                👁️ <span id="toggleBalanceText">Show Balance</span>
+                👁️ <span id="toggleBalanceText">Hide Balance</span>
               </button>
             </div>
             <p class="field-hint" data-i18n="balanceSubText">Savings Account ending in <strong>4417</strong> <span class="smart-tag" style="display:none;">[ACC: 4417]</span> • UPI ID: <strong>asha.patel@sahaay</strong> <span class="smart-tag" style="display:none;">[UPI]</span></p>
@@ -957,6 +1115,7 @@
               <button class="btn-secondary" id="openScannerBtn">📷 <span data-i18n="btnScanQr">Scan UPI QR</span></button>
               <button class="btn-secondary" id="openMyQrBtn">📱 <span data-i18n="btnShowMyQr">My UPI QR</span></button>
               <button class="btn-secondary" onclick="window.SahaayApp.navigateTo('transactions');">📑 <span data-i18n="btnQuickStatement">View Statement</span></button>
+              <button class="btn-secondary" onclick="window.SahaayApp.navigateTo('analytics');">📊 <span>Cashflow Analysis</span></button>
             </div>
           </div>
         </section>
@@ -997,6 +1156,120 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <!-- Section: Analytics & Cashflow -->
+        <section id="section-analytics" hidden data-readable>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h1 style="margin:0;">📊 Cashflow Analytics &amp; Trends</h1>
+              <p class="field-hint" style="margin:4px 0 0 0;">Interactive Credit (Inflow) vs. Debit (Outflow) Spline Graph</p>
+            </div>
+            <!-- Period Selection Pills -->
+            <div class="analytics-time-pills-row" style="background:transparent; border:none; padding:0;">
+              <button type="button" class="analytics-period-pill" data-period="7D">7 Days</button>
+              <button type="button" class="analytics-period-pill active" data-period="30D">30 Days</button>
+              <button type="button" class="analytics-period-pill" data-period="MONTH">This Month</button>
+              <button type="button" class="analytics-period-pill" data-period="ALL">All Time</button>
+            </div>
+          </div>
+
+          <!-- Glassmorphic KPI Summary Grid -->
+          <div class="analytics-kpi-grid">
+            <!-- Inflow Card -->
+            <div class="analytics-kpi-card kpi-credit">
+              <div class="kpi-top-row">
+                <span class="kpi-badge credit-badge">↗ Inflow</span>
+                <span class="kpi-icon-circle">🟢</span>
+              </div>
+              <div class="kpi-amount credit-amt" id="desktopAnalyticsKpiCredit">+₹ 0.00</div>
+              <div class="kpi-subtitle">Total Credit Received</div>
+            </div>
+
+            <!-- Outflow Card -->
+            <div class="analytics-kpi-card kpi-debit">
+              <div class="kpi-top-row">
+                <span class="kpi-badge debit-badge">↘ Outflow</span>
+                <span class="kpi-icon-circle">🔴</span>
+              </div>
+              <div class="kpi-amount debit-amt" id="desktopAnalyticsKpiDebit">−₹ 0.00</div>
+              <div class="kpi-subtitle">Total Money Spent</div>
+            </div>
+
+            <!-- Net Cashflow Card -->
+            <div class="analytics-kpi-card kpi-net">
+              <div class="kpi-top-row">
+                <span class="kpi-badge net-badge">⚡ Net Cashflow</span>
+                <span class="kpi-savings-rate" id="desktopAnalyticsSavingsPct">0%</span>
+              </div>
+              <div class="kpi-amount" id="desktopAnalyticsKpiNet">₹ 0.00</div>
+              <div class="kpi-progress-track">
+                <div class="kpi-progress-bar" id="desktopAnalyticsSavingsBar" style="width:0%;"></div>
+              </div>
+              <div class="kpi-subtitle">Net Retained Surplus</div>
+            </div>
+
+            <!-- Avg Daily Burn Rate -->
+            <div class="analytics-kpi-card kpi-avg">
+              <div class="kpi-top-row">
+                <span class="kpi-badge avg-badge">📅 Daily Velocity</span>
+              </div>
+              <div class="kpi-amount avg-amt" id="desktopAnalyticsKpiAvgSpend">₹ 0.00 / day</div>
+              <div class="kpi-subtitle">Avg Expense Rate</div>
+            </div>
+          </div>
+
+          <!-- Interactive Modern Spline Chart Box -->
+          <div class="modern-chart-card">
+            <div class="chart-header-row">
+              <div>
+                <div class="chart-title">Cashflow Dynamics</div>
+                <div class="chart-sub">Comparing credits &amp; debits over time</div>
+              </div>
+              <!-- Series Toggle Pills -->
+              <div class="analytics-series-toggle">
+                <button type="button" class="analytics-series-btn active" data-series="ALL">All</button>
+                <button type="button" class="analytics-series-btn" data-series="CREDIT">Inflow</button>
+                <button type="button" class="analytics-series-btn" data-series="DEBIT">Outflow</button>
+              </div>
+            </div>
+
+            <!-- Chart Legend -->
+            <div class="chart-legend-row">
+              <span class="legend-item"><span class="legend-dot green"></span> Credit / Income</span>
+              <span class="legend-item"><span class="legend-dot red"></span> Debit / Expense</span>
+              <span class="legend-hint">Hover over graph nodes for detailed breakdown</span>
+            </div>
+
+            <!-- SVG Chart Container -->
+            <div class="chart-canvas-container" id="desktopAnalyticsChartWrap">
+              <!-- Dynamic SVG injected via SahaayAnalytics.renderAnalytics() -->
+            </div>
+          </div>
+
+          <!-- Category Breakdown Card -->
+          <div class="analytics-section-card">
+            <div class="analytics-card-header">
+              <div class="analytics-card-title">🏷️ Spending by Category</div>
+              <span class="analytics-card-tag">Outflow Breakdown</span>
+            </div>
+            <div class="category-breakdown-list" id="desktopAnalyticsCategoriesList">
+              <!-- Dynamic rows injected here -->
+            </div>
+          </div>
+
+          <!-- AI Financial Health & Advisory Insights -->
+          <div class="analytics-ai-card" id="desktopAnalyticsAiCard">
+            <div class="ai-card-header">
+              <div class="ai-card-badge">🤖 AI Financial Intelligence</div>
+              <button type="button" class="ai-voice-listen-btn" id="desktopAnalyticsVoiceReadBtn" title="Read financial summary aloud">
+                🔊 Listen
+              </button>
+            </div>
+            <div id="desktopAnalyticsAiAdvice" class="ai-card-content">
+              <!-- Dynamic summary text -->
+            </div>
           </div>
         </section>
 
@@ -1304,6 +1577,24 @@
                 <input type="checkbox" id="cfg-hide-balance" checked>
                 <span class="slider"></span>
               </label>
+            </div>
+          <!-- CARD: BIOMETRIC FACE ID & PROFILE PHOTO -->
+          <div class="settings-section-card" role="region" aria-label="Biometric Face ID and Profile Photo">
+            <div class="settings-header-badge"><span>📸</span> <span>Biometric Face ID &amp; Profile Photo</span></div>
+            <p class="field-hint">Enroll your face using your camera to log in with 1 glance and set your official profile picture:</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:10px 0;">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <div id="settingsProfilePhotoPreview" style="width:54px; height:54px; border-radius:50%; overflow:hidden; border:2px solid var(--accent); background:var(--navy); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:1.1rem;">
+                  👤
+                </div>
+                <div>
+                  <h4 style="margin:0 0 4px 0;">Camera Profile Photo &amp; Face Biometrics</h4>
+                  <div id="settingsFaceStatusBadge" style="font-size:.84rem; color:var(--ink-soft);">Status: Ready for setup</div>
+                </div>
+              </div>
+              <button type="button" class="btn-primary" id="settingsSetupFaceBtn" style="padding:8px 16px; font-weight:700;">
+                📸 Setup Face &amp; Photo
+              </button>
             </div>
           </div>
 
@@ -2269,6 +2560,7 @@
   <script src="js/qrService.js"></script>
   <script src="js/a11yToolbar.js"></script>
   <script src="js/aiCompanion.js"></script>
+  <script src="js/analyticsService.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

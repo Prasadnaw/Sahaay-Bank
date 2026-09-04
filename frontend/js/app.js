@@ -7,11 +7,11 @@ window.SahaayApp = (function(){
   let currentSection = 'overview';
   let isFrozen = false;
   let sessionTimer = null;
-  let sessionSeconds = 15 * 60; // 900 seconds (Real 15 minutes)
-  let timeoutDisabled = false;
-  let hideBalanceByDefault = true;
-  let isBalanceVisible = false;
-  let mainBalance = 42180.50;
+  let sessionSeconds = 15 * 60; // 900 seconds
+  let timeoutDisabled = true; // Auto-logout disabled: session persists until explicit exit
+  let hideBalanceByDefault = false;
+  let isBalanceVisible = true;
+  let mainBalance = 39404.50;
   let currentTxList = [];
   let currentTxFilter = 'ALL';
   let currentTransferPaymentMethod = 'UPI';
@@ -22,6 +22,9 @@ window.SahaayApp = (function(){
   function renderTransactions(txList = null, filter = null) {
     if (txList) currentTxList = txList;
     if (filter) currentTxFilter = filter.toUpperCase();
+    if (window.SahaayAnalytics && currentTxList.length > 0) {
+      window.SahaayAnalytics.renderAnalytics(currentTxList);
+    }
 
     const tbody = document.getElementById('transactionTbody');
     if (!tbody) return;
@@ -226,13 +229,39 @@ window.SahaayApp = (function(){
   function refreshAccountBalance(newBalance) {
     if (newBalance !== undefined && newBalance !== null) {
       mainBalance = Number(newBalance);
+      const formattedBal = `₹ ${mainBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
       const balEl = document.getElementById('mainBalanceText');
       if (balEl) {
-        balEl.dataset.real = `₹ ${mainBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+        balEl.dataset.real = formattedBal;
       }
       updateBalanceDisplay();
+
+      // Ensure mobile DOM nodes update immediately
+      const mobileBal = document.getElementById('mobileCardBalance');
+      if (mobileBal && isBalanceVisible) mobileBal.textContent = formattedBal;
+      const mobilePassBal = document.getElementById('mobilePassbookBalance');
+      if (mobilePassBal && isBalanceVisible) mobilePassBal.textContent = formattedBal;
+      const mobileTransferBal = document.getElementById('mobileTransferAvailBal');
+      if (mobileTransferBal) mobileTransferBal.textContent = formattedBal;
+
+      // Pulse flash animation to highlight updated balance
+      [balEl, mobileBal, mobilePassBal, mobileTransferBal].forEach(el => {
+        if (el) {
+          el.classList.remove('balance-updated-flash');
+          void el.offsetWidth;
+          el.classList.add('balance-updated-flash');
+        }
+      });
+
+      // Persist updated balance in SahaayAPI current user and localStorage
       const curr = window.SahaayAPI.getCurrentUser();
-      if (curr) curr.balance = mainBalance;
+      if (curr) {
+        curr.balance = mainBalance;
+        window.SahaayAPI.setCurrentUser(curr);
+        try {
+          localStorage.setItem('sahaay_current_user', JSON.stringify(curr));
+        } catch (e) {}
+      }
     }
   }
 
@@ -287,14 +316,16 @@ window.SahaayApp = (function(){
   function updateBalanceDisplay(){
     const balEl = document.getElementById('mainBalanceText');
     const toggleBtnText = document.getElementById('toggleBalanceText');
-    if(!balEl) return;
-    const realBal = balEl.dataset.real || '₹ 42,180.50';
-    if(isBalanceVisible){
-      balEl.innerHTML = `${realBal} <span class="smart-tag" style="${document.documentElement.classList.contains('highlight-info') ? 'display:inline-block;' : 'display:none;'}">[AVAILABLE]</span>`;
-      if(toggleBtnText) toggleBtnText.textContent = 'Hide Balance';
-    } else {
-      balEl.innerHTML = `₹ •••••• <span class="smart-tag" style="display:none;">[AVAILABLE]</span>`;
-      if(toggleBtnText) toggleBtnText.textContent = 'Show Balance';
+    const realBal = `₹ ${mainBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+    if(balEl) {
+      balEl.dataset.real = realBal;
+      if(isBalanceVisible){
+        balEl.innerHTML = `${realBal} <span class="smart-tag" style="${document.documentElement.classList.contains('highlight-info') ? 'display:inline-block;' : 'display:none;'}">[AVAILABLE]</span>`;
+        if(toggleBtnText) toggleBtnText.textContent = 'Hide Balance';
+      } else {
+        balEl.innerHTML = `₹ •••••• <span class="smart-tag" style="display:none;">[AVAILABLE]</span>`;
+        if(toggleBtnText) toggleBtnText.textContent = 'Show Balance';
+      }
     }
 
     const mobileBal = document.getElementById('mobileCardBalance');
@@ -307,7 +338,8 @@ window.SahaayApp = (function(){
     }
     const mobileTransferBal = document.getElementById('mobileTransferAvailBal');
     if (mobileTransferBal) {
-      mobileTransferBal.textContent = isBalanceVisible ? realBal : '₹ ••••••';
+      // Available spendable balance on transfer screen is always displayed clearly
+      mobileTransferBal.textContent = realBal;
     }
   }
 
@@ -343,6 +375,7 @@ window.SahaayApp = (function(){
     const sections = {
       overview: document.getElementById('section-overview'),
       transactions: document.getElementById('section-transactions'),
+      analytics: document.getElementById('section-analytics'),
       transfer: document.getElementById('section-transfer'),
       help: document.getElementById('section-help'),
       settings: document.getElementById('section-settings')
@@ -363,12 +396,17 @@ window.SahaayApp = (function(){
       if (sectionId === 'overview') switchMobileView('home');
       else if (sectionId === 'transfer') switchMobileView('transfer');
       else if (sectionId === 'transactions') switchMobileView('transactions');
+      else if (sectionId === 'analytics') switchMobileView('analytics');
       else if (sectionId === 'help') switchMobileView('ai');
       return;
     }
 
     if (mobileDash) mobileDash.style.display = 'none';
     if (mainContent) mainContent.style.display = 'block';
+
+    if (sectionId === 'analytics') {
+      window.SahaayAnalytics?.renderAnalytics(currentTxList);
+    }
 
     // Sync Bottom Nav tabs
     document.querySelectorAll('.bottom-nav-tab').forEach(t => t.classList.remove('active'));
@@ -387,9 +425,43 @@ window.SahaayApp = (function(){
     const maskedAcc = '•••• ' + (acc.length >= 4 ? acc.slice(-4) : acc);
     const upi = user.upiId || 'asha.patel@sahaay';
     const initials = name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() || 'SB';
+    const photo = user.profilePhoto || null;
 
     const avatarEl = document.getElementById('drawerAvatar');
-    if (avatarEl) avatarEl.textContent = initials;
+    if (avatarEl) {
+      if (photo) {
+        avatarEl.innerHTML = `<img src="${photo}" alt="${name}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+      } else {
+        avatarEl.textContent = initials;
+      }
+    }
+
+    const headerAvatar = document.getElementById('mobileHeaderAvatarContent');
+    if (headerAvatar) {
+      if (photo) {
+        headerAvatar.innerHTML = `<img src="${photo}" alt="${name}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+      } else {
+        headerAvatar.textContent = initials;
+      }
+    }
+
+    const settingsPreview = document.getElementById('settingsProfilePhotoPreview');
+    if (settingsPreview) {
+      if (photo) {
+        settingsPreview.innerHTML = `<img src="${photo}" alt="${name}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+      } else {
+        settingsPreview.textContent = initials;
+      }
+    }
+
+    const settingsBadge = document.getElementById('settingsFaceStatusBadge');
+    if (settingsBadge) {
+      const isEnrolled = !!(user.faceVerification && user.faceVerification.enrolled) || !!user.faceEnrolled;
+      settingsBadge.innerHTML = isEnrolled
+        ? '<span style="color:var(--success); font-weight:700;">🟢 Face Biometric &amp; Photo Active ✓</span>'
+        : '<span>Status: Ready for camera setup</span>';
+    }
+
     const drawerName = document.getElementById('drawerUserName');
     if (drawerName) drawerName.textContent = name;
     const drawerUpi = document.getElementById('drawerUserUpi');
@@ -411,10 +483,30 @@ window.SahaayApp = (function(){
   function resetMobileUserProfile() {
     const avatarEl = document.getElementById('drawerAvatar');
     if (avatarEl) avatarEl.textContent = '👤';
+    const headerAvatar = document.getElementById('mobileHeaderAvatarContent');
+    if (headerAvatar) headerAvatar.textContent = '👤';
+    const settingsPreview = document.getElementById('settingsProfilePhotoPreview');
+    if (settingsPreview) settingsPreview.textContent = '👤';
+    const settingsBadge = document.getElementById('settingsFaceStatusBadge');
+    if (settingsBadge) settingsBadge.innerHTML = '<span>Status: Ready for camera setup</span>';
     const drawerName = document.getElementById('drawerUserName');
     if (drawerName) drawerName.textContent = 'Guest User';
     const drawerUpi = document.getElementById('drawerUserUpi');
     if (drawerUpi) drawerUpi.textContent = 'guest@sahaay';
+  }
+
+  function autoFillLoginCredentials(username = 'asha.patel', password = 'SahaaySafe2026!') {
+    const uField = document.getElementById('username');
+    const pField = document.getElementById('password');
+    const chk = document.getElementById('captchaCheckbox');
+    const err = document.getElementById('captchaError');
+    if (uField) uField.value = username;
+    if (pField) pField.value = password;
+    if (chk) chk.checked = true;
+    if (err) {
+      err.hidden = true;
+      err.textContent = '';
+    }
   }
 
   async function enterDashboard(userData) {
@@ -437,6 +529,12 @@ window.SahaayApp = (function(){
     }
 
     if (user) {
+      // Persist active session in SahaayAPI and localStorage
+      window.SahaayAPI.setCurrentUser(user);
+      try {
+        localStorage.setItem('sahaay_current_user', JSON.stringify(user));
+      } catch (e) {}
+
       // 1. Update Welcome Greeting
       const welcomeH1 = document.querySelector('#section-overview h1[data-standard]');
       if (welcomeH1) {
@@ -491,23 +589,28 @@ window.SahaayApp = (function(){
     document.getElementById('dashboardView').hidden = true;
     const loginView = document.getElementById('loginView');
     if (loginView) {
-      loginView.hidden = true;
-      loginView.style.display = 'none';
+      loginView.hidden = false;
+      loginView.style.display = 'block';
+      loginView.scrollIntoView({ behavior: 'smooth' });
     }
     const assessView = document.getElementById('accessibilityAssessmentView');
     if (assessView) {
-      assessView.style.display = 'block';
-      assessView.scrollIntoView({ behavior: 'smooth' });
+      assessView.style.display = 'none';
     }
     clearInterval(sessionTimer);
+    const uField = document.getElementById('username');
+    const pField = document.getElementById('password');
+    if (uField) uField.value = '';
+    if (pField) pField.value = '';
     window.SahaayVoice.announce('You have signed out securely.');
-    window.SahaayVoice.speakText('You have signed out securely. Returned to accessibility setup.');
+    window.SahaayVoice.speakText('You have signed out securely. Returned to sign in screen.');
   }
 
   function startSessionTimer(){
+    // Per requirement: Active session persists indefinitely until user explicitly clicks Exit/Sign Out
     if(timeoutDisabled) return;
     clearInterval(sessionTimer);
-    sessionSeconds = 15 * 60; // 15 real minutes
+    sessionSeconds = 15 * 60;
     const banner = document.getElementById('timeoutBanner');
     if(banner){
       banner.classList.remove('show');
@@ -686,13 +789,9 @@ window.SahaayApp = (function(){
       const typeSelect = document.getElementById('captchaTypeSelect');
       if (typeSelect) typeSelect.value = 'audio';
       updateCaptchaUI();
-      const uField = document.getElementById('username');
-      const pField = document.getElementById('password');
-      if (uField) uField.value = 'rajesh.kumar';
-      if (pField) pField.value = 'BlindAccess2026!';
       const audioInp = document.getElementById('captchaAudioInput');
       if (audioInp) audioInp.value = captchaAudioCode;
-      window.SahaayVoice.speakText('Blind profile active. You are now on the login screen. Say "Sign in" or "Sign in to dashboard" to enter.');
+      window.SahaayVoice.speakText('Blind profile active. You are now on the login screen. Please enter your credentials or use voice.');
     } else if (profile === 'low_vision') {
       captchaType = 'math';
       const typeSelect = document.getElementById('captchaTypeSelect');
@@ -710,20 +809,12 @@ window.SahaayApp = (function(){
       const typeSelect = document.getElementById('captchaTypeSelect');
       if (typeSelect) typeSelect.value = 'checkbox';
       updateCaptchaUI();
-      const uField = document.getElementById('username');
-      const pField = document.getElementById('password');
-      if (uField) uField.value = 'meera.sharma';
-      if (pField) pField.value = 'SeniorCare2026!';
       window.SahaayVoice.speakText('Senior citizen profile active. Login screen set with simplified sign-in.');
     } else {
       captchaType = 'checkbox';
       const typeSelect = document.getElementById('captchaTypeSelect');
       if (typeSelect) typeSelect.value = 'checkbox';
       updateCaptchaUI();
-      const uField = document.getElementById('username');
-      const pField = document.getElementById('password');
-      if (uField) uField.value = 'asha.patel';
-      if (pField) pField.value = 'SahaaySafe2026!';
       window.SahaayVoice.speakText('Standard banking mode active. Welcome to Sahaay Bank.');
     }
 
@@ -958,10 +1049,7 @@ window.SahaayApp = (function(){
     document.getElementById('autoFillDemoBtn')?.addEventListener('click', () => {
       const selected = demoDbUsers[demoUserIdx % demoDbUsers.length];
       demoUserIdx++;
-      const userField = document.getElementById('username');
-      const passField = document.getElementById('password');
-      if (userField) userField.value = selected.u;
-      if (passField) passField.value = selected.p;
+      autoFillLoginCredentials(selected.u, selected.p);
       showToast(`Filled: ${selected.label}`);
       window.SahaayVoice.announce(`Demo credentials filled for ${selected.label}`);
     });
@@ -1012,12 +1100,19 @@ window.SahaayApp = (function(){
     });
 
     let enrolledFaceTemplate = null;
+    let enrolledFacePhoto = null;
     document.getElementById('regEnrollFaceBtn')?.addEventListener('click', () => {
-      window.SahaayFace.openEnrollmentModal((template) => {
+      window.SahaayFace.openEnrollmentModal((template, photo) => {
         enrolledFaceTemplate = template;
+        enrolledFacePhoto = photo;
         const badge = document.getElementById('regFaceBadge');
         if (badge) {
-          badge.innerHTML = '🟢 <span style="color:var(--success);">Status: Face Biometric Enrolled ✓</span>';
+          badge.innerHTML = photo
+            ? `<div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+                 <img src="${photo}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid var(--success);">
+                 <span style="color:var(--success); font-weight:700;">Face Biometric &amp; Photo Enrolled ✓</span>
+               </div>`
+            : '🟢 <span style="color:var(--success);">Status: Face Biometric Enrolled ✓</span>';
         }
       });
     });
@@ -1073,7 +1168,8 @@ window.SahaayApp = (function(){
         confirmPassword,
         phone,
         accessibilityProfile: profile,
-        faceTemplate: enrolledFaceTemplate
+        faceTemplate: enrolledFaceTemplate,
+        photo: enrolledFacePhoto
       });
 
       if (btn) {
@@ -1558,6 +1654,7 @@ window.SahaayApp = (function(){
         home: document.getElementById('mobileViewHome'),
         transfer: document.getElementById('mobileViewTransfer'),
         transactions: document.getElementById('mobileViewTransactions'),
+        analytics: document.getElementById('mobileViewAnalytics'),
         myqr: document.getElementById('mobileViewMyQr'),
         ai: document.getElementById('mobileViewAi')
       };
@@ -1585,6 +1682,7 @@ window.SahaayApp = (function(){
       if (viewName === 'home') document.getElementById('drawerNavHome')?.classList.add('active');
       else if (viewName === 'transfer') document.getElementById('drawerNavSend')?.classList.add('active');
       else if (viewName === 'transactions') document.getElementById('drawerNavHistory')?.classList.add('active');
+      else if (viewName === 'analytics') document.getElementById('drawerNavAnalytics')?.classList.add('active');
       else if (viewName === 'myqr') document.getElementById('drawerNavMyQr')?.classList.add('active');
       else if (viewName === 'ai') document.getElementById('drawerNavAi')?.classList.add('active');
 
@@ -1600,6 +1698,8 @@ window.SahaayApp = (function(){
         const passBalEl = document.getElementById('mobilePassbookBalance');
         if (passBalEl) passBalEl.textContent = `₹ ${mainBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
         renderTransactions();
+      } else if (viewName === 'analytics') {
+        window.SahaayAnalytics?.renderAnalytics(currentTxList);
       } else if (viewName === 'myqr') {
         renderMobileQrScreen();
       } else if (viewName === 'ai') {
@@ -1613,6 +1713,13 @@ window.SahaayApp = (function(){
     // Subview Back Buttons -> Return to Mobile Home
     document.getElementById('mobileTransferBackBtn')?.addEventListener('click', () => switchMobileView('home'));
     document.getElementById('mobileTxBackBtn')?.addEventListener('click', () => switchMobileView('home'));
+    document.getElementById('mobileAnalyticsBackBtn')?.addEventListener('click', () => switchMobileView('home'));
+    document.getElementById('mobileAnalyticsRefreshBtn')?.addEventListener('click', () => {
+      loadTransactions().then(() => {
+        window.SahaayAnalytics?.renderAnalytics(currentTxList);
+        showToast('📊 Analytics refreshed');
+      });
+    });
     document.getElementById('mobileMyQrBackBtn')?.addEventListener('click', () => switchMobileView('home'));
     document.getElementById('mobileAiBackBtn')?.addEventListener('click', () => switchMobileView('home'));
 
@@ -1622,12 +1729,41 @@ window.SahaayApp = (function(){
     document.getElementById('drawerNavScan')?.addEventListener('click', () => { closeDrawer(); document.getElementById('openScannerQuickBtn')?.click(); });
     document.getElementById('drawerNavMyQr')?.addEventListener('click', () => switchMobileView('myqr'));
     document.getElementById('drawerNavHistory')?.addEventListener('click', () => switchMobileView('transactions'));
+    document.getElementById('drawerNavAnalytics')?.addEventListener('click', () => switchMobileView('analytics'));
     document.getElementById('drawerNavFreeze')?.addEventListener('click', () => { closeDrawer(); document.getElementById('freezeBtn')?.click(); });
     document.getElementById('drawerNavAi')?.addEventListener('click', () => switchMobileView('ai'));
     document.getElementById('drawerNavA11y')?.addEventListener('click', () => { closeDrawer(); document.getElementById('tool-wizard')?.click(); });
     document.getElementById('drawerNavServer')?.addEventListener('click', () => { closeDrawer(); document.getElementById('openServerConfigBtn')?.click(); });
     document.getElementById('drawerNavSwitchUser')?.addEventListener('click', () => { closeDrawer(); signOut(); });
     document.getElementById('drawerNavLogout')?.addEventListener('click', () => { closeDrawer(); signOut(); });
+
+    // Face Biometric & Profile Photo Setup Action
+    const triggerFaceSetup = () => {
+      closeDrawer();
+      window.SahaayFace?.openEnrollmentModal(async (descriptor, photo) => {
+        showToast('⏳ Enrolling face biometric & profile photo...');
+        const res = await window.SahaayAPI.enrollFace(descriptor, photo);
+        if (res && res.success) {
+          showToast('✓ Face biometric & profile photo enrolled!');
+          let user = window.SahaayAPI.getCurrentUser();
+          if (user) {
+            user.faceEnrolled = true;
+            if (photo) user.profilePhoto = photo;
+            window.SahaayAPI.setCurrentUser(user);
+            updateMobileUserProfile(user);
+          }
+          window.SahaayVoice?.speakText?.('Face biometric and profile photo enrolled successfully.');
+        } else {
+          showToast('⚠️ Enrollment failed: ' + (res?.error || 'Unknown error'));
+        }
+      });
+    };
+
+    document.getElementById('drawerNavFaceSetup')?.addEventListener('click', triggerFaceSetup);
+    document.getElementById('drawerAvatarWrapper')?.addEventListener('click', triggerFaceSetup);
+    document.getElementById('drawerFaceSetupBadgeBtn')?.addEventListener('click', triggerFaceSetup);
+    document.getElementById('mobileHeaderAvatarBtn')?.addEventListener('click', triggerFaceSetup);
+    document.getElementById('settingsSetupFaceBtn')?.addEventListener('click', triggerFaceSetup);
 
     // Drawer Copy UPI
     document.getElementById('drawerCopyUpiBtn')?.addEventListener('click', () => {
@@ -1672,6 +1808,23 @@ window.SahaayApp = (function(){
     });
 
     // Mobile Secondary Strip
+    document.getElementById('mobileActionAnalytics')?.addEventListener('click', () => switchMobileView('analytics'));
+    document.getElementById('mobileChipAnalytics')?.addEventListener('click', () => switchMobileView('analytics'));
+    document.getElementById('mobilePassbookAnalyticsCtaBtn')?.addEventListener('click', () => switchMobileView('analytics'));
+    document.getElementById('navAnalyticsBtn')?.addEventListener('click', () => navigateTo('analytics'));
+
+    // Analytics Filters (Period & Series)
+    document.querySelectorAll('.analytics-period-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.SahaayAnalytics?.setPeriod(btn.dataset.period);
+      });
+    });
+    document.querySelectorAll('.analytics-series-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.SahaayAnalytics?.setSeriesFilter(btn.dataset.series);
+      });
+    });
+
     document.getElementById('mobileChipVoice')?.addEventListener('click', () => { document.getElementById('voiceActionMicBtn')?.click(); });
     document.getElementById('mobileChipAi')?.addEventListener('click', () => switchMobileView('ai'));
     document.getElementById('mobileChipFreeze')?.addEventListener('click', () => { document.getElementById('freezeBtn')?.click(); });
@@ -2002,24 +2155,40 @@ window.SahaayApp = (function(){
 
     initMobileAppUI();
 
+    // Check active session on load: if user previously logged in, resume session immediately (never auto logout on refresh or restart)
+    const existingSession = window.SahaayAPI.getCurrentUser();
+    if (existingSession && existingSession.id) {
+      enterDashboard(existingSession);
+    } else {
+      // Ensure login screen is visible and credentials are auto-filled first
+      const loginView = document.getElementById('loginView');
+      const assessView = document.getElementById('accessibilityAssessmentView');
+      if (loginView) {
+        loginView.hidden = false;
+        loginView.style.display = 'block';
+      }
+      const uField = document.getElementById('username');
+      const pField = document.getElementById('password');
+      if (uField) uField.value = '';
+      if (pField) pField.value = '';
+
+      setTimeout(() => {
+        const promptText = 'Welcome to Sahaay Bank. Please enter your credentials or sign in with face recognition.';
+        window.SahaayVoice?.speakText?.(promptText, 'en-IN');
+      }, 700);
+    }
+
     // Check backend health on load
     window.SahaayAPI.checkBackendHealth().then(online => {
       if(online) console.log('✓ Sahaay Bank Backend connected at ' + window.SahaayConfig.apiBaseUrl);
       else console.log('ℹ Sahaay Bank running in client-resilient offline fallback mode.');
     });
-
-    // Welcome announcement for disability setup page on start
-    setTimeout(() => {
-      const promptText = 'Welcome to Sahaay Bank. Please choose your assistance setup: Blind, Low Vision, Motor Assistance, Senior Citizen, or Standard Banking.';
-      window.SahaayVoice.speakText(promptText, 'en-IN', () => {
-        window.SahaayVoice.startListening();
-      });
-    }, 700);
   }
 
   return {
     init,
     navigateTo,
+    switchMobileView,
     showToast,
     enterDashboard,
     signOut,
@@ -2029,12 +2198,15 @@ window.SahaayApp = (function(){
     refreshAccountBalance,
     loadTransactions,
     renderTransactions,
+    getCurrentTxList: () => currentTxList,
     updateBalanceDisplay,
+    updateMobileUserProfile,
+    autoFillLoginCredentials,
     revealBalance: () => {
       const balEl = document.getElementById('mainBalanceText');
       const toggleBtnText = document.getElementById('toggleBalanceText');
       if(balEl) {
-        balEl.innerHTML = `${balEl.dataset.real || '₹ 42,180.50'} <span class="smart-tag" style="${document.documentElement.classList.contains('highlight-info') ? 'display:inline-block;' : 'display:none;'}">[AVAILABLE]</span>`;
+        balEl.innerHTML = `${balEl.dataset.real || '₹ 39,404.50'} <span class="smart-tag" style="${document.documentElement.classList.contains('highlight-info') ? 'display:inline-block;' : 'display:none;'}">[AVAILABLE]</span>`;
       }
       if(toggleBtnText) toggleBtnText.textContent = 'Hide Balance';
     }

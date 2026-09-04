@@ -26,7 +26,9 @@ exports.getAccount = (req, res) => {
         balance: user.balance,
         isFrozen: !!user.isFrozen,
         accessibilityProfile: user.accessibilityProfile || 'standard',
-        faceEnrolled: !!(user.faceVerification && user.faceVerification.enrolled)
+        faceEnrolled: !!(user.faceVerification && user.faceVerification.enrolled),
+        faceVerification: user.faceVerification || { enrolled: false },
+        profilePhoto: user.profilePhoto || null
       }
     });
   } catch (err) {

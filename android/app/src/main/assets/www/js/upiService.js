@@ -131,28 +131,35 @@ window.SahaayUpi = (function () {
     playSuccessChime();
 
     // 1. Immediately refresh balance in UI
-    const newBal = res.data?.newBalance;
-    if (window.SahaayApp && window.SahaayApp.refreshAccountBalance) {
+    const newBal = (res.data?.newBalance !== undefined) ? res.data.newBalance : (res.newBalance !== undefined ? res.newBalance : null);
+    if (newBal !== null && window.SahaayApp && window.SahaayApp.refreshAccountBalance) {
       window.SahaayApp.refreshAccountBalance(newBal);
-    } else {
+    } else if (newBal !== null && newBal !== undefined) {
       const balEl = document.getElementById('mainBalanceText');
-      if (balEl && newBal !== undefined) {
+      if (balEl) {
         balEl.textContent = '₹ ' + Number(newBal).toLocaleString('en-IN', { minimumFractionDigits: 2 });
       }
     }
 
-    // 2. Reload statement table
+    // 2. Reload statement table and mobile passbook
     if (window.SahaayApp && window.SahaayApp.loadTransactions) {
       window.SahaayApp.loadTransactions();
     }
 
-    // 3. Reset transfer form
+    // 3. Reset transfer forms (both desktop and mobile)
     if (document.getElementById('payee')) document.getElementById('payee').value = '';
     if (document.getElementById('payeeSearchInput')) document.getElementById('payeeSearchInput').value = '';
     if (document.getElementById('amount')) document.getElementById('amount').value = '';
     if (document.getElementById('transferReason')) document.getElementById('transferReason').value = '';
     const preview = document.getElementById('recipientPreviewCard');
     if (preview) preview.style.display = 'none';
+
+    // Mobile inputs reset
+    if (document.getElementById('mobilePayeeInput')) document.getElementById('mobilePayeeInput').value = '';
+    if (document.getElementById('mobileAmountInput')) document.getElementById('mobileAmountInput').value = '';
+    if (document.getElementById('mobileNoteInput')) document.getElementById('mobileNoteInput').value = '';
+    const mobVerifiedCard = document.getElementById('mobileVerifiedPayeeCard');
+    if (mobVerifiedCard) mobVerifiedCard.hidden = true;
 
     // 4. Show toast & receipt modal
     const recipientName = res.data?.recipient?.name || payee;

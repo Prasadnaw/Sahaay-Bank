@@ -20,6 +20,8 @@ exports.register = async (req, res) => {
       phone,
       accessibilityProfile = 'standard',
       faceTemplate = null,
+      photo = null,
+      profilePhoto = null,
       upiPin = '1234'
     } = req.body;
 
@@ -86,6 +88,7 @@ exports.register = async (req, res) => {
       upiPin: (upiPin && upiPin.length === 4) ? upiPin : '1234',
       accessibilityProfile: accessibilityProfile || 'standard',
       isFrozen: false,
+      profilePhoto: photo || profilePhoto || null,
       faceVerification: {
         enrolled: !!faceTemplate,
         template: faceTemplate || null
@@ -165,7 +168,7 @@ exports.login = async (req, res) => {
 
 exports.enrollFace = async (req, res) => {
   try {
-    const { template } = req.body;
+    const { template, photo } = req.body;
     if (!template || typeof template !== 'string' || template.length < 10) {
       return res.status(400).json({ success: false, error: 'Valid face template descriptor is required.' });
     }
@@ -180,12 +183,17 @@ exports.enrollFace = async (req, res) => {
       enrolled: true,
       template: template
     };
+    if (photo) {
+      user.profilePhoto = photo;
+    }
     writeDatabase(db);
 
     res.json({
       success: true,
-      message: 'Face verification enrolled successfully.',
-      faceVerification: { enrolled: true }
+      message: 'Face biometric verification and profile photo enrolled successfully.',
+      faceVerification: { enrolled: true },
+      profilePhoto: user.profilePhoto || null,
+      user: sanitizeUser(user)
     });
   } catch (err) {
     console.error('Enroll face error:', err);
@@ -201,6 +209,7 @@ exports.getFaceProfiles = (req, res) => {
       username: u.username,
       name: u.name,
       accessibilityProfile: u.accessibilityProfile,
+      profilePhoto: u.profilePhoto || null,
       hasTemplate: !!(u.faceVerification && u.faceVerification.template),
       template: (u.faceVerification && u.faceVerification.template) || null
     }));
