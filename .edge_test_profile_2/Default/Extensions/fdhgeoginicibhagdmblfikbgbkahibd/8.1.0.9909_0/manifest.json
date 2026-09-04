@@ -1,0 +1,50 @@
+{
+   "action": {
+      "default_icon": {
+         "16": "images/browser_action/disabled_16.png",
+         "32": "images/browser_action/disabled_32.png"
+      },
+      "default_title": "__MSG_res_PRODUCT_NAME_TRADEMARKED__"
+   },
+   "author": "McAfee LLC.",
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "scripts/content_navigate_complete.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_end"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' 'wasm-unsafe-eval'; default-src 'self'; style-src 'self' 'unsafe-inline'; style-src-elem 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' data: https://fonts.gstatic.com; img-src data:; connect-src 'self' https://publicsuffix.org https://data.iana.org/ https://sadownload.mcafee.com https://mip.api.mcafeewebadvisor.com https://us.search.yahoo.com https://cu1pehnswadext.servicebus.windows.net https://threat.api.mcafee.com https://csptoken.ccs.mcafee.com https://analytics.qa.apis.mcafee.com https://analytics.apis.mcafee.com https://report.api.mcafee.com/ https://auth.api.mcafee.com/auth/v1/jwt ws://127.0.0.1:* https://einstein-core.awscommon.mcafee.com https://securitymgmt.unifiedapis.mcafee.com https://securitymgmt.qa.unifiedapis.mcafee.com https://securitymgmt.staging.unifiedapis.mcafee.com https://einstein-qa-core.awscommon.mcafee.com https://einstein-stg-core.awscommon.mcafee.com https://qa.auth.api.mcafee.com/auth/v1/jwt https://fraud.api.mcafee.com https://qa.fraud.api.mcafee.com https://esd-api.esd-stg.int.ppawscommon.mcafee.com https://esd-api.esd-qa.int.ppawscommon.mcafee.com https://esd-api.ppawscommon.mcafee.com"
+   },
+   "declarative_net_request": {
+      "rule_resources": [ {
+         "enabled": true,
+         "id": "sdk_block_rules",
+         "path": "dnr_rules/sdk_block_rules.json"
+      } ]
+   },
+   "default_locale": "en",
+   "description": "__MSG_res_PRODUCT_NAME_TRADEMARKED__",
+   "externally_connectable": {
+      "ids": [ "*" ],
+      "matches": [ "https://*.mcafee.com/*", "*://search.yahoo.com/*", "*://*.search.yahoo.com/*" ]
+   },
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "images/webadvisor.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxjJPlY/2cCiVUUXEzRAul3BSTAnUvc7CnJlQ0IPDTrSTFflJVuH02E0d0/B18qZ+VWOHEJ4xiQnNrUVkVa+AfRZxzKJmNZfhkSDvBizc12ESvQxTTwD62BDt+Kwx4gGJQdQyhUogeldTgMD/RwCQ8P/y+iIPrh+ep6VU9BzxHqC3IDxA/9kWAk3+xAOKWPHJ0iUhBHEAwiySAx7/yQPVzNHMXvMnEQL+xLxWRU/3wknh+FIuI74w4jMy+qV6EpW0uSBdiQ5uywVA2v6WMQ3chF+h5VNJhXayxEOCEcK+QirqvzTtfZV+zr4wN34Ovh5VC1RpKL23dBKP0Iu41e4B+QIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_res_PRODUCT_NAME_TRADEMARKED__",
+   "permissions": [ "alarms", "tabs", "scripting", "activeTab", "downloads", "nativeMessaging", "webRequest", "storage", "declarativeNetRequest", "unlimitedStorage" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "8.1.0.9909",
+   "web_accessible_resources": [ {
+      "extension_ids": [ "fdhgeoginicibhagdmblfikbgbkahibd" ],
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "html/*.html", "images/*.png", "images/*.gif", "images/*.svg", "images/*.json", "json/*.json", "fonts/*.ttf", "css/*.css", "txt/*.txt", "MockingBird-Package/scripts/worklet_processor.js", "wasm_feature.wasm" ]
+   } ]
+}

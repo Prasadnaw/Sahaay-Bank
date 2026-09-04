@@ -1,0 +1,13 @@
+<resources>
+    <color name="navy_primary">#0B132B</color>
+    <color name="navy_dark">#050811</color>
+    <color name="gold_accent">#F59E0B</color>
+    <color name="gold_dark">#B45309</color>
+    <color name="indigo_accent">#4F46E5</color>
+    <color name="background_light">#F8FAFC</color>
+    <color name="surface_white">#FFFFFF</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="success_green">#10B981</color>
+    <color name="danger_red">#EF4444</color>
+</resources>

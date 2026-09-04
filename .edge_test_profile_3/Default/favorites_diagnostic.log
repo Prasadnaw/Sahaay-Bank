@@ -1,0 +1,25 @@
+2026-09-03 23:10:17.013: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_3\Default
+2026-09-03 23:10:17.013: [INFO] Profiles total count: 1
+2026-09-03 23:10:17.013: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_3\Default lastActive=2026-09-03T23:10:17.003Z
+2026-09-03 23:10:17.013: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_3\Default
+2026-09-03 23:10:17.013: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_3\Default lastActive=2026-09-03T23:10:17.003Z
+2026-09-03 23:10:17.013: [INFO] OnDoneLoading sync enabled: 0
+2026-09-03 23:10:17.013: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-03 23:10:17.013: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-03 23:10:17.013: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-03 23:10:17.055: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-03 23:10:17.663: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-03 23:10:17.665: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.667: [INFO] Primary account changed.
+2026-09-03 23:10:17.667: [INFO] OnPrimaryAccountChanged PrimaryAccountChangeEvent::Type::kSet
+2026-09-03 23:10:17.670: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.680: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.977: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.977: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.978: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.984: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.984: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.984: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:10:17.984: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4
+2026-09-03 23:10:18.530: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4
+2026-09-03 23:10:18.532: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4

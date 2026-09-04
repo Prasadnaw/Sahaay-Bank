@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en" class="fresh-theme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahaay Bank — Accessible UPI & Digital Banking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Modular Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/toolbar.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/upi-qr.css">
+  <link rel="stylesheet" href="css/mobile-app.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-i18n="skipLink">Skip to main content</a>
+
+  <!-- DWELL CLICK VISUAL INDICATOR -->
+  <div id="dwellIndicator" aria-hidden="true"></div>
+
+  <!-- DEDICATED AESTHETIC MOBILE APP BAR -->
+  <header class="mobile-app-header" id="mobileAppHeader">
+    <div class="mobile-header-left">
+      <button type="button" class="mobile-drawer-btn" id="mobileDrawerOpenBtn" aria-label="Open Navigation Drawer" title="Menu">
+        <span aria-hidden="true">☰</span>
+      </button>
+      <div class="mobile-app-brand">
+        <div class="mobile-brand-logo">
+          <svg width="20" height="20" viewBox="0 0 42 42" aria-hidden="true" focusable="false">
+            <rect width="42" height="42" rx="8" fill="#10384C"/>
+            <path d="M21 8 L34 15 V17 H8 V15 Z" fill="#C29333"/>
+            <rect x="11" y="19" width="4" height="13" fill="#fff"/>
+            <rect x="19" y="19" width="4" height="13" fill="#fff"/>
+            <rect x="27" y="19" width="4" height="13" fill="#fff"/>
+            <rect x="8" y="33" width="26" height="3" fill="#C29333"/>
+          </svg>
+        </div>
+        <div class="mobile-brand-name">
+          <span>Sahaay Bank</span>
+          <span class="mobile-live-indicator" title="Connected to Render Backend"></span>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-header-actions">
+      <button type="button" class="mobile-icon-btn" id="mobileVoiceBtn" aria-label="Start Voice Assistant" title="Voice Banking">
+        🎙️
+      </button>
+      <button type="button" class="mobile-icon-btn" id="mobileServerBtn" aria-label="Server Connection Settings" title="Server Settings">
+        ⚙️
+      </button>
+    </div>
+  </header>
+
+  <!-- AESTHETIC SLIDE-OUT NAVIGATION DRAWER -->
+  <div class="app-drawer-overlay" id="appDrawerOverlay" aria-hidden="true"></div>
+  <aside class="app-side-drawer" id="appSideDrawer" aria-label="Mobile Navigation Drawer">
+    <div class="drawer-header">
+      <button type="button" class="drawer-close-btn" id="appDrawerCloseBtn" aria-label="Close Drawer">✕</button>
+      <div class="drawer-profile-row">
+        <div class="drawer-avatar" id="drawerAvatar">AP</div>
+        <div class="drawer-user-info">
+          <div class="drawer-user-name" id="drawerUserName">Asha Patel</div>
+          <span class="drawer-user-badge" id="drawerUserBadge">✓ Verified Account</span>
+        </div>
+      </div>
+      <div class="drawer-upi-row">
+        <span class="drawer-upi-text" id="drawerUserUpi">asha.patel@sahaay</span>
+        <button type="button" class="drawer-copy-btn" id="drawerCopyUpiBtn" title="Copy UPI ID">Copy</button>
+      </div>
+    </div>
+
+    <nav class="drawer-nav-menu">
+      <div class="drawer-nav-section-title">Banking &amp; Transfers</div>
+      <button type="button" class="drawer-nav-item active" id="drawerNavHome">
+        <span class="drawer-nav-icon">🏠</span> <span>Dashboard</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavSend">
+        <span class="drawer-nav-icon">💸</span> <span>Send Money</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavScan">
+        <span class="drawer-nav-icon">📷</span> <span>Scan UPI QR</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavMyQr">
+        <span class="drawer-nav-icon">📱</span> <span>My QR Code</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavHistory">
+        <span class="drawer-nav-icon">📜</span> <span>Passbook &amp; Ledger</span>
+      </button>
+
+      <div class="drawer-nav-section-title">Security &amp; Assistive</div>
+      <button type="button" class="drawer-nav-item" id="drawerNavFreeze">
+        <span class="drawer-nav-icon">❄️</span> <span id="drawerFreezeLabel">Freeze Account</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavAi">
+        <span class="drawer-nav-icon">🤖</span> <span>AI Financial Assistant</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavA11y">
+        <span class="drawer-nav-icon">♿</span> <span>Accessibility Suite</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavServer">
+        <span class="drawer-nav-icon">🌐</span> <span>Server Connection</span>
+      </button>
+
+      <div class="drawer-nav-section-title">Account Session</div>
+      <button type="button" class="drawer-nav-item" id="drawerNavSwitchUser">
+        <span class="drawer-nav-icon">🔄</span> <span>Switch Profile</span>
+      </button>
+      <button type="button" class="drawer-nav-item" id="drawerNavLogout">
+        <span class="drawer-nav-icon">🚪</span> <span>Sign Out</span>
+      </button>
+    </nav>
+
+    <div class="drawer-footer">
+      <div>Sahaay Bank • Mobile Android Edition</div>
+      <div style="color:#10B981; margin-top:4px; font-weight:600;">✓ WCAG 2.2 AAA 100% Compliant</div>
+    </div>
+  </aside>
+
+  <!-- SITE HEADER (LOGO & BRANDING AT TOP) -->
+  <header class="site-header" role="banner">
+    <div class="brand">
+      <svg width="46" height="46" viewBox="0 0 42 42" aria-hidden="true" focusable="false">
+        <rect width="42" height="42" rx="8" fill="#10384C"/>
+        <path d="M21 8 L34 15 V17 H8 V15 Z" fill="#C29333"/>
+        <rect x="11" y="19" width="4" height="13" fill="#fff"/>
+        <rect x="19" y="19" width="4" height="13" fill="#fff"/>
+        <rect x="27" y="19" width="4" height="13" fill="#fff"/>
+        <rect x="8" y="33" width="26" height="3" fill="#C29333"/>
+      </svg>
+      <div class="brand-text">
+        <div class="name" id="brandName" data-standard="Sahaay Bank" data-plain="My Easy Bank" data-i18n="brandName">Sahaay Bank</div>
+        <div class="tag" id="brandTag" data-standard="Universal Multilingual & Accessible Digital Banking" data-plain="Banking made simple in your language" data-i18n="brandTag">Universal Multilingual & Accessible Digital Banking</div>
+      </div>
+    </div>
+
+    <div class="header-badges">
+      <button type="button" class="btn-secondary" id="toggleAppModeBtn" style="min-height:38px; padding:6px 12px; font-size:.88rem; background:rgba(232,182,72,0.15); border-color:var(--gold); font-weight:700;" aria-label="Toggle Dedicated Mobile App UI">
+        📱 <span>Mobile App View</span>
+      </button>
+      <button type="button" class="btn-secondary" id="openScannerQuickBtn" style="min-height:38px; padding:6px 12px; font-size:.88rem;" aria-label="Scan any UPI QR code to pay">
+        📷 <span data-i18n="btnScanQrHeader">Scan QR</span>
+      </button>
+      <button type="button" class="btn-secondary" id="openMyQrQuickBtn" style="min-height:38px; padding:6px 12px; font-size:.88rem;" aria-label="Show my own UPI QR code">
+        📱 <span data-i18n="btnMyQrHeader">My QR</span>
+      </button>
+      <button type="button" class="btn-secondary" id="openServerConfigBtn" style="min-height:38px; padding:6px 12px; font-size:.88rem;" aria-label="Configure Cloud Server Sync">
+        🌐 <span>Server</span>
+      </button>
+      <button type="button" class="a11y-btn" id="quickThemeBtn" style="min-height:38px; padding:6px 12px; font-size:.88rem;" aria-label="Toggle dark theme">
+        ✨ <span data-i18n="themeBtnText">Fresh Modern</span>
+      </button>
+      <button class="audit-badge" id="openAuditBtn" aria-label="Open continuous accessibility audit report (100% compliant)">
+        <span aria-hidden="true">✓</span> <span data-i18n="auditPassingBadge">Live a11y: 100% Passing</span>
+      </button>
+      <span class="demo-flag" data-i18n="demoBadge">FULL-STACK READY</span>
+    </div>
+  </header>
+
+  <!-- ACCESSIBILITY TOOLBAR (BELOW SITE HEADER) -->
+  <aside class="a11y-bar" id="mainA11yBar" role="region" aria-label="Accessibility settings and assistive tools">
+    <span class="label" data-i18n="assistiveToolsLabel">Assistive Tools:</span>
+
+    <button class="a11y-btn" id="tool-wizard" aria-haspopup="dialog" style="background:var(--gold); color:var(--navy-dark); font-weight:800; border-color:var(--gold);" title="Open Accessibility Setup Wizard for Disabilities">
+      ♿ <span>Setup Wizard</span>
+    </button>
+
+    <div class="a11y-group" id="tool-text-size" role="group" aria-label="Text size scale">
+      <button class="a11y-btn" id="textSmaller" aria-label="Decrease text size (A minus)">A−</button>
+      <button class="a11y-btn" id="textReset" aria-label="Reset text size to standard (A)">A</button>
+      <button class="a11y-btn" id="textBigger" aria-label="Increase text size (A plus)">A+</button>
+      <button class="a11y-btn" id="textMax" aria-label="Maximum text size (A double plus)">A++</button>
+    </div>
+
+    <button class="a11y-btn" id="tool-contrast" aria-pressed="false" title="Switch to black and yellow AAA high contrast">
+      👁️ <span data-i18n="toolContrast">High contrast</span>
+    </button>
+    <button class="a11y-btn" id="tool-plain" aria-pressed="false" title="Simplify financial terms into plain everyday English">
+      📖 <span data-i18n="toolPlain">Plain language</span>
+    </button>
+    <button class="a11y-btn" id="tool-click-read" aria-pressed="false" title="Click any box, card, or select text on screen to hear it spoken aloud">
+      🔊 <span data-i18n="toolClickRead">Select to speech</span>
+    </button>
+    <button class="a11y-btn" id="tool-explore" aria-pressed="false" title="First click announces action; second click confirms">
+      🛡️ <span data-i18n="toolExplore">Two-click safe mode</span>
+    </button>
+    <button class="a11y-btn" id="tool-hover" aria-pressed="false" title="Automatically click buttons by hovering over them for 1.2 seconds">
+      ⏱️ <span data-i18n="toolHover">Hover select</span>
+    </button>
+    <button class="a11y-btn" id="tool-osk" aria-pressed="false" title="Open or close on-screen virtual keyboard for typing">
+      ⌨️ <span data-i18n="toolOsk">Virtual keyboard</span>
+    </button>
+    <button class="a11y-btn" id="tool-tags" aria-pressed="false" title="Highlight important numbers, dates, and amounts">
+      🏷️ <span data-i18n="toolTags">Highlight key info</span>
+    </button>
+    <button class="a11y-btn" id="tool-voice-alerts" aria-pressed="false" title="Speak all system notifications aloud">
+      🗣️ <span data-i18n="toolVoiceAlerts">Voice alerts</span>
+    </button>
+    <button class="a11y-btn" id="tool-motion" aria-pressed="false" title="Stop all transitions and animations">
+      🚫 <span data-i18n="toolMotion">Reduce motion</span>
+    </button>
+  </aside>
+
+  <!-- MULTILINGUAL VOICE ACTION STRIP -->
+  <section class="voice-action-bar" id="tool-voice-bar" role="region" aria-label="Multilingual Voice Action Navigation System">
+    <div class="voice-main-controls">
+      <button type="button" class="voice-mic-btn" id="voiceActionMicBtn" aria-label="Activate voice command system">
+        <span class="mic-icon" aria-hidden="true">🎙️</span>
+        <span id="voiceMicBtnText" data-i18n="voiceMicBtn">Start Voice Action</span>
+      </button>
+
+      <label for="voiceLangSelect" class="sr-only">Voice Language Mode</label>
+      <select id="voiceLangSelect" class="voice-lang-select" aria-label="Select voice language or auto detect">
+        <option value="auto" selected>🌐 Auto-Detect Language (स्वचालित भाषा)</option>
+        <option value="en-IN">🇬🇧 English (India)</option>
+        <option value="hi-IN">🇮🇳 हिन्दी (Hindi)</option>
+        <option value="ta-IN">🇮🇳 தமிழ் (Tamil)</option>
+      </select>
+      <span id="detectedLangBadge" aria-live="polite"></span>
+    </div>
+
+    <div class="voice-status-display" id="voiceLiveStatusBox" aria-live="polite">
+      <span data-i18n="voiceLiveHint">💡 Say: "Raju ko paise bhejiye", "Mera QR dikhao", "Scan QR", "Help", or "Freeze account"</span>
+    </div>
+  </section>
+
+  <!-- LIVE SCREEN READER REGIONS -->
+  <div id="liveRegion" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="liveRegionAssertive" class="sr-only" role="alert" aria-live="assertive"></div>
+
+  <!-- DEDICATED PRE-LOGIN VIEW: ACCESSIBILITY & DISABILITY ASSESSMENT -->
+  <main id="accessibilityAssessmentView" class="main-content" style="max-width:880px; margin:24px auto;" role="main" aria-labelledby="preLoginTitle" data-readable>
+    <div class="panel" style="padding:24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:var(--navy-dark); font-weight:800; font-size:.84rem; padding:4px 12px; border-radius:20px;">
+          <span>♿ STEP 1 OF 2: DISABILITY & ASSISTANCE SETUP</span>
+        </div>
+        <button type="button" class="btn-secondary" id="skipAssessmentDirectBtn" style="padding:6px 14px; font-weight:700;">
+          Skip to Standard Login →
+        </button>
+      </div>
+
+      <h1 id="preLoginTitle" style="font-size:1.8rem; margin:0 0 8px 0; color:var(--navy);">Welcome to Sahaay Accessible Banking</h1>
+      <p style="font-size:1.05rem; color:var(--ink); margin:0 0 16px 0; line-height:1.5;">
+        Please tell us or select how you would like to interact with Sahaay Bank. We will personalize your screen, controls, and login method according to your assistance needs.
+      </p>
+
+      <!-- Live Voice Guided Setup Box -->
+      <div class="wizard-speech-banner" id="preLoginSpeechBanner" style="margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:1.8rem;">🎙️</span>
+          <div>
+            <strong style="font-size:1.02rem;">Hands-Free Voice Selection Active:</strong>
+            <p style="margin:2px 0 0 0; font-size:.92rem;" id="preLoginSpeechStatus">Listening... Speak: <strong>"Blind"</strong>, <strong>"Low Vision"</strong>, <strong>"Motor"</strong>, <strong>"Senior"</strong>, or <strong>"Standard"</strong></p>
+          </div>
+        </div>
+        <button type="button" class="btn-secondary" id="replayPreLoginVoiceBtn" style="min-height:38px; padding:6px 12px; font-size:.88rem;">🔊 Listen Again</button>
+      </div>
+
+      <!-- 5 Disability Decision Cards -->
+      <div class="onboarding-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+        <!-- 1. BLIND / NON-VISUAL -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="blind" role="button" tabindex="0" aria-label="Select Blind or Non-Visual Assistance Profile">
+          <div>
+            <div class="profile-badge">👁️ BLIND / NON-VISUAL</div>
+            <h3 style="margin-top:6px;">Blind / Non-Visual</h3>
+            <p>Full voice navigation without needing sight.</p>
+            <ul class="profile-features-list">
+              <li>🎙️ <strong>Continuous Hands-Free Voice Assistant</strong></li>
+              <li>🔊 <strong>Full Text-to-Speech narration</strong></li>
+              <li>🛡️ <strong>Two-Click Safe Mode</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> Voice Sign-In & Audio Code</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="blind" style="width:100%; margin-top:12px;">
+            🎙️ Choose Blind Profile (Say "Blind")
+          </button>
+        </div>
+
+        <!-- 2. LOW VISION -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="low_vision" role="button" tabindex="0" aria-label="Select Low Vision and High Contrast Profile">
+          <div>
+            <div class="profile-badge">🔍 LOW VISION</div>
+            <h3 style="margin-top:6px;">Low Vision & Partial Sight</h3>
+            <p>Maximum visibility with enlarged fonts and contrast.</p>
+            <ul class="profile-features-list">
+              <li>🔠 <strong>A++ Maximum Text Scaling (125%)</strong></li>
+              <li>👁️ <strong>AAA High Contrast (Yellow on Black)</strong></li>
+              <li>🏷️ <strong>Highlighted Financial Data</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> Large High-Contrast Math Challenge</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="low_vision" style="width:100%; margin-top:12px;">
+            👁️ Choose Low Vision (Say "Low Vision")
+          </button>
+        </div>
+
+        <!-- 3. MOTOR ASSISTANCE -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="motor" role="button" tabindex="0" aria-label="Select Motor and Tremor Assistance Profile">
+          <div>
+            <div class="profile-badge">🖐️ MOTOR ASSISTANCE</div>
+            <h3 style="margin-top:6px;">Motor & Tremor Support</h3>
+            <p>Designed for tremors, weakness, or limited hand dexterity.</p>
+            <ul class="profile-features-list">
+              <li>⏱️ <strong>Hover Select (Dwell Clicking 1.2s)</strong></li>
+              <li>🛡️ <strong>Two-Click Safe Mode</strong></li>
+              <li>⌨️ <strong>Large On-Screen Virtual Keyboard</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> 1-Tap Accessible Verification</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="motor" style="width:100%; margin-top:12px;">
+            🖐️ Choose Motor Profile (Say "Motor")
+          </button>
+        </div>
+
+        <!-- 4. SENIOR CITIZEN -->
+        <div class="onboarding-profile-card pre-login-card" data-profile="senior" role="button" tabindex="0" aria-label="Select Senior Citizen and Simplified Profile">
+          <div>
+            <div class="profile-badge">👵 SENIOR CITIZEN</div>
+            <h3 style="margin-top:6px;">Senior Citizen & Relaxed</h3>
+            <p>Stress-free banking with simple everyday terms.</p>
+            <ul class="profile-features-list">
+              <li>📖 <strong>Plain Everyday Words (No Jargon)</strong></li>
+              <li>⏳ <strong>Zero Session Timeout Pressure</strong></li>
+              <li>🐢 <strong>Reduced Motion & Smooth Flow</strong></li>
+              <li>🔑 <strong>Decided Login Type:</strong> SMS One-Time Code (OTP)</li>
+            </ul>
+          </div>
+          <button type="button" class="btn-primary select-pre-login-btn" data-profile="senior" style="width:100%; margin-top:12px;">
+            👵 Choose Senior Profile (Say "Senior")
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. STANDARD OPTION -->
+      <div style="margin-top:20px; padding:16px; background:var(--bg); border:1px solid var(--border); border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <strong style="color:var(--navy);">Standard Banking Experience:</strong>
+          <div style="font-size:.88rem; color:var(--ink-soft);">Proceed with standard password login and clean modern theme.</div>
+        </div>
+        <button type="button" class="btn-secondary select-pre-login-btn" data-profile="standard" style="padding:8px 18px; font-weight:700;">
+          ✨ Continue with Standard Mode (Say "Standard")
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- LOGIN VIEW -->
+  <main id="loginView" class="main-content" style="max-width:540px; margin:30px auto; display:none;" data-readable>
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button type="button" id="backToAssessmentBtn" class="btn-secondary" style="padding:4px 10px; font-size:.85rem; font-weight:700;">
+          ← Change Assistance Setup
+        </button>
+        <span id="activeLoginProfileBadge" style="font-size:.78rem; font-weight:800; background:var(--gold); color:var(--navy-dark); padding:3px 8px; border-radius:4px;">
+          STANDARD
+        </span>
+      </div>
+
+      <h1 data-i18n="loginHeading" data-standard="Sign in to your account" data-plain="Sign In to Your Money">Sign in to your account</h1>
+
+      <!-- MODE SWITCHER: SIGN IN vs CREATE ACCOUNT -->
+      <div style="display:flex; border:2px solid var(--border); border-radius:8px; overflow:hidden; margin:12px 0 16px 0;" role="tablist" aria-label="Account Access Mode">
+        <button type="button" id="tabModeLogin" class="tab-btn" style="flex:1; padding:10px; font-weight:800; border-radius:0; border:none; background:var(--navy); color:#fff;" aria-selected="true">
+          🔐 Sign In
+        </button>
+        <button type="button" id="tabModeRegister" class="tab-btn" style="flex:1; padding:10px; font-weight:800; border-radius:0; border:none; background:var(--surface); color:var(--ink);" aria-selected="false">
+          📝 Create Account
+        </button>
+      </div>
+
+      <!-- 1. LOGIN FORM CONTAINER -->
+      <div id="loginFormContainer">
+        <div class="pw-solution-box" role="region" aria-label="Password accessibility explanation">
+          <strong data-i18n="pwSolutionTitle">♿ Accessible Password Support:</strong>
+          <p style="margin:4px 0 8px 0; font-size:.88rem;" data-i18n="pwSolutionDesc">Pasting is strictly allowed. You can use password managers or assisted filling.</p>
+          <button type="button" class="btn-secondary" id="autoFillDemoBtn" style="min-height:40px; padding:6px 14px; font-size:.9rem;">
+            ⚡ <span data-i18n="autoFillBtn">1-Tap Fill Demo Credentials</span>
+          </button>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Sign-in method">
+          <button class="tab-btn" role="tab" id="tabPassword" aria-selected="true" data-i18n="tabPassword">Standard Password</button>
+          <button class="tab-btn" role="tab" id="tabOtp" aria-selected="false" data-i18n="tabOtp">One-Time Code (SMS)</button>
+        </div>
+
+        <div id="panelPassword" role="tabpanel">
+          <div class="field">
+            <label for="username" data-i18n="lblUsername">Username or Customer ID</label>
+            <input type="text" id="username" autocomplete="username" value="asha.patel">
+          </div>
+          <div class="field">
+            <label for="password" data-i18n="lblPassword">Password</label>
+            <div class="pw-wrap">
+              <input type="password" id="password" autocomplete="current-password" value="SahaaySafe2026!" onpaste="return true;">
+              <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password in plain text" data-i18n="pwToggle">Show</button>
+            </div>
+          </div>
+          <!-- ACCESSIBLE CAPTCHA VERIFICATION -->
+          <div class="captcha-container" role="region" aria-label="Accessible Security Verification">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+              <label for="captchaTypeSelect" style="font-weight:700; font-size:.92rem;">🛡️ Choose Verification Type:</label>
+              <select id="captchaTypeSelect" style="padding:6px 12px; font-size:.88rem; min-height:36px; border-radius:6px; border:2px solid var(--border); background:var(--surface); color:var(--ink); font-weight:600;">
+                <option value="checkbox" selected>1. Accessible 1-Tap Checkbox</option>
+                <option value="math">2. Simple Math Challenge</option>
+                <option value="audio">3. Spoken Audio Voice Code</option>
+              </select>
+            </div>
+
+            <!-- OPTION 1: 1-Tap Accessible Checkbox (SHOWS ALONE WHEN SELECTED) -->
+            <div id="captchaCheckWrap" class="captcha-challenge-row" style="padding:12px; background:var(--bg); border-radius:6px; border:1.5px solid var(--border);">
+              <label style="display:flex; align-items:center; gap:12px; cursor:pointer; font-weight:700;">
+                <input type="checkbox" id="captchaCheckbox" style="width:24px; height:24px; cursor:pointer;" aria-label="Confirm you are an authorized human user">
+                <span style="font-size:.95rem;">I confirm I am an authorized human user</span>
+              </label>
+            </div>
+
+            <!-- OPTION 2: Simple Math Challenge (SHOWS ALONE WHEN SELECTED) -->
+            <div id="captchaMathBox" class="captcha-challenge-row" style="padding:12px; background:var(--bg); border-radius:6px; border:1.5px solid var(--border);" hidden>
+              <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <span class="captcha-badge" id="captchaQuestion" style="font-size:1.3rem; font-weight:900; padding:8px 18px; background:#0F172A !important; color:#FFD400 !important; border-radius:6px; border:2px solid #C29333; letter-spacing:2px; display:inline-block;">4 + 3 = ?</span>
+                <input type="number" id="captchaInput" placeholder="Answer" style="max-width:110px; font-size:1.15rem; text-align:center; padding:6px; background:var(--surface); color:var(--ink); border:2px solid var(--border);" aria-label="Enter math answer">
+                <button type="button" class="btn-secondary" id="listenCaptchaBtn" title="Hear math problem spoken aloud" style="min-height:38px; padding:6px 12px;">🔊 Listen</button>
+                <button type="button" class="btn-secondary" id="refreshCaptchaBtn" title="Generate another math problem" style="min-height:38px; padding:6px 12px;">🔄</button>
+              </div>
+            </div>
+
+            <!-- OPTION 3: Audio Voice Code (SHOWS ALONE WHEN SELECTED) -->
+            <div id="captchaAudioBox" class="captcha-challenge-row" style="padding:12px; background:var(--bg); border-radius:6px; border:1.5px solid var(--border);" hidden>
+              <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <button type="button" class="btn-secondary" id="playAudioCodeBtn" style="min-height:40px; padding:6px 14px; font-weight:700;">🔊 Play Audio Code</button>
+                <input type="text" id="captchaAudioInput" maxlength="4" placeholder="4-digit code" style="max-width:140px; font-size:1.15rem; text-align:center; padding:6px; letter-spacing:4px;" aria-label="Enter 4-digit spoken audio code">
+                <button type="button" class="btn-secondary" id="refreshAudioCodeBtn" title="Generate new audio code" style="min-height:38px; padding:6px 12px;">🔄</button>
+              </div>
+            </div>
+
+            <div id="captchaError" class="field-error" style="margin-top:8px; color:var(--danger); font-weight:700;" hidden>⚠️ Verification required: Please complete the challenge before signing in.</div>
+          </div>
+
+          <button class="btn-primary" id="loginBtn" style="width:100%;" data-i18n="btnSignIn">Sign in to Dashboard</button>
+
+          <!-- OPTION: LOGIN VIA FACE VERIFICATION (NO CREDENTIALS NEEDED) -->
+          <div style="margin:16px 0 6px 0; text-align:center;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <hr style="flex:1; border:none; border-top:1px solid var(--border);">
+              <span style="font-size:.78rem; font-weight:800; color:var(--ink-soft); text-transform:uppercase; letter-spacing:1px;">OR SIGN IN WITHOUT TYPING</span>
+              <hr style="flex:1; border:none; border-top:1px solid var(--border);">
+            </div>
+            <button type="button" class="btn-primary" id="loginWithFaceBtn" style="width:100%; background:linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%); border:2px solid #6366F1; font-size:1.05rem; padding:13px; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 14px rgba(67,56,202,0.25);">
+              <span style="font-size:1.3rem;">📸</span>
+              <span><strong>Login via Face Verification</strong></span>
+            </button>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:8px 0 0 0;">
+              No passwords or typing required. Automatically recognizes your face and signs in.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. CREATE ACCOUNT / REGISTER FORM CONTAINER -->
+      <div id="registerFormContainer" hidden>
+        <h2 style="font-size:1.2rem; margin:0 0 6px 0;">Create Demo Banking Account</h2>
+        <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 16px 0;">Open an accessible demo account instantly. Transfers between users are fully active.</p>
+
+        <form id="registrationForm" onsubmit="event.preventDefault();">
+          <div class="field">
+            <label for="regFullName">Full Name *</label>
+            <input type="text" id="regFullName" placeholder="e.g. Ramesh Chandra" required autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="regUsername">Username * (letters, numbers, periods)</label>
+            <input type="text" id="regUsername" placeholder="e.g. ramesh.chandra" required autocomplete="username">
+            <p class="field-hint" style="margin-top:4px;">UPI ID: <strong id="regPreviewUpiId" style="color:var(--navy);">username@sahaay</strong></p>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="field">
+              <label for="regPassword">Password *</label>
+              <div class="pw-wrap">
+                <input type="password" id="regPassword" placeholder="Min 6 chars" required autocomplete="new-password">
+                <button type="button" class="pw-toggle" id="regPwToggle">Show</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="regConfirmPassword">Confirm Password *</label>
+              <input type="password" id="regConfirmPassword" placeholder="Repeat password" required autocomplete="new-password">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="regPhone">Mobile Phone (10 Digits) *</label>
+            <input type="tel" id="regPhone" placeholder="e.g. 9876500000" maxlength="10" required autocomplete="tel">
+          </div>
+
+          <div class="field">
+            <label for="regA11yProfile">Accessibility Assistance Profile</label>
+            <select id="regA11yProfile" style="width:100%; padding:8px 12px; font-weight:700; border-radius:6px; border:2px solid var(--border); background:var(--surface); color:var(--ink);">
+              <option value="standard" selected>Standard Accessibility</option>
+              <option value="blind">Blind / Visual Assist (Full Voice & Audio)</option>
+              <option value="senior">Senior Citizen (Large Text, Plain Words)</option>
+              <option value="hearing">Hearing Assist (Visual Flash & Captions)</option>
+              <option value="motor">Motor Assist (1-Tap & Large Click Targets)</option>
+              <option value="cognitive">Cognitive Simplicity (Distraction-Free)</option>
+            </select>
+          </div>
+
+          <div style="padding:12px; background:var(--bg); border:1.5px solid var(--border); border-radius:8px; margin-bottom:14px; font-size:.88rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <span>⚡ Account Number:</span>
+              <strong style="color:var(--navy);">Auto-generated</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <span>⚡ Starting Balance:</span>
+              <strong style="color:var(--success);">₹ 0.00 (Demo Funds)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>⚡ Demo UPI PIN:</span>
+              <strong>1234</strong>
+            </div>
+          </div>
+
+          <!-- OPTIONAL FACE VERIFICATION ENROLLMENT -->
+          <div style="padding:12px; background:rgba(194,147,51,0.08); border:2px dashed var(--gold); border-radius:8px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <strong style="font-size:.95rem;">📸 Optional Face Verification:</strong>
+                <p style="margin:2px 0 0 0; font-size:.84rem; color:var(--ink-soft);">Camera-based biometric verification for quick login & transfers.</p>
+              </div>
+              <button type="button" class="btn-secondary" id="regEnrollFaceBtn" style="min-height:36px; padding:4px 12px; font-size:.85rem; font-weight:700;">
+                📷 Enroll Face
+              </button>
+            </div>
+            <div id="regFaceBadge" style="margin-top:8px; font-size:.82rem; font-weight:700; color:var(--ink-soft);">
+              ⚪ Status: Not Enrolled (Optional)
+            </div>
+          </div>
+
+          <div id="regError" class="field-error" style="margin-bottom:12px; color:var(--danger); font-weight:700;" hidden></div>
+          <div id="regSuccess" style="margin-bottom:12px; color:var(--success); font-weight:700;" hidden></div>
+
+          <button type="submit" class="btn-primary" id="regSubmitBtn" style="width:100%; font-size:1.05rem;">
+            ✓ Create Account & Sign In
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- DASHBOARD VIEW -->
+  <div id="dashboardView" hidden>
+    <section class="freeze-bar" id="freezeBar" aria-label="Account Security and Emergency Freeze">
+      <div class="freeze-status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="freezeStatusText" data-i18n="freezeActiveStatus">Your account is active</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <p class="freeze-sub" id="freezeSubText" data-i18n="freezeSubText">One tap stops all card and transfer activity immediately. No complex forms.</p>
+        <button class="freeze-toggle-btn" id="freezeBtn" aria-pressed="false">
+          🛑 <span id="freezeBtnText" data-i18n="btnFreezeNow">Freeze my account now</span>
+        </button>
+      </div>
+    </section>
+
+    <div id="timeoutBanner" class="timeout-banner" role="alert" aria-live="assertive">
+      <div>
+        <strong style="font-size:1.1rem;" data-i18n="timeoutHeading">⏳ Need more time?</strong>
+        <p style="margin:2px 0 0 0;" id="timeoutDesc" data-i18n="timeoutDesc">Your session has been extended to ensure you have ample time to read and verify.</p>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-primary" id="extendSessionBtn" style="min-height:44px; padding:8px 16px;" data-i18n="btnExtSession">Add 15 Minutes</button>
+        <button class="btn-secondary" id="disableTimeoutBtn" style="min-height:44px; padding:8px 16px;" data-i18n="btnDisableTimeout">Turn Off Timeouts</button>
+      </div>
+    <!-- AESTHETIC MOBILE DASHBOARD CONTAINER -->
+    <main class="mobile-dashboard-view" id="mobileDashboardView">
+      <!-- Luxury Obsidian & Gold Debit Card -->
+      <div class="mobile-virtual-card">
+        <div class="card-top-row">
+          <div class="card-bank-title">🏛️ Sahaay Platinum</div>
+          <div class="card-contactless-icon">((( )))</div>
+        </div>
+        <div class="card-chip-row">
+          <div class="card-emv-chip" aria-hidden="true"></div>
+          <div class="card-balance-block">
+            <div class="card-balance-label">Available Balance</div>
+            <div class="card-balance-amount">
+              <span id="mobileCardBalance">₹ ••••••</span>
+              <button type="button" class="card-eye-btn" id="mobileToggleBalanceBtn" aria-label="Toggle balance visibility">👁️</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-bottom-row">
+          <div>
+            <div class="card-holder-name" id="mobileCardHolderName">Asha Patel</div>
+            <div style="font-size:0.75rem; color:#10B981; margin-top:2px;">Active • UPI Linked</div>
+          </div>
+          <div class="card-account-number" id="mobileCardAccNum">•••• 4417</div>
+        </div>
+      </div>
+
+      <!-- Quick Action Grid -->
+      <div class="mobile-quick-actions-grid">
+        <div class="mobile-action-pill" id="mobileActionSend" role="button" tabindex="0" aria-label="Send Money via UPI">
+          <div class="mobile-action-icon-wrap icon-wrap-send">💸</div>
+          <span class="mobile-action-label">Send</span>
+        </div>
+        <div class="mobile-action-pill" id="mobileActionScan" role="button" tabindex="0" aria-label="Scan UPI QR Code">
+          <div class="mobile-action-icon-wrap icon-wrap-scan">📷</div>
+          <span class="mobile-action-label">Scan QR</span>
+        </div>
+        <div class="mobile-action-pill" id="mobileActionMyQr" role="button" tabindex="0" aria-label="Show My QR Code">
+          <div class="mobile-action-icon-wrap icon-wrap-myqr">📱</div>
+          <span class="mobile-action-label">My QR</span>
+        </div>
+        <div class="mobile-action-pill" id="mobileActionDeposit" role="button" tabindex="0" aria-label="Deposit Demo Funds">
+          <div class="mobile-action-icon-wrap icon-wrap-deposit">➕</div>
+          <span class="mobile-action-label">Deposit</span>
+        </div>
+      </div>
+
+      <!-- Secondary Feature Strip -->
+      <div class="mobile-secondary-strip">
+        <button type="button" class="mobile-chip-btn" id="mobileChipVoice" aria-label="Voice Assistant">
+          <span>🎙️</span> <span>Voice</span>
+        </button>
+        <button type="button" class="mobile-chip-btn" id="mobileChipAi" aria-label="AI Financial Assistant">
+          <span>🤖</span> <span>AI Help</span>
+        </button>
+        <button type="button" class="mobile-chip-btn" id="mobileChipFreeze" aria-label="Emergency Account Freeze">
+          <span>❄️</span> <span id="mobileChipFreezeLabel">Lock</span>
+        </button>
+        <button type="button" class="mobile-chip-btn" id="mobileChipA11y" aria-label="Accessibility Tools">
+          <span>♿</span> <span>Assist</span>
+        </button>
+      </div>
+
+      <!-- Recent Transactions Feed -->
+      <section class="mobile-recent-tx-section" aria-label="Recent Transactions">
+        <div class="mobile-section-header">
+          <h3 class="mobile-section-title">Recent Activity</h3>
+          <span class="mobile-section-link" id="mobileViewAllTxBtn">View All 📜</span>
+        </div>
+        <div class="mobile-tx-list" id="mobileTxFeedList">
+          <!-- Injected dynamically from latest user transactions -->
+        </div>
+      </section>
+    </main>
+
+    <div class="app-shell">
+      <nav class="side-nav" aria-label="Banking Sections">
+        <ul>
+          <li><button class="nav-item" data-section="overview" id="navOverviewBtn" aria-current="page">📊 <span data-i18n="navOverview">Overview</span></button></li>
+          <li><button class="nav-item" data-section="transactions" id="navTransactionsBtn">📑 <span data-i18n="navTransactions">Transactions</span></button></li>
+          <li><button class="nav-item" data-section="transfer" id="navTransferBtn">💸 <span data-i18n="navTransfer">Send & UPI</span></button></li>
+          <li><button class="nav-item" data-section="help" id="navHelpBtn">❓ <span data-i18n="navHelp">Help & Commands</span></button></li>
+          <li><button class="nav-item" data-section="settings" id="navSettingsBtn">⚙️ <span data-i18n="navSettings">Settings</span></button></li>
+          <li><button class="nav-item" id="signOutBtn">🚪 <span data-i18n="navSignOut">Sign Out</span></button></li>
+        </ul>
+      </nav>
+
+      <main class="main-content" id="main-content" tabindex="-1">
+        <!-- Section: Overview -->
+        <section id="section-overview" data-readable>
+          <h1 data-standard="Welcome back, Asha" data-plain="Hello Asha! Here is your money summary:" data-i18n="welcomeHeading">Welcome back, Asha</h1>
+          <div class="panel">
+            <h2 id="balanceHeading" data-standard="Available Balance" data-plain="Money You Have Right Now" data-i18n="balanceHeading">Available Balance</h2>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:6px 0 10px 0;">
+              <p class="balance-figure" id="mainBalanceText" data-real="₹ 42,180.50" style="margin:0;">₹ •••••• <span class="smart-tag" style="display:none;">[AVAILABLE]</span></p>
+              <button type="button" class="btn-secondary" id="toggleBalanceVisibilityBtn" style="min-height:36px; padding:4px 12px; font-size:.85rem; font-weight:700;" aria-label="Show or hide account balance">
+                👁️ <span id="toggleBalanceText">Show Balance</span>
+              </button>
+            </div>
+            <p class="field-hint" data-i18n="balanceSubText">Savings Account ending in <strong>4417</strong> <span class="smart-tag" style="display:none;">[ACC: 4417]</span> • UPI ID: <strong>asha.patel@sahaay</strong> <span class="smart-tag" style="display:none;">[UPI]</span></p>
+            <div style="display:flex; gap:12px; margin-top:16px; flex-wrap:wrap;">
+              <button class="btn-primary" onclick="window.SahaayApp.navigateTo('transfer');">↗️ <span data-i18n="btnQuickSend">Send Money Now</span></button>
+              <button type="button" class="btn-primary" id="openDepositModalBtn" style="background:#0F766E; border-color:#0D9488;">➕ <span>Add Money (Demo Deposit)</span></button>
+              <button class="btn-secondary" id="openScannerBtn">📷 <span data-i18n="btnScanQr">Scan UPI QR</span></button>
+              <button class="btn-secondary" id="openMyQrBtn">📱 <span data-i18n="btnShowMyQr">My UPI QR</span></button>
+              <button class="btn-secondary" onclick="window.SahaayApp.navigateTo('transactions');">📑 <span data-i18n="btnQuickStatement">View Statement</span></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Transactions -->
+        <section id="section-transactions" hidden data-readable>
+          <h1 data-standard="Recent Transactions" data-plain="Things You Spent or Received" data-i18n="transHeading">Recent Transactions</h1>
+          <div class="panel">
+            <!-- Transaction Filter Tabs -->
+            <div class="tx-filter-bar" role="tablist" aria-label="Filter transactions">
+              <button type="button" class="tx-filter-btn active" data-filter="ALL">All</button>
+              <button type="button" class="tx-filter-btn" data-filter="SENT">Money Sent</button>
+              <button type="button" class="tx-filter-btn" data-filter="RECEIVED">Money Received</button>
+              <button type="button" class="tx-filter-btn" data-filter="QR">QR Payments</button>
+              <button type="button" class="tx-filter-btn" data-filter="UPI">UPI Transfers</button>
+              <button type="button" class="tx-filter-btn" data-filter="DEPOSIT">Deposits</button>
+              <button type="button" class="tx-filter-btn" data-filter="REFUND">Refunds</button>
+            </div>
+
+            <table aria-label="Statement of recent bank transactions" id="transactionsTable">
+              <caption data-i18n="tableCaption">Table of past transactions. Amounts are marked with text and arrows.</caption>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thDate">Date</th>
+                  <th scope="col" data-i18n="thPayee">Description / Payee</th>
+                  <th scope="col" data-i18n="thType">Payment Type</th>
+                  <th scope="col" data-i18n="thAmount">Amount</th>
+                  <th scope="col">Balance</th>
+                </tr>
+              </thead>
+              <tbody id="transactionTbody">
+                <tr>
+                  <td>2 Sep 2026</td>
+                  <td>Salary Credit — TechCorp <span class="smart-tag">[SALARY]</span></td>
+                  <td><strong style="color:var(--success);">Credit</strong></td>
+                  <td class="amt credit">+ ₹15,000.00</td>
+                  <td style="font-weight:700;">₹ 42,180.50</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section: Send Money & UPI -->
+        <section id="section-transfer" hidden data-readable>
+          <h1 data-standard="Send Money & UPI" data-plain="Pay Someone" data-i18n="transferHeading">Send Money & UPI</h1>
+          <div class="panel" style="border-left-color:var(--gold); background:rgba(194,147,51,0.08); padding:16px 20px; margin-bottom:18px;">
+            <strong style="font-size:1.05rem;" data-i18n="upiPinCalloutTitle">🔒 Multi-User Demo Transfers:</strong>
+            <p style="margin:4px 0 0 0; font-size:.92rem;" data-i18n="upiPinCalloutDesc">Transfers deduct from your balance and credit the recipient's account in real-time with dual linked receipts.</p>
+          </div>
+          <div class="panel">
+            <form id="transferForm" onsubmit="event.preventDefault();">
+              <!-- RECIPIENT SEARCH & QUICK SELECTION -->
+              <div class="field" style="position:relative;">
+                <label for="payeeSearchInput" style="font-weight:700; font-size:.95rem;">🔍 Search Registered Demo Recipient:</label>
+                <input type="text" id="payeeSearchInput" placeholder="Type name (e.g. Rajesh, Meera), UPI ID, or account number..." autocomplete="off">
+                <div id="recipientSearchResults" class="recipient-search-results" hidden></div>
+              </div>
+
+              <!-- REGISTERED DEMO RECIPIENTS CHIPS -->
+              <div>
+                <label style="font-weight:700; font-size:.9rem; display:block; margin-bottom:4px;">⭐ Registered Demo Users (1-Tap Select):</label>
+                <div class="beneficiary-chips-wrap" id="quickRecipientsWrap">
+                  <button type="button" class="beneficiary-chip" data-payee="rajesh@sahaay" data-name="Rajesh Kumar">👤 Rajesh Kumar (rajesh@sahaay)</button>
+                  <button type="button" class="beneficiary-chip" data-payee="meera@sahaay" data-name="Meera Sharma">👤 Meera Sharma (meera@sahaay)</button>
+                  <button type="button" class="beneficiary-chip" data-payee="asha.patel@sahaay" data-name="Asha Patel">👤 Asha Patel (asha.patel@sahaay)</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="payee" data-i18n="lblSendTo">Recipient UPI ID, Username, or Account Number *</label>
+                <input type="text" id="payee" placeholder="e.g. rajesh@sahaay or 8821" required>
+                <p id="payeeError" class="error-text" hidden>⚠️ Please enter a valid registered recipient.</p>
+              </div>
+
+              <!-- Selected Recipient Preview Card -->
+              <div id="recipientPreviewCard" style="display:none; padding:10px 14px; background:var(--bg); border-left:4px solid var(--gold); border-radius:6px; margin-bottom:14px;">
+                <span style="font-size:.82rem; font-weight:800; color:var(--gold-dark); text-transform:uppercase;">Verified Demo Payee:</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                  <strong id="previewPayeeName" style="font-size:1.05rem; color:var(--navy);">—</strong>
+                  <span id="previewPayeeUpi" style="font-size:.9rem; font-weight:700; color:var(--ink-soft);">—</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="amount" data-i18n="lblAmount">Amount in Rupees (₹) *</label>
+                <input type="number" id="amount" min="1" placeholder="e.g. 500" required>
+                <p id="amountError" class="error-text" hidden data-i18n="errAmount">⚠️ Please enter an amount greater than ₹0 and within your available balance.</p>
+              </div>
+
+              <div class="field">
+                <label for="transferReason">Payment Reason / Note (Optional)</label>
+                <input type="text" id="transferReason" placeholder="e.g. Hackathon Demo, Lunch, Bill split">
+              </div>
+
+              <!-- VERIFICATION METHOD SELECTION -->
+              <div class="field" style="margin-top:14px;">
+                <label style="font-weight:700; font-size:.92rem; display:block; margin-bottom:6px;">🛡️ Authorization Method:</label>
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 14px; background:var(--bg); border:2px solid var(--border); border-radius:8px; font-weight:700; flex:1; min-width:180px;">
+                    <input type="radio" name="transferAuthMethod" value="pin" checked style="width:18px; height:18px;">
+                    <span>🔢 4-Digit UPI PIN</span>
+                  </label>
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px 14px; background:var(--bg); border:2px solid var(--border); border-radius:8px; font-weight:700; flex:1; min-width:180px;">
+                    <input type="radio" name="transferAuthMethod" value="face" style="width:18px; height:18px;">
+                    <span>📸 Face Verification (Camera)</span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="button" class="btn-primary" id="reviewTransferBtn" style="width:100%; font-size:1.1rem; margin-top:8px;">
+                🔒 <span data-i18n="btnReviewTransfer">Authorize & Send Money</span>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Section: Help & Guide -->
+        <section id="section-help" hidden data-readable>
+          <h1 data-i18n="helpHeading">❓ Help & Voice Commands Guide</h1>
+          
+          <div class="panel">
+            <h2>🎙️ Voice Commands Directory (Interactive List)</h2>
+            <p class="field-hint">Speak naturally in Hindi or English, or click any "▶️ Try" button to test the command:</p>
+
+            <!-- CATEGORY 1: PAYMENTS & TRANSFERS -->
+            <h3 class="cmd-category-heading">💸 Payments & UPI Transfers</h3>
+            <div class="cmd-list-wrap">
+              <table class="cmd-table" aria-label="Payments and UPI transfer voice commands">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width:40%;">Spoken Command (Hindi / English)</th>
+                    <th scope="col" style="width:40%;">What It Does</th>
+                    <th scope="col" style="width:20%; text-align:center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Raju ko 500 bhejiye"</span>
+                      <span class="cmd-phrase">"Send 500 to Raju"</span>
+                    </td>
+                    <td>Fills recipient and amount, asks for confirmation, then opens UPI PIN verification.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="raju ko 500 bhejiye" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Paise bhejiye"</span>
+                      <span class="cmd-phrase">"Send money"</span>
+                    </td>
+                    <td>Opens transfer screen and interactively prompts for payee and amount step-by-step.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="paise bhejiye" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Pooja ko ek hazaar bhejo"</span>
+                      <span class="cmd-phrase">"Transfer 1000 to Pooja"</span>
+                    </td>
+                    <td>Selects saved contact Pooja Verma and prepares ₹1,000 transfer.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="pooja ko ek hazaar bhejo" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- CATEGORY 2: QR CODES -->
+            <h3 class="cmd-category-heading">📱 UPI QR Codes & Scanning</h3>
+            <div class="cmd-list-wrap">
+              <table class="cmd-table" aria-label="QR Code voice commands">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width:40%;">Spoken Command</th>
+                    <th scope="col" style="width:40%;">What It Does</th>
+                    <th scope="col" style="width:20%; text-align:center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Mera QR code dikhao"</span>
+                      <span class="cmd-phrase">"Show my QR code"</span>
+                    </td>
+                    <td>Displays your personal high-density UPI receiving QR code on screen.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="mera qr code dikhao" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"QR code scan karo"</span>
+                      <span class="cmd-phrase">"Scan QR code"</span>
+                    </td>
+                    <td>Opens the camera QR code scanner to pay any merchant.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="scan qr code" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- CATEGORY 3: NAVIGATION & SECURITY -->
+            <h3 class="cmd-category-heading">🧭 Navigation & Account Security</h3>
+            <div class="cmd-list-wrap">
+              <table class="cmd-table" aria-label="Navigation and security voice commands">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width:40%;">Spoken Command</th>
+                    <th scope="col" style="width:40%;">What It Does</th>
+                    <th scope="col" style="width:20%; text-align:center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Khata freeze karo"</span>
+                      <span class="cmd-phrase">"Freeze account"</span>
+                    </td>
+                    <td>Immediately freezes all debit and transfer operations for emergency protection.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="freeze account" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Transactions dikhao"</span>
+                      <span class="cmd-phrase">"Show past transactions"</span>
+                    </td>
+                    <td>Navigates directly to your recent transaction statement.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="transactions dikhao" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Change language to Hindi"</span>
+                      <span class="cmd-phrase">"Bhasha badlo"</span>
+                    </td>
+                    <td>Switches the entire user interface and voice system to Hindi.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="change language to hindi" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="cmd-phrase">"Sign out"</span>
+                      <span class="cmd-phrase">"Log out karo"</span>
+                    </td>
+                    <td>Securely signs out of your session.</td>
+                    <td style="text-align:center;">
+                      <button type="button" class="btn-secondary try-cmd-btn" data-cmd="sign out" style="min-height:34px; padding:4px 10px; font-size:.85rem;">▶️ Try</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- BANKING TERMINOLOGIES GLOSSARY -->
+          <div class="panel">
+            <h2>📚 Banking Terminologies Glossary</h2>
+            <div class="cmd-list-wrap">
+              <table class="cmd-table" aria-label="Common banking terminology explanations">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width:25%;">Term</th>
+                    <th scope="col" style="width:75%;">Simple Plain Explanation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>UPI ID / VPA</strong></td>
+                    <td>Virtual Payment Address (e.g. <code>asha.patel@sahaay</code>). A simple nickname for your bank account so you never need to share account numbers.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>UPI PIN</strong></td>
+                    <td>A 4-digit secret security code you enter on the on-screen keypad to authorize and release money. Never share this with anyone!</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Account Freeze</strong></td>
+                    <td>A 1-tap emergency lock that stops all outgoing money and card transactions instantly if you suspect fraud or lost a card.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Beneficiary</strong></td>
+                    <td>A trusted person or merchant whose payment details you have saved for fast, verified 1-tap payments.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Available Balance</strong></td>
+                    <td>The exact money currently in your account ready to spend right now, minus pending holds.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Settings -->
+        <section id="section-settings" hidden data-readable>
+          <h1 data-i18n="settingsHeading">Settings & Preferences</h1>
+
+          <!-- CARD 1: THEME & VISUAL APPEARANCE -->
+          <div class="settings-section-card">
+            <div class="settings-header-badge"><span>🎨</span> <span data-i18n="themeHeader">Theme & Appearance</span></div>
+            <p class="field-hint" data-i18n="themeSub">Choose your preferred visual presentation:</p>
+            <div class="theme-selector-grid">
+              <button type="button" class="theme-card-btn" id="themeLightBtn" aria-pressed="false">
+                <span style="font-size:1.6rem;">☀️</span>
+                <span data-i18n="themeLight">Light Classic</span>
+                <small style="font-size:.75rem; color:var(--ink-soft);" data-i18n="themeLightSub">Clean Standard</small>
+              </button>
+              <button type="button" class="theme-card-btn" id="themeFreshBtn" aria-pressed="true">
+                <span style="font-size:1.6rem;">✨</span>
+                <span data-i18n="themeFresh">Fresh Modern</span>
+                <small style="font-size:.75rem; color:var(--ink-soft);" data-i18n="themeFreshSub">Bright White & Aesthetic</small>
+              </button>
+              <button type="button" class="theme-card-btn" id="themeDarkBtn" aria-pressed="false">
+                <span style="font-size:1.6rem;">🌙</span>
+                <span data-i18n="themeDark">Dark Theme</span>
+                <small style="font-size:.75rem; color:var(--ink-soft);" data-i18n="themeDarkSub">Modern Night Mode</small>
+              </button>
+              <button type="button" class="theme-card-btn" id="themeContrastBtn" aria-pressed="false">
+                <span style="font-size:1.6rem;">👁️</span>
+                <span data-i18n="themeContrast">High Contrast</span>
+                <small style="font-size:.75rem; color:var(--ink-soft);" data-i18n="themeContrastSub">WCAG AAA Yellow/Black</small>
+              </button>
+            </div>
+          </div>
+
+          <!-- CARD 2: PRIVACY & ACCOUNT BALANCE VISIBILITY -->
+          <div class="settings-section-card">
+            <div class="settings-header-badge"><span>🔒</span> <span>Privacy & Balance Protection</span></div>
+            <p class="field-hint">Protect sensitive financial numbers from onlookers in public places:</p>
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Hide Account Balance by Default</h4>
+                <p>Always masks your account balance (₹ ••••••) on page load until you tap "Show Balance"</p>
+              </div>
+              <label class="switch" aria-label="Toggle hiding account balance by default">
+                <input type="checkbox" id="cfg-hide-balance" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- CARD 3: ACCESSIBILITY TOOLBAR CUSTOMIZER (SELECTION SET MENU) -->
+          <div class="settings-section-card" role="region" aria-label="Accessibility toolbar customizer">
+            <div class="settings-header-badge">
+              <span>🛠️</span>
+              <span data-i18n="customizerHeader">Accessibility Toolbar Customizer</span>
+            </div>
+            <p style="font-size:.95rem; margin-bottom:12px;" data-i18n="customizerSub">
+              Customize which assistive tools appear in your top toolbar. Uncheck tools you don't need:
+            </p>
+
+            <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+              <button type="button" class="btn-secondary" id="resetToolbarBtn" style="min-height:36px; padding:4px 12px; font-size:.85rem;">
+                🔄 <span data-i18n="btnResetToolbar">Reset Toolbar to Default</span>
+              </button>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgTextSizeTitle">Text Resizing Controls (A−, A, A+, A++)</h4>
+                <p data-i18n="cfgTextSizeDesc">Show quick font zoom buttons</p>
+              </div>
+              <label class="switch" aria-label="Toggle text resizing buttons in toolbar">
+                <input type="checkbox" id="cfg-text-size" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgContrastTitle">High Contrast Button</h4>
+                <p data-i18n="cfgContrastDesc">Quick toggle for AAA yellow-on-black mode</p>
+              </div>
+              <label class="switch" aria-label="Toggle high contrast button in toolbar">
+                <input type="checkbox" id="cfg-contrast" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgPlainTitle">Plain Language Mode</h4>
+                <p data-i18n="cfgPlainDesc">Replaces banking jargon with everyday simple words</p>
+              </div>
+              <label class="switch" aria-label="Toggle plain language button in toolbar">
+                <input type="checkbox" id="cfg-plain" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>Select to Speech (Read on Click / Text Selection)</h4>
+                <p>Click any card or highlight text on screen to hear it spoken aloud</p>
+              </div>
+              <label class="switch" aria-label="Toggle select to speech in toolbar">
+                <input type="checkbox" id="cfg-click-read" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgExploreTitle">Two-Click Safe Mode (Explore & Confirm)</h4>
+                <p data-i18n="cfgExploreDesc">1st click speaks the option; 2nd click executes it</p>
+              </div>
+              <label class="switch" aria-label="Toggle two click safe mode in toolbar">
+                <input type="checkbox" id="cfg-explore" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgHoverTitle">Hover Select (Dwell Clicking)</h4>
+                <p data-i18n="cfgHoverDesc">Auto-clicks buttons when resting cursor for 1.2s</p>
+              </div>
+              <label class="switch" aria-label="Toggle hover select button in toolbar">
+                <input type="checkbox" id="cfg-hover" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgOskTitle">On-Screen Virtual Keyboard</h4>
+                <p data-i18n="cfgOskDesc">Show toggle for on-screen touch/eye-gaze keyboard</p>
+              </div>
+              <label class="switch" aria-label="Toggle virtual keyboard button in toolbar">
+                <input type="checkbox" id="cfg-osk" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgTagsTitle">Highlight Key Info (Smart Tags)</h4>
+                <p data-i18n="cfgTagsDesc">Highlights balances, due dates, and amounts</p>
+              </div>
+              <label class="switch" aria-label="Toggle highlight key info button in toolbar">
+                <input type="checkbox" id="cfg-tags" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgVoiceAlertsTitle">Voice Alerts & Notifications</h4>
+                <p data-i18n="cfgVoiceAlertsDesc">Audio announcement for status changes</p>
+              </div>
+              <label class="switch" aria-label="Toggle voice alerts in toolbar">
+                <input type="checkbox" id="cfg-voice-alerts" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgMotionTitle">Reduce Motion</h4>
+                <p data-i18n="cfgMotionDesc">Disable transitions and animated effects</p>
+              </div>
+              <label class="switch" aria-label="Toggle reduce motion in toolbar">
+                <input type="checkbox" id="cfg-motion" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgVoiceBarTitle">Multilingual Voice Action Bar</h4>
+                <p data-i18n="cfgVoiceBarDesc">Voice command strip at top of screen</p>
+              </div>
+              <label class="switch" aria-label="Toggle voice command bar visibility">
+                <input type="checkbox" id="cfg-voice-bar" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="cfgAiAvatarTitle">Floating AI Companion Avatar</h4>
+                <p data-i18n="cfgAiAvatarDesc">Show animated speaking companion icon</p>
+              </div>
+              <label class="switch" aria-label="Toggle floating AI companion avatar">
+                <input type="checkbox" id="cfg-ai-avatar" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- CARD 3: SECURITY & PRIVACY PREFERENCES -->
+          <div class="settings-section-card">
+            <div class="settings-header-badge">
+              <span>🔐</span>
+              <span data-i18n="secHeader">Security & Privacy Preferences</span>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="secBioTitle">Biometric Authentication</h4>
+                <p data-i18n="secBioDesc">Use Fingerprint or Face ID for signing in and transfers</p>
+              </div>
+              <label class="switch" aria-label="Toggle biometric authentication">
+                <input type="checkbox" id="cfg-biometrics" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="secHideBalTitle">Hide Account Balance by Default</h4>
+                <p data-i18n="secHideBalDesc">Mask account balance on launch for privacy</p>
+              </div>
+              <label class="switch" aria-label="Toggle hide balance by default">
+                <input type="checkbox" id="cfg-hide-balance">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="sec2faTitle">Two-Factor Authentication (2FA) Method</h4>
+                <p data-i18n="sec2faDesc">Preferred verification channel for payments</p>
+              </div>
+              <select id="cfg-2fa-method" style="max-width:180px; min-height:42px; font-size:.92rem;" aria-label="Select Two-Factor Authentication method">
+                <option value="sms" selected>SMS OTP</option>
+                <option value="totp">Authenticator App</option>
+                <option value="whatsapp">WhatsApp Alert</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4 data-i18n="secSoundTitle">Audio Tap Sound Effects</h4>
+                <p data-i18n="secSoundDesc">Play a subtle accessible chime when buttons are activated</p>
+              </div>
+              <label class="switch" aria-label="Toggle audio tap sound effects">
+                <input type="checkbox" id="cfg-sound-fx" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <h4>UPI PIN Protection</h4>
+                <p>Demo UPI PIN is <strong>1234</strong>. Required for all transactions.</p>
+              </div>
+              <button type="button" class="btn-secondary" id="changePinBtn" style="min-height:38px; padding:6px 14px; font-size:.9rem;">
+                Change UPI PIN
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <!-- UPI PIN Modal -->
+  <div class="modal-overlay" id="upiPinModal" role="dialog" aria-modal="true" aria-labelledby="upiModalTitle">
+    <div class="upi-pin-box">
+      <button class="modal-close-btn" id="closeUpiModalBtn" aria-label="Close">✕</button>
+      <div class="upi-header-badge"><span>🔒 SAHAAY SECURE UPI</span></div>
+      <h2 id="upiModalTitle" style="margin:4px 0;">Enter 4-Digit UPI PIN</h2>
+      <p style="font-size:1.05rem;" id="upiPayInfo">Paying <strong id="upiPayAmount">₹0</strong> to <strong id="upiPayeeName">—</strong></p>
+      <div class="upi-dots-container" id="upiDotsContainer">
+        <div class="upi-dot" id="dot-0"></div>
+        <div class="upi-dot" id="dot-1"></div>
+        <div class="upi-dot" id="dot-2"></div>
+        <div class="upi-dot" id="dot-3"></div>
+      </div>
+      <p style="font-size:.85rem; color:var(--ink-soft); margin-bottom:12px;">Demo UPI PIN: <strong>1234</strong></p>
+      <div class="upi-keypad-grid">
+        <button type="button" class="upi-key" data-digit="1">1</button>
+        <button type="button" class="upi-key" data-digit="2">2</button>
+        <button type="button" class="upi-key" data-digit="3">3</button>
+        <button type="button" class="upi-key" data-digit="4">4</button>
+        <button type="button" class="upi-key" data-digit="5">5</button>
+        <button type="button" class="upi-key" data-digit="6">6</button>
+        <button type="button" class="upi-key" data-digit="7">7</button>
+        <button type="button" class="upi-key" data-digit="8">8</button>
+        <button type="button" class="upi-key" data-digit="9">9</button>
+        <button type="button" class="upi-key action-key" id="upiClearKey">⌫ Clear</button>
+        <button type="button" class="upi-key" data-digit="0">0</button>
+        <button type="button" class="upi-key submit-key" id="upiSubmitKey">✓ Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Personal Realistic QR Modal -->
+  <div class="modal-overlay" id="myQrModal" role="dialog" aria-modal="true" aria-labelledby="myQrTitle">
+    <div class="qr-card" style="max-width:440px;">
+      <button class="modal-close-btn" id="closeMyQrBtn" aria-label="Close">✕</button>
+      <h2 id="myQrTitle" style="margin:0 0 4px 0;">Receive Money via UPI QR</h2>
+      <p class="field-hint" style="margin:0 0 10px 0;">Official NPCI / BHIM UPI Vector QR Code</p>
+      
+      <div class="qr-frame" style="display:flex; justify-content:center; margin:8px 0;">
+        <!-- Rendered dynamically by window.SahaayQr.renderQr() -->
+      </div>
+
+      <div style="margin:12px 0 6px 0;">
+        <label for="customQrAmount" style="font-weight:700; font-size:.88rem; display:block; margin-bottom:4px;">Request Specific Amount (Optional):</label>
+        <div style="display:flex; justify-content:center; gap:8px;">
+          <input type="number" id="customQrAmount" placeholder="e.g. 500" style="max-width:140px; text-align:center; min-height:36px; padding:4px;">
+          <button type="button" class="btn-primary" id="applyQrAmountBtn" style="min-height:36px; padding:4px 12px; font-size:.88rem;">Update QR</button>
+        </div>
+      </div>
+
+      <h3 id="myQrCardName" style="margin:10px 0 2px 0;">Asha Patel</h3>
+      <p id="myQrCardUpi" style="font-weight:700; color:var(--navy); font-size:1.1rem; margin:0 0 12px 0;">asha.patel@sahaay</p>
+      <div style="display:flex; justify-content:center; gap:10px; margin-top:6px;">
+        <button type="button" class="btn-primary" id="copyUpiIdBtn">📋 Copy UPI ID</button>
+        <button type="button" class="btn-secondary" id="downloadQrBtn">⬇️ Download QR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Scanner Camera & Simulator Modal -->
+  <div class="modal-overlay" id="qrScannerModal" role="dialog" aria-modal="true" aria-labelledby="scannerTitle">
+    <div class="modal" style="max-width:500px; text-align:center;">
+      <button class="modal-close-btn" id="closeScannerModalBtn" aria-label="Close QR scanner">✕</button>
+      <div style="display:inline-flex; align-items:center; gap:6px; background:var(--gold); color:var(--navy-dark); font-size:.8rem; font-weight:800; padding:4px 10px; border-radius:20px; margin-bottom:8px;">
+        <span>📷 SCAN & PAY</span>
+      </div>
+      <h2 id="scannerTitle" style="margin:0 0 4px 0;">Scan Sahaay UPI QR Code</h2>
+      <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 12px 0;">Position the recipient's QR code inside the camera frame below.</p>
+
+      <!-- Camera Viewfinder -->
+      <div class="qr-camera-wrap" id="qrCameraWrap">
+        <video id="qrScannerVideo" playsinline autoplay muted></video>
+        <canvas id="qrScannerCanvas" hidden></canvas>
+        <div class="qr-scanner-laser" id="qrScannerLaser"></div>
+        <div class="qr-viewfinder-reticle"></div>
+
+        <!-- Accessible Camera Fallback Container -->
+        <div id="qrCameraFallback" style="display:none; position:absolute; inset:0; background:rgba(15,23,42,0.94); color:#fff; padding:18px; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:10;">
+          <span style="font-size:2.2rem; margin-bottom:6px;">📷🚫</span>
+          <strong style="font-size:1.02rem; margin-bottom:4px;">Camera Scanning Unavailable</strong>
+          <p style="font-size:.84rem; color:#CBD5E1; margin:0 0 14px 0; max-width:280px; line-height:1.4;">Camera scanning is unavailable on this device. You can enter the recipient's UPI ID manually.</p>
+          <button type="button" class="btn-primary" id="qrFallbackManualBtn" style="font-size:.88rem; padding:8px 16px;">⌨️ Enter UPI ID Manually</button>
+        </div>
+      </div>
+
+      <div id="qrScannerStatus" style="font-size:.9rem; font-weight:700; margin:10px 0 6px 0; color:var(--navy);" aria-live="polite">
+        Starting camera... Point at recipient's Sahaay QR
+      </div>
+
+      <!-- Quick 1-Tap Demo User QR Selection & Image Upload -->
+      <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+        <strong style="display:block; font-size:.88rem; margin-bottom:8px; color:var(--ink);">Or select a demo recipient QR instantly:</strong>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+          <button type="button" class="btn-secondary demo-user-qr-btn" data-payee="rajesh@sahaay" data-name="Rajesh Kumar" style="padding:6px 4px; font-size:.82rem;">👤 Rajesh Kumar</button>
+          <button type="button" class="btn-secondary demo-user-qr-btn" data-payee="meera@sahaay" data-name="Meera Sharma" style="padding:6px 4px; font-size:.82rem;">👤 Meera Sharma</button>
+          <button type="button" class="btn-secondary demo-user-qr-btn" data-payee="asha.patel@sahaay" data-name="Asha Patel" style="padding:6px 4px; font-size:.82rem;">👤 Asha Patel</button>
+        </div>
+        <div style="margin-top:10px; display:flex; justify-content:center; gap:10px;">
+          <label class="btn-secondary" style="cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-size:.84rem; padding:6px 14px;">
+            <input type="file" id="qrImageUploadInput" accept="image/*" style="display:none;">
+            📁 Upload QR Code Image
+          </label>
+          <button type="button" class="btn-secondary" id="qrManualFallbackSecondaryBtn" style="font-size:.84rem; padding:6px 14px;">
+            ⌨️ Manual Entry
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Scanned Recipient Confirmation Modal -->
+  <div class="modal-overlay" id="qrRecipientConfirmModal" role="dialog" aria-modal="true" aria-labelledby="recipientConfirmTitle">
+    <div class="modal" style="max-width:440px; text-align:center;">
+      <button class="modal-close-btn" id="closeRecipientConfirmBtn" aria-label="Cancel recipient confirmation">✕</button>
+      <div style="display:inline-flex; align-items:center; gap:6px; background:var(--gold); color:var(--navy-dark); font-size:.8rem; font-weight:800; padding:4px 10px; border-radius:20px; margin-bottom:8px;">
+        <span>✓ RECIPIENT FOUND</span>
+      </div>
+      <h2 id="recipientConfirmTitle" style="margin:0 0 4px 0;">Confirm Payment Recipient</h2>
+      <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 16px 0;">Official verified Sahaay Bank account found from QR.</p>
+
+      <div style="background:var(--bg); border:2px solid var(--gold); border-radius:10px; padding:16px; text-align:left; margin-bottom:16px;">
+        <div style="font-size:1.3rem; font-weight:800; color:var(--navy);" id="confirmRecipientName">—</div>
+        <div style="font-size:1rem; font-weight:700; color:var(--gold-dark); margin:6px 0;" id="confirmRecipientUpi">—</div>
+        <div style="font-size:.88rem; color:var(--ink-soft);" id="confirmRecipientAcc">Account ending: —</div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-secondary" id="cancelRecipientConfirmBtn" style="flex:1;">✕ Cancel</button>
+        <button type="button" class="btn-primary" id="proceedRecipientConfirmBtn" style="flex:2;">✓ Continue to Transfer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Server Connection & Cross-Platform Sync Modal -->
+  <div class="modal-overlay" id="serverConfigModal" role="dialog" aria-modal="true" aria-labelledby="serverConfigTitle">
+    <div class="modal" style="max-width:480px; text-align:left;">
+      <button class="modal-close-btn" id="closeServerConfigBtn" aria-label="Close server configuration">✕</button>
+      <div style="display:inline-flex; align-items:center; gap:6px; background:var(--gold); color:var(--navy-dark); font-size:.8rem; font-weight:800; padding:4px 10px; border-radius:20px; margin-bottom:8px;">
+        <span>🌐 CROSS-PLATFORM SYNC</span>
+      </div>
+      <h2 id="serverConfigTitle" style="margin:0 0 4px 0;">Backend Server Connection</h2>
+      <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 14px 0;">
+        Connect this interface to your Render cloud deployment or local development backend to synchronize transactions in real-time across Web and Android Mobile.
+      </p>
+
+      <div style="margin-bottom:14px;">
+        <label for="serverBackendUrlInput" style="display:block; font-weight:700; font-size:.88rem; margin-bottom:6px;">Backend Server URL:</label>
+        <input type="url" id="serverBackendUrlInput" class="input-field" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--border); font-family:monospace; box-sizing:border-box;" placeholder="https://sahaay-bank.onrender.com">
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <span style="font-size:.8rem; font-weight:700; color:var(--ink-soft); text-transform:uppercase;">Quick Presets:</span>
+        <div style="display:flex; gap:8px; margin-top:6px;">
+          <button type="button" class="btn-secondary" id="presetRenderBtn" style="flex:1; font-size:.82rem; padding:6px;">Render Cloud</button>
+          <button type="button" class="btn-secondary" id="presetLocalBtn" style="flex:1; font-size:.82rem; padding:6px;">Localhost (5050)</button>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-secondary" id="cancelServerConfigBtn" style="flex:1;">Cancel</button>
+        <button type="button" class="btn-primary" id="saveServerConfigBtn" style="flex:2;">✓ Save &amp; Reconnect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transfer Reason & Demo Risk Assessment Modal (₹10,000+) -->
+  <div class="modal-overlay" id="transferReasonModal" role="dialog" aria-modal="true" aria-labelledby="transferReasonTitle">
+    <div class="modal" style="max-width:480px;">
+      <button class="modal-close-btn" id="closeTransferReasonBtn" aria-label="Close transfer reason dialog">✕</button>
+      
+      <!-- Risk Warning Banner -->
+      <div style="padding:12px 14px; background:rgba(239,68,68,0.1); border-left:4px solid var(--danger); border-radius:6px; margin-bottom:14px;">
+        <strong style="color:var(--danger); font-size:1.02rem; display:block;">⚠️ Additional verification</strong>
+        <p style="margin:4px 0 0 0; font-size:.88rem; color:var(--ink);">
+          This transfer requires a reason because it exceeds Sahaay's demo risk threshold (₹10,000).
+        </p>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+          <span style="font-size:.8rem; font-weight:800; text-transform:uppercase; color:var(--ink-soft);">Sahaay Demo Risk Assessment:</span>
+          <span id="demoRiskScoreBadge" style="background:#FEF3C7; color:#B45309; font-weight:800; font-size:.78rem; padding:2px 8px; border-radius:12px;">MEDIUM RISK (+25)</span>
+        </div>
+      </div>
+
+      <h2 id="transferReasonTitle" style="margin:0 0 6px 0; font-size:1.3rem;">Why are you sending this money?</h2>
+      <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 12px 0;">Please select a primary category for this high-value demo transfer:</p>
+
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;" id="reasonRadioGroup">
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px;">
+          <input type="radio" name="reasonCategoryOpt" value="Family / Friends" checked>
+          <span>👨‍👩‍👧 Family / Friends</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px;">
+          <input type="radio" name="reasonCategoryOpt" value="Education">
+          <span>🎓 Education</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px;">
+          <input type="radio" name="reasonCategoryOpt" value="Medical Expenses">
+          <span>🏥 Medical Expenses</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px;">
+          <input type="radio" name="reasonCategoryOpt" value="Rent / Housing">
+          <span>🏠 Rent / Housing</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px;">
+          <input type="radio" name="reasonCategoryOpt" value="Shopping / Purchase">
+          <span>🛒 Shopping / Purchase</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px;">
+          <input type="radio" name="reasonCategoryOpt" value="Business / Work">
+          <span>💼 Business / Work</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px;">
+          <input type="radio" name="reasonCategoryOpt" value="Other">
+          <span>✏️ Other</span>
+        </label>
+      </div>
+
+      <!-- Custom explanation text field for Other -->
+      <div id="customReasonWrap" style="display:none; margin-bottom:14px;">
+        <label for="customReasonInput" style="font-weight:700; font-size:.88rem; display:block; margin-bottom:4px;">Please specify the reason *</label>
+        <input type="text" id="customReasonInput" placeholder="e.g. College fee payment, Property deposit, Equipment purchase">
+        <p id="customReasonError" class="error-text" hidden>⚠️ An explanation is required when selecting "Other".</p>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-secondary" id="cancelTransferReasonBtn" style="flex:1;">✕ Back</button>
+        <button type="button" class="btn-primary" id="confirmTransferReasonBtn" style="flex:2;">Proceed to Authorization →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transfer Success Receipt Modal -->
+  <div class="modal-overlay" id="transferReceiptModal" role="dialog" aria-modal="true" aria-labelledby="receiptTitle">
+    <div class="modal" style="max-width:480px; text-align:center;">
+      <button class="modal-close-btn" id="closeReceiptBtn" aria-label="Close receipt">✕</button>
+      <div style="font-size:3rem; line-height:1; margin-bottom:8px;">🎉</div>
+      <div style="display:inline-flex; align-items:center; gap:6px; background:var(--success); color:#fff; font-size:.8rem; font-weight:800; padding:4px 12px; border-radius:20px; margin-bottom:8px;" id="receiptMethodBadge">
+        ✓ TRANSFER SUCCESSFUL
+      </div>
+      <h2 id="receiptTitle" style="margin:0 0 4px 0;">Payment Successful</h2>
+      <div style="font-size:2.2rem; font-weight:900; color:var(--navy); margin:12px 0;" id="receiptAmountDisplay">₹ 0.00</div>
+
+      <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:left; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--ink-soft); font-size:.88rem;">To:</span>
+          <strong id="receiptToName" style="color:var(--navy);">—</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--ink-soft); font-size:.88rem;">UPI ID:</span>
+          <span id="receiptToUpi" style="font-weight:700; color:var(--ink);">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--ink-soft); font-size:.88rem;">From:</span>
+          <span id="receiptFromName" style="font-weight:700; color:var(--ink);">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;" id="receiptReasonRow">
+          <span style="color:var(--ink-soft); font-size:.88rem;">Reason:</span>
+          <span id="receiptReasonVal" style="font-weight:700; color:var(--gold-dark);">—</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:10px; border-top:1px dashed var(--border);">
+          <span style="color:var(--ink-soft); font-size:.82rem;">Reference ID:</span>
+          <code id="receiptRefId" style="font-weight:800; background:var(--surface); padding:3px 8px; border-radius:4px; border:1px solid var(--border); font-size:.85rem;">SAH-QR-XXXXXXXX</code>
+        </div>
+      </div>
+
+      <button type="button" class="btn-primary" id="doneReceiptBtn" style="width:100%; font-size:1.05rem; padding:10px;">
+        ✓ Done
+      </button>
+    </div>
+  </div>
+
+  <!-- Voice Action Confirm Modal -->
+  <div class="modal-overlay" id="voiceConfirmModal" role="dialog" aria-modal="true">
+    <div class="voice-confirm-box">
+      <div class="voice-confirm-action-icon" id="vcIcon">🎙️</div>
+      <h2 id="vcActionName" style="color:var(--navy);">Confirm Action</h2>
+      <p id="vcSpokenPrompt">Listening for confirmation... Say "Yes" or "No":</p>
+      <div class="voice-confirm-buttons">
+        <button class="btn-primary" id="vcConfirmBtn" style="background:var(--success); border-color:var(--success);" onclick="window.SahaayVoice.executeConfirmedAction();">✓ Yes, Proceed</button>
+        <button class="btn-secondary" id="vcCancelBtn" style="color:var(--danger); border-color:var(--danger);" onclick="window.SahaayVoice.cancelVoiceAction();">✕ Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Security PIN Modal -->
+  <div class="modal-overlay" id="pinModal" role="dialog" aria-modal="true" aria-labelledby="pinModalTitle">
+    <div class="modal" style="max-width:440px;">
+      <button class="modal-close-btn" id="closePinModalBtn" aria-label="Close PIN change dialog">✕</button>
+      <h2 id="pinModalTitle">Change Security PIN</h2>
+      <p class="field-hint">Enter your new 4-digit PIN for transactions:</p>
+      <div class="field">
+        <label for="newPinInput">New 4-Digit PIN</label>
+        <input type="password" id="newPinInput" maxlength="4" placeholder="••••" inputmode="numeric" style="font-size:1.6rem; letter-spacing:6px; text-align:center;">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="savePinBtn" style="width:100%;">Save New PIN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Audit Modal -->
+  <div class="modal-overlay" id="auditModal" role="dialog" aria-modal="true">
+    <div class="modal" style="max-width:620px;">
+      <button class="modal-close-btn" id="closeAuditModalBtn">✕</button>
+      <h2>Live Continuous Accessibility Audit</h2>
+      <div id="auditResultsList" style="display:flex; flex-direction:column; gap:10px; margin:16px 0;"></div>
+      <button class="btn-primary" id="runAuditAgainBtn" style="width:100%;">🔄 Re-Run Live Tests Now</button>
+    </div>
+  </div>
+
+  <!-- ACCESSIBLE ONBOARDING SETUP WIZARD (PERSONS WITH DISABILITIES) -->
+  <div class="modal-overlay" id="a11yOnboardingModal" role="dialog" aria-modal="true" aria-labelledby="a11yWizardTitle">
+    <div class="modal" style="max-width:740px; max-height:88vh; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:var(--navy-dark); font-weight:800; font-size:.82rem; padding:4px 10px; border-radius:20px; margin-bottom:8px;">
+            <span>♿ ASSISTIVE ONBOARDING</span>
+          </div>
+          <h2 id="a11yWizardTitle" style="margin:0; font-size:1.45rem;">Personalize Your Accessible Experience</h2>
+        </div>
+        <button class="modal-close-btn" id="closeOnboardingBtn" aria-label="Skip accessibility setup and close dialog">✕</button>
+      </div>
+
+      <div class="wizard-speech-banner" id="wizardSpeechBanner">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:1.4rem;">🎙️</span>
+          <div>
+            <strong>Voice Guided Setup Active:</strong>
+            <p style="margin:2px 0 0 0; font-size:.9rem;" id="wizardSpeechPrompt">Listening... Speak <strong>"Blind"</strong>, <strong>"Low Vision"</strong>, <strong>"Motor"</strong>, <strong>"Senior"</strong>, or <strong>"Skip"</strong></p>
+          </div>
+        </div>
+        <button type="button" class="btn-secondary" id="replayWizardPromptBtn" style="min-height:36px; padding:4px 10px; font-size:.84rem;">🔊 Repeat Voice Prompt</button>
+      </div>
+
+      <p class="field-hint" style="margin:12px 0 16px 0; font-size:.94rem;">Choose your preferred banking assistance profile below. All options can also be adjusted later in Settings or Toolbar:</p>
+
+      <div class="onboarding-cards-grid">
+        <!-- Profile 1: Blind / Non-Visual -->
+        <div class="onboarding-profile-card" data-profile="blind">
+          <div class="profile-badge">👁️ FULL VOICE & DOUBLE-TAP</div>
+          <h3>Blind / Non-Visual Assistance</h3>
+          <p>Controls entire website using natural voice commands and screen reader narration.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>Hands-Free Mic Always On</strong> — No need to click buttons, just speak</li>
+            <li>✓ <strong>Full Text-to-Speech</strong> — Every screen element and balance is read aloud</li>
+            <li>✓ <strong>Two-Click Safe Mode</strong> — 1st tap announces element; 2nd tap confirms action</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="blind" style="width:100%; margin-top:8px;">
+            🎙️ Activate Blind Profile (Or say "Blind")
+          </button>
+        </div>
+
+        <!-- Profile 2: Low Vision / Partial Sight -->
+        <div class="onboarding-profile-card" data-profile="low_vision">
+          <div class="profile-badge">🔍 HIGH VISIBILITY</div>
+          <h3>Low Vision & High Contrast</h3>
+          <p>Maximizes on-screen legibility with enlarged text, high-contrast themes, and highlighted data.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>A++ Maximum Text Size</strong> — 125% scale with crisp high-legibility fonts</li>
+            <li>✓ <strong>AAA High Contrast Theme</strong> — Glowing yellow text on pure black background</li>
+            <li>✓ <strong>Highlight Key Info</strong> — Bright yellow marker effect on balances & accounts</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="low_vision" style="width:100%; margin-top:8px;">
+            👁️ Activate Low Vision (Or say "Low Vision")
+          </button>
+        </div>
+
+        <!-- Profile 3: Motor & Physical Assistance -->
+        <div class="onboarding-profile-card" data-profile="motor">
+          <div class="profile-badge">🖐️ MOTOR & TREMOR SAFE</div>
+          <h3>Motor & Mobility Support</h3>
+          <p>Designed for tremors, reduced dexterity, or hands-free dwell mouse navigation.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>Hover Select (Dwell Clicking)</strong> — Hover over buttons to click automatically</li>
+            <li>✓ <strong>Two-Click Safe Mode</strong> — Protects against accidental clicks & slips</li>
+            <li>✓ <strong>Large Virtual Keyboard</strong> — Full tactile on-screen QWERTY typing</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="motor" style="width:100%; margin-top:8px;">
+            🖐️ Activate Motor Profile (Or say "Motor")
+          </button>
+        </div>
+
+        <!-- Profile 4: Senior Citizen / Cognitive Ease -->
+        <div class="onboarding-profile-card" data-profile="senior">
+          <div class="profile-badge">👵 SENIOR CITIZEN CARE</div>
+          <h3>Senior Citizen & Simplified</h3>
+          <p>Gentle, stress-free banking with everyday terminology and zero time pressure.</p>
+          <ul class="profile-features-list">
+            <li>✓ <strong>Plain Everyday Language</strong> — Jargon replaced with simple words</li>
+            <li>✓ <strong>Reduced Motion & Low Speed</strong> — Eliminates fast moving elements</li>
+            <li>✓ <strong>No Session Timeout</strong> — Takes away 15-minute time pressure countdowns</li>
+            <li>✓ <strong>Masked Balance by Default</strong> — Protects money numbers from public view</li>
+          </ul>
+          <button type="button" class="btn-primary select-profile-btn" data-profile="senior" style="width:100%; margin-top:8px;">
+            👵 Activate Senior Profile (Or say "Senior")
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-top:1px solid var(--border); padding-top:14px;">
+        <span style="font-size:.88rem; color:var(--ink-soft);">Prefer standard settings? You can proceed directly:</span>
+        <button type="button" class="btn-secondary" id="skipOnboardingBtn" style="padding:8px 18px; font-weight:700;">
+          ✨ Skip Setup & Continue (Or say "Skip")
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Virtual OSK -->
+  <div class="osk-container" id="oskContainer">
+    <div class="osk-header">
+      <strong style="color:var(--gold);">⌨️ Virtual Keyboard</strong>
+      <button type="button" class="btn-secondary" id="closeOskBtn" style="min-height:32px; padding:2px 8px; color:#fff; border-color:#fff;">✕</button>
+    </div>
+    <div class="osk-grid">
+      <!-- Row 1: Numbers -->
+      <div class="osk-row">
+        <button type="button" class="osk-key" data-key="1">1</button>
+        <button type="button" class="osk-key" data-key="2">2</button>
+        <button type="button" class="osk-key" data-key="3">3</button>
+        <button type="button" class="osk-key" data-key="4">4</button>
+        <button type="button" class="osk-key" data-key="5">5</button>
+        <button type="button" class="osk-key" data-key="6">6</button>
+        <button type="button" class="osk-key" data-key="7">7</button>
+        <button type="button" class="osk-key" data-key="8">8</button>
+        <button type="button" class="osk-key" data-key="9">9</button>
+        <button type="button" class="osk-key" data-key="0">0</button>
+        <button type="button" class="osk-key wide" data-key="BACKSPACE">⌫ Del</button>
+      </div>
+      <!-- Row 2: QWERTY Top Row -->
+      <div class="osk-row">
+        <button type="button" class="osk-key" data-key="q" data-letter="q">q</button>
+        <button type="button" class="osk-key" data-key="w" data-letter="w">w</button>
+        <button type="button" class="osk-key" data-key="e" data-letter="e">e</button>
+        <button type="button" class="osk-key" data-key="r" data-letter="r">r</button>
+        <button type="button" class="osk-key" data-key="t" data-letter="t">t</button>
+        <button type="button" class="osk-key" data-key="y" data-letter="y">y</button>
+        <button type="button" class="osk-key" data-key="u" data-letter="u">u</button>
+        <button type="button" class="osk-key" data-key="i" data-letter="i">i</button>
+        <button type="button" class="osk-key" data-key="o" data-letter="o">o</button>
+        <button type="button" class="osk-key" data-key="p" data-letter="p">p</button>
+      </div>
+      <!-- Row 3: Home Row + @ Symbol -->
+      <div class="osk-row">
+        <button type="button" class="osk-key" data-key="a" data-letter="a">a</button>
+        <button type="button" class="osk-key" data-key="s" data-letter="s">s</button>
+        <button type="button" class="osk-key" data-key="d" data-letter="d">d</button>
+        <button type="button" class="osk-key" data-key="f" data-letter="f">f</button>
+        <button type="button" class="osk-key" data-key="g" data-letter="g">g</button>
+        <button type="button" class="osk-key" data-key="h" data-letter="h">h</button>
+        <button type="button" class="osk-key" data-key="j" data-letter="j">j</button>
+        <button type="button" class="osk-key" data-key="k" data-letter="k">k</button>
+        <button type="button" class="osk-key" data-key="l" data-letter="l">l</button>
+        <button type="button" class="osk-key" data-key="@">@</button>
+      </div>
+      <!-- Row 4: Bottom Row + Shift & Clear -->
+      <div class="osk-row">
+        <button type="button" class="osk-key wide" data-key="SHIFT">⇧ Shift</button>
+        <button type="button" class="osk-key" data-key="z" data-letter="z">z</button>
+        <button type="button" class="osk-key" data-key="x" data-letter="x">x</button>
+        <button type="button" class="osk-key" data-key="c" data-letter="c">c</button>
+        <button type="button" class="osk-key" data-key="v" data-letter="v">v</button>
+        <button type="button" class="osk-key" data-key="b" data-letter="b">b</button>
+        <button type="button" class="osk-key" data-key="n" data-letter="n">n</button>
+        <button type="button" class="osk-key" data-key="m" data-letter="m">m</button>
+        <button type="button" class="osk-key" data-key=".">.</button>
+        <button type="button" class="osk-key wide" data-key="CLEAR">Clear</button>
+      </div>
+      <!-- Row 5: Spacebar & Done Action -->
+      <div class="osk-row">
+        <button type="button" class="osk-key extra-wide" data-key="SPACE">␣ Space</button>
+        <button type="button" class="osk-key wide" onclick="document.getElementById('closeOskBtn').click();">✓ Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Companion Avatar -->
+  <div class="ai-companion-widget" id="aiWidget">
+    <div class="ai-bubble" id="aiBubble">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0; font-size:1.15rem;">🤖 Sahaay AI Companion</h3>
+        <button type="button" class="btn-secondary" id="closeAiBtn" style="min-height:28px; padding:2px 6px;">✕</button>
+      </div>
+      <div id="aiReplyBox" style="background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; font-size:.92rem;">
+        Namaste! Ask me anything or say "Mera QR code dikhao".
+      </div>
+      <div class="ai-chips">
+        <button type="button" class="ai-chip" data-query="Transactions">📜 Transactions</button>
+        <button type="button" class="ai-chip" data-query="Check balance">💰 Balance</button>
+        <button type="button" class="ai-chip" data-query="Mera QR code dikhao">📱 My QR</button>
+        <button type="button" class="ai-chip" data-query="Send money">💸 Send Money</button>
+      </div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <input type="text" id="aiTextInput" placeholder="Ask Sahaay Bot or tap 🎙️..." style="flex:1; min-height:40px; font-size:.9rem; padding:6px 10px;">
+        <button type="button" class="btn-secondary" id="aiVoiceBtn" aria-label="Speak question to Sahaay Bot" style="min-height:40px; min-width:44px; padding:4px 8px; font-size:1.3rem; display:flex; align-items:center; justify-content:center; cursor:pointer;" title="Speak to Sahaay Bot">🎙️</button>
+        <button type="button" class="btn-primary" id="aiSendBtn" style="min-height:40px; padding:6px 14px; font-weight:700;">Send</button>
+      </div>
+      <div id="aiVoiceListeningHint" style="font-size:.82rem; color:var(--navy); font-weight:700; display:none;">🎙️ Listening to you... Speak now!</div>
+    </div>
+    <button class="ai-avatar-btn" id="aiToggleBtn" aria-label="Talk to Sahaay AI Companion">
+      <svg class="ai-avatar-face" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="42" fill="#C29333"/>
+        <circle cx="50" cy="50" r="38" fill="#10384C"/>
+        <circle cx="36" cy="42" r="6" fill="#FFD400"/>
+        <circle cx="64" cy="42" r="6" fill="#FFD400"/>
+        <path id="aiMouth" d="M 34 62 Q 50 74 66 62" stroke="#FFD400" stroke-width="4" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Add Money (Demo Deposit) Modal -->
+  <div class="modal-overlay" id="addMoneyModal" role="dialog" aria-modal="true" aria-labelledby="addMoneyTitle">
+    <div class="modal" style="max-width:480px;">
+      <button class="modal-close-btn" id="closeAddMoneyBtn" aria-label="Close deposit dialog">✕</button>
+      <div style="display:inline-flex; align-items:center; gap:6px; background:#0F766E; color:#fff; font-size:.8rem; font-weight:800; padding:4px 10px; border-radius:20px; margin-bottom:8px;">
+        <span>💰 DEMO FUNDS</span>
+      </div>
+      <h2 id="addMoneyTitle" style="margin:0 0 4px 0;">Add Money to Demo Account</h2>
+      <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 14px 0;">Simulated financial deposit for testing transfers between registered hackathon accounts.</p>
+
+      <div style="padding:10px 14px; background:rgba(194,147,51,0.1); border-left:4px solid var(--gold); border-radius:6px; font-size:.85rem; margin-bottom:14px;">
+        ⚠️ <strong>HACKATHON DEMO NOTICE:</strong> This adds simulated demo money. No real bank accounts or payment gateways are involved.
+      </div>
+
+      <div class="field">
+        <label for="depositAmountInput" style="font-weight:700;">Deposit Amount (₹) *</label>
+        <input type="number" id="depositAmountInput" placeholder="Enter amount (e.g. 1000)" min="1" max="100000" style="font-size:1.3rem; font-weight:800; text-align:center;">
+        <p id="depositError" class="error-text" hidden>⚠️ Please enter a valid deposit amount (₹1 - ₹1,00,000).</p>
+      </div>
+
+      <label style="font-weight:700; font-size:.88rem; display:block; margin-top:10px;">⚡ Quick Select Demo Amount:</label>
+      <div class="quick-deposit-grid">
+        <button type="button" class="quick-deposit-chip" data-amt="500">+ ₹500</button>
+        <button type="button" class="quick-deposit-chip" data-amt="1000">+ ₹1,000</button>
+        <button type="button" class="quick-deposit-chip" data-amt="5000">+ ₹5,000</button>
+        <button type="button" class="quick-deposit-chip" data-amt="10000">+ ₹10,000</button>
+      </div>
+
+      <button type="button" class="btn-primary" id="confirmDepositBtn" style="width:100%; font-size:1.1rem; margin-top:12px; background:#0F766E; border-color:#0D9488;">
+        ✓ Confirm & Add Demo Money
+      </button>
+    </div>
+  </div>
+
+  <!-- Transfer Success Receipt Modal -->
+  <div class="modal-overlay" id="transferReceiptModal" role="dialog" aria-modal="true" aria-labelledby="receiptTitle">
+    <div class="modal receipt-box" style="max-width:480px;">
+      <button class="modal-close-btn" id="closeReceiptBtn" aria-label="Close transfer receipt">✕</button>
+      <div class="receipt-header-badge">
+        <div class="receipt-success-icon" aria-hidden="true">✓</div>
+        <h2 id="receiptTitle" style="margin:0; font-size:1.4rem; color:var(--success);">Payment Successful</h2>
+        <p style="margin:4px 0 0 0; font-size:.88rem; color:var(--ink-soft);">Official Sahaay Bank Demo Transfer Receipt</p>
+        <div class="receipt-amount-display" id="receiptAmountDisplay">₹0.00</div>
+      </div>
+
+      <div class="receipt-details-table">
+        <div class="receipt-row">
+          <span style="color:var(--ink-soft);">Paid To:</span>
+          <strong id="receiptToName" style="color:var(--navy);">—</strong>
+        </div>
+        <div class="receipt-row">
+          <span style="color:var(--ink-soft);">Recipient UPI ID:</span>
+          <span id="receiptToUpi" style="font-weight:700;">—</span>
+        </div>
+        <div class="receipt-row">
+          <span style="color:var(--ink-soft);">Transferred From:</span>
+          <span id="receiptFromName" style="font-weight:700;">—</span>
+        </div>
+        <div class="receipt-row">
+          <span style="color:var(--ink-soft);">Payment Method:</span>
+          <span id="receiptMethodBadge" style="font-weight:700; color:var(--gold-dark);">UPI Instant Transfer</span>
+        </div>
+        <div class="receipt-row">
+          <span style="color:var(--ink-soft);">Status:</span>
+          <span style="font-weight:800; color:var(--success);">SUCCESS (COMPLETED)</span>
+        </div>
+        <div class="receipt-row" style="flex-direction:column; gap:4px; margin-top:8px;">
+          <span style="color:var(--ink-soft); font-size:.85rem;">Reference ID:</span>
+          <div class="receipt-ref-box" id="receiptRefId">SAH-XXXXXXXX</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button type="button" class="btn-primary" id="doneReceiptBtn" style="flex:1;">✓ Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Face Enrollment Modal -->
+  <div class="modal-overlay" id="faceEnrollModal" role="dialog" aria-modal="true" aria-labelledby="faceEnrollTitle">
+    <div class="modal" style="max-width:440px; text-align:center;">
+      <button class="modal-close-btn" id="closeFaceEnrollBtn" aria-label="Close face enrollment">✕</button>
+      <h2 id="faceEnrollTitle" style="margin:0 0 4px 0;">📸 Face Verification Enrollment</h2>
+      <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 10px 0;">100% Client-Side Privacy: No photos are ever uploaded or stored on servers.</p>
+
+      <div class="face-video-wrapper">
+        <video id="faceEnrollVideo" class="face-video-elem" autoplay playsinline muted></video>
+        <div class="face-reticle-overlay" id="faceEnrollReticle"></div>
+      </div>
+
+      <div id="faceEnrollStatus" style="font-size:.95rem; font-weight:700; margin:8px 0; color:var(--navy);" aria-live="polite">
+        Starting camera preview...
+      </div>
+      <div id="faceEnrollError" class="field-error" style="margin:8px 0;" hidden></div>
+
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <button type="button" class="btn-primary" id="faceEnrollCaptureBtn" style="flex:1;" disabled>
+          📸 Capture & Save Face
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FACE LOGIN MODAL ==================== -->
+  <div class="modal-overlay" id="faceLoginModal" role="dialog" aria-modal="true" aria-labelledby="faceLoginTitle">
+    <div class="modal" style="max-width:520px; text-align:center; position:relative;">
+      <button class="modal-close-btn" id="closeFaceLoginBtn" aria-label="Close Face Login">✕</button>
+      <div style="display:flex; justify-content:center; align-items:center; margin-bottom:12px;">
+        <h3 id="faceLoginTitle" style="margin:0; font-size:1.25rem; display:flex; align-items:center; gap:8px;">
+          <span>📸</span> <span>Face Recognition Sign-In</span>
+        </h3>
+      </div>
+
+      <p style="font-size:.92rem; color:var(--ink-soft); margin:0 0 14px 0;">
+        Look directly at your camera. Sahaay will recognize your face and sign you in without passwords.
+      </p>
+
+      <!-- Video Feed & Viewfinder Reticle -->
+      <div class="qr-camera-wrap" style="height:300px; border-radius:12px; overflow:hidden; position:relative; background:#0B0F19; margin-bottom:14px;">
+        <video id="faceLoginVideo" playsinline autoplay muted style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+        <canvas id="faceLoginCanvas" style="display:none;"></canvas>
+        
+        <!-- Viewfinder Reticle -->
+        <div id="faceLoginReticle" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:190px; height:230px; border:3px dashed #60A5FA; border-radius:115px; pointer-events:none; box-shadow:0 0 0 9999px rgba(0,0,0,0.45); transition:all 0.3s ease;">
+          <div id="faceReticleBadge" style="position:absolute; top:12px; left:50%; transform:translateX(-50%); font-size:.72rem; color:#93C5FD; font-weight:700; text-transform:uppercase; letter-spacing:1px; background:rgba(0,0,0,0.65); padding:2px 8px; border-radius:4px; white-space:nowrap;">
+            Position Face
+          </div>
+        </div>
+
+        <!-- Camera Fallback Banner -->
+        <div id="faceLoginFallback" style="display:none; position:absolute; inset:0; background:#0F172A; color:#F8FAFC; flex-direction:column; align-items:center; justify-content:center; padding:20px; z-index:10;">
+          <span style="font-size:2.5rem; margin-bottom:8px;">📷</span>
+          <strong style="font-size:1.05rem; margin-bottom:6px;">Camera Access Unavailable</strong>
+          <p style="font-size:.85rem; color:#94A3B8; text-align:center; margin-bottom:14px;">
+            Select your demo user profile below to sign in instantly with biometric face profile.
+          </p>
+        </div>
+      </div>
+
+      <div id="faceLoginStatus" style="font-size:1rem; font-weight:700; color:var(--navy); min-height:26px; margin-bottom:14px;">
+        Looking for face... Please keep your head steady.
+      </div>
+
+      <!-- 1-Tap Demo User Biometric Selector for Instant Testing -->
+      <div style="padding:12px; background:var(--bg); border:1.5px solid var(--border); border-radius:8px; margin-bottom:14px; text-align:left;">
+        <span style="font-size:.8rem; font-weight:700; color:var(--ink-soft); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">
+          Instant Demo Face Profiles:
+        </span>
+        <div id="faceLoginProfilesContainer" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; max-height:160px; overflow-y:auto;">
+          <button type="button" class="btn-secondary demo-face-login-btn" data-user="asha.patel" style="font-size:.82rem; padding:8px 4px; text-align:center;">
+            👤 Asha Patel
+            <small style="display:block; opacity:.7; font-size:.7rem;">Standard</small>
+          </button>
+          <button type="button" class="btn-secondary demo-face-login-btn" data-user="rajesh.kumar" style="font-size:.82rem; padding:8px 4px; text-align:center;">
+            👤 Rajesh Kumar
+            <small style="display:block; opacity:.7; font-size:.7rem;">Blind / Voice</small>
+          </button>
+          <button type="button" class="btn-secondary demo-face-login-btn" data-user="meera.sharma" style="font-size:.82rem; padding:8px 4px; text-align:center;">
+            👤 Meera Sharma
+            <small style="display:block; opacity:.7; font-size:.7rem;">Senior / Motor</small>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="btn-secondary" id="cancelFaceLoginBtn" style="width:100%;">
+        Sign in with Password Instead
+      </button>
+    </div>
+  </div>
+
+  <!-- Face Verification Prompt Modal -->
+  <div class="modal-overlay" id="faceVerifyModal" role="dialog" aria-modal="true" aria-labelledby="faceVerifyTitle">
+    <div class="modal" style="max-width:440px; text-align:center;">
+      <button class="modal-close-btn" id="closeFaceVerifyBtn" aria-label="Cancel face verification">✕</button>
+      <div style="display:inline-flex; align-items:center; gap:6px; background:var(--gold); color:var(--navy-dark); font-size:.8rem; font-weight:800; padding:4px 10px; border-radius:20px; margin-bottom:8px;">
+        <span>🛡️ BIOMETRIC AUTHORIZATION</span>
+      </div>
+      <h2 id="faceVerifyTitle" style="margin:0 0 4px 0;">Look at Camera to Authorize</h2>
+      <p style="font-size:.88rem; color:var(--ink-soft); margin:0 0 10px 0;">Hold steady inside the frame to verify payment.</p>
+
+      <div class="face-video-wrapper">
+        <video id="faceVerifyVideo" class="face-video-elem" autoplay playsinline muted></video>
+        <div class="face-reticle-overlay" id="faceVerifyReticle"></div>
+        <div class="face-scan-line"></div>
+      </div>
+
+      <div id="faceVerifyStatus" style="font-size:.95rem; font-weight:700; margin:8px 0; color:var(--navy);" aria-live="polite">
+        Verifying identity...
+      </div>
+      <div id="faceVerifyError" class="field-error" style="margin:8px 0;" hidden></div>
+
+      <div style="margin-top:14px;">
+        <button type="button" class="btn-secondary" id="faceVerifyFallbackPinBtn" style="width:100%; font-weight:700;">
+          🔢 Cancel & Use 4-Digit UPI PIN Instead
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION BAR FOR MOBILE APP -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Bottom Navigation">
+    <button type="button" class="bottom-nav-tab active" id="bottomTabHome">
+      <span class="bottom-nav-icon">🏠</span>
+      <span class="bottom-nav-label">Home</span>
+    </button>
+    <button type="button" class="bottom-nav-tab" id="bottomTabSend">
+      <span class="bottom-nav-icon">💸</span>
+      <span class="bottom-nav-label">Transfer</span>
+    </button>
+    <button type="button" class="bottom-nav-fab" id="bottomFabScan" aria-label="Scan UPI QR Code to Pay">
+      <span class="fab-icon">📷</span>
+    </button>
+    <button type="button" class="bottom-nav-tab" id="bottomTabHistory">
+      <span class="bottom-nav-icon">📜</span>
+      <span class="bottom-nav-label">Passbook</span>
+    </button>
+    <button type="button" class="bottom-nav-tab" id="bottomTabAi">
+      <span class="bottom-nav-icon">🤖</span>
+      <span class="bottom-nav-label">AI Assist</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Modular Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/faceAuth.js"></script>
+  <script src="js/voiceEngine.js"></script>
+  <script src="js/upiService.js"></script>
+  <script src="js/jsqr.js"></script>
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/qrService.js"></script>
+  <script src="js/a11yToolbar.js"></script>
+  <script src="js/aiCompanion.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

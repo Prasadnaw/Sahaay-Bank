@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Circle background -->
+    <path
+        android:fillColor="#0B132B"
+        android:pathData="M54,4 A50,50 0 1,0 54,104 A50,50 0 1,0 54,4 Z" />
+    <!-- Gold emblem border -->
+    <path
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:pathData="M54,10 A44,44 0 1,0 54,98 A44,44 0 1,0 54,10 Z" />
+    <!-- Bank Rupee / Shield icon -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M40,32 h28 v6 h-18 v4 h14 v6 h-14 c0,4 3,8 10,8 l10,18 h-8 l-9,-16 c-6,0 -11,-4 -11,-10 v-16 Z" />
+</vector>

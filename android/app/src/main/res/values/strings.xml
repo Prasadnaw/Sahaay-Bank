@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Sahaay Bank</string>
+    <string name="action_settings">Server Settings</string>
+    <string name="server_config_title">Sahaay Backend Configuration</string>
+    <string name="server_config_desc">Cross-connect with your cloud Render backend or local dev server.</string>
+    <string name="server_url_hint">e.g. https://sahaay-bank.onrender.com</string>
+    <string name="server_preset_render">Render Cloud (Default)</string>
+    <string name="server_preset_emulator">Android Emulator (10.0.2.2:5050)</string>
+    <string name="server_preset_local">Localhost (localhost:5050)</string>
+    <string name="btn_save_reload">Save &amp; Reload App</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="camera_permission_required">Camera access is required to scan UPI QR codes and authenticate with Face Verification.</string>
+    <string name="audio_permission_required">Microphone access is required for the Voice Assistant and Voice Banking Navigation.</string>
+</resources>

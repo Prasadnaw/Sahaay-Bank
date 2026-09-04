@@ -1,0 +1,88 @@
+/* ==========================================================================
+   SAHAAY BANK DESIGN TOKENS & THEMING (WCAG 2.2 AAA COMPLIANT)
+   ========================================================================== */
+
+/* Light Theme (Default) */
+:root {
+  --bg: #F4F7F6;
+  --surface: #FFFFFF;
+  --ink: #172228;
+  --ink-soft: #4E5D65;
+  --navy: #10384C;
+  --navy-dark: #09222E;
+  --gold: #C29333;
+  --gold-dark: #9B7322;
+  --success: #207550;
+  --success-bg: #E3F4EC;
+  --danger: #B32B1E;
+  --danger-bg: #FDEAE8;
+  --border: #D0D8D7;
+  --focus: #C29333;
+  --tag-bg: #E2ECF0;
+  --tag-ink: #0B3A4F;
+  --radius: 8px;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-head: 'IBM Plex Serif', Georgia, serif;
+  --scale: 1;
+}
+
+/* Modern Dark Theme */
+html.dark-theme {
+  --bg: #0B1C24;
+  --surface: #122B38;
+  --ink: #F1F7F9;
+  --ink-soft: #A5BCC8;
+  --navy: #6AC2F0;
+  --navy-dark: #061219;
+  --gold: #E8B648;
+  --gold-dark: #C29333;
+  --success: #36C786;
+  --success-bg: #0A2B1D;
+  --danger: #FF6F61;
+  --danger-bg: #380C0A;
+  --border: #244658;
+  --focus: #E8B648;
+  --tag-bg: #1A3A4C;
+  --tag-ink: #86D2FF;
+}
+
+/* Fresh Modern Aesthetic Theme (Bright White, Crisp Modern Buttons & Aesthetic Dashboard) */
+html.fresh-theme {
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --ink: #0F172A;
+  --ink-soft: #64748B;
+  --navy: #4F46E5;        /* Electric Indigo */
+  --navy-dark: #1E1B4B;   /* Deep Midnight */
+  --gold: #3B82F6;        /* Modern Vibrant Blue */
+  --gold-dark: #2563EB;
+  --success: #10B981;     /* Mint Emerald */
+  --success-bg: #ECFDF5;
+  --danger: #EF4444;      /* Modern Coral Red */
+  --danger-bg: #FEF2F2;
+  --border: #E2E8F0;      /* Clean subtle border */
+  --focus: #4F46E5;
+  --tag-bg: #EEF2FF;
+  --tag-ink: #4338CA;
+  --radius: 12px;
+}
+
+/* Ultra-High Contrast AAA Theme (Black & Bright Yellow / White) */
+html.contrast {
+  --bg: #000000 !important;
+  --surface: #000000 !important;
+  --ink: #FFFFFF !important;
+  --ink-soft: #FFFF00 !important;
+  --navy: #FFD400 !important;       /* Bright visible yellow - NEVER black! */
+  --navy-dark: #000000 !important;
+  --gold: #FFD400 !important;
+  --gold-dark: #FFD400 !important;
+  --success: #55FFA0 !important;
+  --success-bg: #002E15 !important;
+  --danger: #FF6F61 !important;
+  --danger-bg: #3D0000 !important;
+  --border: #FFD400 !important;
+  --focus: #FFD400 !important;
+  --tag-bg: #262600 !important;
+  --tag-ink: #FFFF00 !important;
+}

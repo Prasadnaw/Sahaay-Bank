@@ -1,0 +1,186 @@
+﻿/* ==========================================================================
+   BASE & RESET STYLES (WCAG 2.4.7 / 2.4.11 COMPLIANT)
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(16px * var(--scale));
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+html.contrast body {
+  border-top: 5px solid var(--gold);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  margin: 0 0 .5em 0;
+  color: var(--navy);
+}
+
+p {
+  margin: 0 0 1em 0;
+}
+
+a {
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration-thickness: 2px;
+}
+
+button, input, select, textarea {
+  font-family: var(--font-body);
+}
+
+/* Clear accessible focus rings (WCAG 2.4.7 & 2.4.11) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid var(--focus) !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
+
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--gold);
+  color: var(--navy-dark);
+  padding: 14px 22px;
+  z-index: 9999;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 0 0 8px 0;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   EXPLICIT HIGH CONTRAST AAA TEXT VISIBILITY GUARANTEES
+   ========================================================================== */
+html.contrast,
+html.contrast body,
+html.contrast p,
+html.contrast span,
+html.contrast div,
+html.contrast label,
+html.contrast td,
+html.contrast th,
+html.contrast li,
+html.contrast select,
+html.contrast textarea,
+html.contrast .field-hint {
+  color: #FFFFFF !important;
+}
+
+html.contrast h1,
+html.contrast h2,
+html.contrast h3,
+html.contrast h4,
+html.contrast a,
+html.contrast .name,
+html.contrast strong,
+html.contrast .balance-figure,
+html.contrast caption {
+  color: #FFD400 !important;
+}
+
+html.contrast input[type="text"],
+html.contrast input[type="password"],
+html.contrast input[type="number"],
+html.contrast select {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFD400 !important;
+}
+
+html.contrast .panel,
+html.contrast .settings-section-card,
+html.contrast .help-card,
+html.contrast .modal,
+html.contrast .upi-pin-box,
+html.contrast .qr-card {
+  background: #000000 !important;
+  border-color: #FFD400 !important;
+  color: #FFFFFF !important;
+}
+
+html.contrast .a11y-btn {
+  background: #000000 !important;
+  color: #FFD400 !important;
+  border: 2px solid #FFD400 !important;
+}
+
+html.contrast .a11y-btn[aria-pressed="true"] {
+  background: #FFD400 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+}
+
+html.contrast .btn-primary {
+  background: #FFD400 !important;
+  color: #000000 !important;
+  border: 2px solid #FFD400 !important;
+  font-weight: 900 !important;
+}
+
+html.contrast .btn-secondary {
+  background: #000000 !important;
+  color: #FFD400 !important;
+  border: 2px solid #FFD400 !important;
+  font-weight: 800 !important;
+}
+
+html.contrast nav.side-nav button.nav-item {
+  color: #FFFFFF !important;
+}
+
+html.contrast nav.side-nav button.nav-item[aria-current="page"] {
+  background: #000000 !important;
+  border: 2px solid #FFD400 !important;
+  color: #FFD400 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+html.no-motion * {
+  animation: none !important;
+  transition: none !important;
+}

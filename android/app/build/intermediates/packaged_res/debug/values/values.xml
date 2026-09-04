@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_light">#F8FAFC</color>
+    <color name="danger_red">#EF4444</color>
+    <color name="gold_accent">#F59E0B</color>
+    <color name="gold_dark">#B45309</color>
+    <color name="indigo_accent">#4F46E5</color>
+    <color name="navy_dark">#050811</color>
+    <color name="navy_primary">#0B132B</color>
+    <color name="success_green">#10B981</color>
+    <color name="surface_white">#FFFFFF</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <string name="action_settings">Server Settings</string>
+    <string name="app_name">Sahaay Bank</string>
+    <string name="audio_permission_required">Microphone access is required for the Voice Assistant and Voice Banking Navigation.</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_save_reload">Save &amp; Reload App</string>
+    <string name="camera_permission_required">Camera access is required to scan UPI QR codes and authenticate with Face Verification.</string>
+    <string name="server_config_desc">Cross-connect with your cloud Render backend or local dev server.</string>
+    <string name="server_config_title">Sahaay Backend Configuration</string>
+    <string name="server_preset_emulator">Android Emulator (10.0.2.2:5050)</string>
+    <string name="server_preset_local">Localhost (localhost:5050)</string>
+    <string name="server_preset_render">Render Cloud (Default)</string>
+    <string name="server_url_hint">e.g. https://sahaay-bank.onrender.com</string>
+    <style name="Theme.SahaayBank" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/navy_primary</item>
+        <item name="colorPrimaryVariant">@color/navy_dark</item>
+        <item name="colorOnPrimary">@color/surface_white</item>
+        <item name="colorSecondary">@color/gold_accent</item>
+        <item name="colorSecondaryVariant">@color/gold_dark</item>
+        <item name="colorOnSecondary">@color/navy_primary</item>
+        <item name="android:statusBarColor">@color/navy_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/navy_dark</item>
+    </style>
+</resources>

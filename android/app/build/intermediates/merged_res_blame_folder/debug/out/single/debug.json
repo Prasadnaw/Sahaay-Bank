@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-merged_res-4:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-merged_res-4:\\xml_network_security_config.xml.flat",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\xml\\network_security_config.xml"
+    },
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-merged_res-4:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-merged_res-4:\\layout_dialog_server_config.xml.flat",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\layout\\dialog_server_config.xml"
+    },
+    {
+        "merged": "com.sahaay.bank.app-merged_res-4:/layout_activity_main.xml.flat",
+        "source": "com.sahaay.bank.app-main-6:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-merged_res-4:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-merged_res-4:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-merged_res-4:\\drawable_ic_settings.xml.flat",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\drawable\\ic_settings.xml"
+    }
+]

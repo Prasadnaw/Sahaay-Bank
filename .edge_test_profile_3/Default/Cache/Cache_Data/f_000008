@@ -1,0 +1,669 @@
+/**
+ * Sahaay Bank Realistic Personal QR Code & Camera Scanner Service
+ */
+window.SahaayQr = (function(){
+  'use strict';
+
+  let videoStream = null;
+  let scanAnimationId = null;
+  let isScanning = false;
+  let pendingScannedUser = null;
+  let pendingScannedAmount = null;
+
+  /**
+   * Generates a 100% standards-compliant QR code Data URL using local QRCode library or backend fallback.
+   */
+  async function generateRealQrDataUrl(payloadString) {
+    if (window.QRCode && window.QRCode.toDataURL) {
+      try {
+        const url = await window.QRCode.toDataURL(payloadString, {
+          margin: 3,
+          width: 320,
+          errorCorrectionLevel: 'M',
+          color: {
+            dark: '#0F172A',
+            light: '#FFFFFF'
+          }
+        });
+        if (url) return url;
+      } catch (e) {
+        console.warn('Browser QRCode toDataURL error:', e);
+      }
+    }
+
+    // Fallback: request authentic QR code from backend
+    try {
+      const res = await fetch(`/api/qr/generate?text=${encodeURIComponent(payloadString)}`);
+      const data = await res.json();
+      if (data && data.success && data.data && data.data.dataUrl) {
+        return data.data.dataUrl;
+      }
+    } catch (e) {}
+
+    return null;
+  }
+
+  /**
+   * Renders the authentic personal QR code for the current user
+   */
+  async function renderQr(amount = null) {
+    const frame = document.querySelector('#myQrModal .qr-frame');
+    if (!frame) return;
+    const currentUser = (window.SahaayAPI && window.SahaayAPI.getCurrentUser()) || null;
+    const upiId = currentUser?.upiId || window.SahaayConfig?.defaultUpiId || 'asha.patel@sahaay';
+    const name = currentUser?.name || window.SahaayConfig?.accountHolder || 'Asha Patel';
+    const userId = currentUser?.id || 'USR-1001';
+
+    const nameEl = document.getElementById('myQrCardName');
+    const upiEl = document.getElementById('myQrCardUpi');
+    if (nameEl) nameEl.textContent = name;
+    if (upiEl) upiEl.textContent = upiId;
+
+    // Structured JSON payment identity
+    const paymentPayload = {
+      type: 'SAHAAY_PAYMENT',
+      version: 1,
+      upiId: upiId,
+      userId: userId,
+      name: name
+    };
+    if (amount && Number(amount) > 0) {
+      paymentPayload.amount = Number(amount);
+    }
+
+    const payloadString = JSON.stringify(paymentPayload);
+    frame.setAttribute('data-payload', payloadString);
+
+    // Generate real QR code image
+    const dataUrl = await generateRealQrDataUrl(payloadString);
+    if (dataUrl) {
+      frame.setAttribute('data-dataurl', dataUrl);
+      frame.innerHTML = `<img id="myQrCodeImg" src="${dataUrl}" width="240" height="240" alt="Sahaay Payment QR Code for ${name}" style="display:block; margin:0 auto; border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">`;
+      return;
+    }
+
+    // Secondary fallback via getMyQr
+    try {
+      if (window.SahaayAPI && window.SahaayAPI.getMyQr) {
+        const res = await window.SahaayAPI.getMyQr(amount);
+        if (res && res.success && res.data && res.data.dataUrl) {
+          frame.setAttribute('data-dataurl', res.data.dataUrl);
+          frame.innerHTML = `<img id="myQrCodeImg" src="${res.data.dataUrl}" width="240" height="240" alt="Sahaay Payment QR Code for ${name}" style="display:block; margin:0 auto; border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.08);">`;
+        }
+      }
+    } catch (e) {
+      console.warn('Fallback getMyQr failed:', e);
+    }
+  }
+
+  /**
+   * Downloads the user's authentic QR code as a PNG image file
+   */
+  async function downloadQrCode() {
+    const frame = document.querySelector('#myQrModal .qr-frame');
+    const currentUser = (window.SahaayAPI && window.SahaayAPI.getCurrentUser()) || null;
+    const userName = (currentUser?.name || 'Sahaay_User').replace(/\s+/g, '_');
+    const filename = `Sahaay_UPI_QR_${userName}.png`;
+
+    function triggerDownload(href, name) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.SahaayApp?.showToast('✓ QR Code saved to Downloads folder');
+      window.SahaayVoice?.announce('Your UPI QR code has been saved to your downloads folder.', true);
+    }
+
+    // 1. Check data-dataurl attribute
+    let dataUrl = frame?.getAttribute('data-dataurl');
+    if (dataUrl && dataUrl.startsWith('data:image/')) {
+      triggerDownload(dataUrl, filename);
+      return;
+    }
+
+    // 2. Check <img> tag in frame
+    const imgEl = frame?.querySelector('img');
+    if (imgEl && imgEl.src && imgEl.src.startsWith('data:image/')) {
+      triggerDownload(imgEl.src, filename);
+      return;
+    }
+
+    // 3. Generate freshly on the fly
+    const payload = frame?.getAttribute('data-payload') || JSON.stringify({
+      type: 'SAHAAY_PAYMENT',
+      version: 1,
+      upiId: currentUser?.upiId || 'asha.patel@sahaay',
+      userId: currentUser?.id || 'USR-1001',
+      name: currentUser?.name || 'Asha Patel'
+    });
+
+    dataUrl = await generateRealQrDataUrl(payload);
+    if (dataUrl) {
+      triggerDownload(dataUrl, filename);
+    } else {
+      window.SahaayApp?.showToast('⚠️ Could not generate QR code for download');
+    }
+  }
+
+  function showMyQr(amount = null) {
+    const modal = document.getElementById('myQrModal');
+    if (modal) {
+      renderQr(amount);
+      modal.classList.add('open');
+      window.SahaayVoice?.announce('Your personal UPI QR code is displayed on screen.', true);
+    }
+  }
+
+  function closeMyQr() {
+    const modal = document.getElementById('myQrModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  /**
+   * Starts camera scanner with BarcodeDetector / jsQR and fallback UI
+   */
+  async function openScanner() {
+    const modal = document.getElementById('qrScannerModal');
+    if (!modal) return;
+
+    modal.classList.add('open');
+    const video = document.getElementById('qrScannerVideo');
+    const canvas = document.getElementById('qrScannerCanvas');
+    const fallbackBox = document.getElementById('qrCameraFallback');
+    const statusText = document.getElementById('qrScannerStatus');
+    const laser = document.getElementById('qrScannerLaser');
+
+    if (fallbackBox) fallbackBox.style.display = 'none';
+    if (laser) laser.style.display = 'block';
+    if (statusText) statusText.textContent = 'Starting camera... Point at recipient\'s Sahaay QR';
+
+    window.SahaayVoice?.announce('QR Code scanner active. Point camera or choose a recipient.', true);
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showCameraFallback('Camera API is not supported on this browser.');
+      return;
+    }
+
+    try {
+      isScanning = true;
+      videoStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } }
+      });
+
+      if (video) {
+        video.srcObject = videoStream;
+        await video.play();
+        if (statusText) statusText.textContent = '📷 Camera active! Point at recipient\'s Sahaay QR';
+        startScanLoop(video, canvas);
+      }
+    } catch (err) {
+      console.warn('Camera access unavailable:', err.message);
+      showCameraFallback('Camera scanning is unavailable on this device.');
+    }
+  }
+
+  function showCameraFallback(reason) {
+    isScanning = false;
+    stopCamera();
+    const fallbackBox = document.getElementById('qrCameraFallback');
+    const laser = document.getElementById('qrScannerLaser');
+    const statusText = document.getElementById('qrScannerStatus');
+
+    if (laser) laser.style.display = 'none';
+    if (fallbackBox) fallbackBox.style.display = 'flex';
+    if (statusText) statusText.textContent = reason || 'Camera scanning is unavailable on this device.';
+
+    window.SahaayVoice?.announce('Camera scanning is unavailable on this device.', true);
+  }
+
+  function stopCamera() {
+    isScanning = false;
+    if (scanAnimationId) {
+      cancelAnimationFrame(scanAnimationId);
+      scanAnimationId = null;
+    }
+    if (videoStream) {
+      videoStream.getTracks().forEach(t => t.stop());
+      videoStream = null;
+    }
+    const video = document.getElementById('qrScannerVideo');
+    if (video) video.srcObject = null;
+  }
+
+  function closeScanner() {
+    stopCamera();
+    const modal = document.getElementById('qrScannerModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  /**
+   * Continuous frame decoding loop with downsampling and dual-engine recognition
+   */
+  function startScanLoop(video, canvas) {
+    let detector = null;
+    if ('BarcodeDetector' in window) {
+      try {
+        detector = new BarcodeDetector({ formats: ['qr_code'] });
+      } catch (e) {}
+    }
+
+    const scanCanvas = document.createElement('canvas');
+    const scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
+    let isBusy = false;
+    let lastScanTime = 0;
+
+    async function tick(now) {
+      if (!isScanning) return;
+
+      // Throttle scanning to ~12-14 scans/sec (every 75ms) to preserve CPU and guarantee smooth preview
+      if (!isBusy && (now - lastScanTime >= 75)) {
+        if (video && (video.videoWidth > 0 || video.readyState >= 2) && !video.paused && !video.ended) {
+          isBusy = true;
+          lastScanTime = now;
+
+          try {
+            const vw = video.videoWidth || 640;
+            const vh = video.videoHeight || 480;
+
+            // Downsample to 480px width for fast 4ms binarization without module blur
+            const targetW = 480;
+            const targetH = Math.max(120, Math.round((vh / vw) * targetW));
+            if (scanCanvas.width !== targetW || scanCanvas.height !== targetH) {
+              scanCanvas.width = targetW;
+              scanCanvas.height = targetH;
+            }
+
+            scanCtx.drawImage(video, 0, 0, targetW, targetH);
+
+            let detected = null;
+
+            // Engine 1: Native BarcodeDetector
+            if (detector) {
+              try {
+                const barcodes = await detector.detect(scanCanvas);
+                if (barcodes && barcodes.length > 0 && barcodes[0].rawValue) {
+                  detected = barcodes[0].rawValue;
+                }
+              } catch (e) {}
+            }
+
+            // Engine 2: Bundled jsQR with dual inversion attempts
+            if (!detected && window.jsQR) {
+              try {
+                const imgData = scanCtx.getImageData(0, 0, targetW, targetH);
+                const code = window.jsQR(imgData.data, targetW, targetH, {
+                  inversionAttempts: 'attemptBoth'
+                });
+                if (code && code.data) {
+                  detected = code.data;
+                }
+              } catch (e) {}
+            }
+
+            // Engine 3: Center-crop pass (if user holds QR close to the center reticle)
+            if (!detected && window.jsQR && targetW >= 300) {
+              try {
+                const cropSize = Math.round(Math.min(targetW, targetH) * 0.65);
+                const cropX = Math.round((targetW - cropSize) / 2);
+                const cropY = Math.round((targetH - cropSize) / 2);
+                const cropData = scanCtx.getImageData(cropX, cropY, cropSize, cropSize);
+                const code = window.jsQR(cropData.data, cropSize, cropSize, {
+                  inversionAttempts: 'attemptBoth'
+                });
+                if (code && code.data) {
+                  detected = code.data;
+                }
+              } catch (e) {}
+            }
+
+            if (detected) {
+              const statusText = document.getElementById('qrScannerStatus');
+              if (statusText) statusText.textContent = '✓ QR Code Recognized! Verifying...';
+              
+              // Audio chime
+              try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime); // E5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+                gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.28);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.28);
+              } catch (e) {}
+
+              handleDetectedQr(detected);
+              return;
+            }
+          } catch (err) {
+            console.warn('Frame scan error:', err);
+          } finally {
+            isBusy = false;
+          }
+        }
+      }
+
+      scanAnimationId = requestAnimationFrame(tick);
+    }
+
+    scanAnimationId = requestAnimationFrame(tick);
+  }
+
+  /**
+   * Parses detected QR text and verifies recipient via backend
+   */
+  async function handleDetectedQr(payloadText) {
+    stopCamera();
+    closeScanner();
+
+    let upiId = null;
+    let name = null;
+    let amount = null;
+    let userId = null;
+
+    // Check JSON SAHAAY_PAYMENT format
+    if (typeof payloadText === 'string' && payloadText.trim().startsWith('{')) {
+      try {
+        const parsed = JSON.parse(payloadText);
+        upiId = parsed.upiId;
+        name = parsed.name;
+        userId = parsed.userId;
+        amount = parsed.amount || null;
+      } catch (e) {}
+    }
+
+    // Check standard UPI URI format
+    if (!upiId && typeof payloadText === 'string' && payloadText.startsWith('upi://pay')) {
+      try {
+        const url = new URL(payloadText.replace('upi://pay', 'http://upi.dummy'));
+        upiId = url.searchParams.get('pa');
+        name = url.searchParams.get('pn');
+        amount = url.searchParams.get('am') ? Number(url.searchParams.get('am')) : null;
+      } catch (e) {}
+    }
+
+    // Fallback: direct string as identifier
+    if (!upiId && typeof payloadText === 'string') {
+      upiId = payloadText.trim();
+    }
+
+    const queryIdentifier = upiId || userId;
+    if (!queryIdentifier) {
+      window.SahaayApp?.showToast('⚠️ Could not decode valid recipient from QR');
+      return;
+    }
+
+    // Authoritative backend lookup
+    window.SahaayApp?.showToast('🔍 Verifying recipient...');
+    const result = await window.SahaayAPI.lookupUser(queryIdentifier);
+
+    if (result && result.success && (result.user || result.data)) {
+      const recipient = result.user || result.data;
+      showRecipientConfirmation(recipient, amount);
+    } else {
+      const errMsg = (result && result.error) ? result.error : `Recipient "${queryIdentifier}" not found.`;
+      window.SahaayApp?.showToast(`⚠️ ${errMsg}`);
+      window.SahaayVoice?.announce(errMsg, true);
+    }
+  }
+
+  /**
+   * Displays the Recipient Confirmation dialog before proceeding to transfer
+   */
+  function showRecipientConfirmation(user, amount = null) {
+    pendingScannedUser = user;
+    pendingScannedAmount = amount;
+
+    const modal = document.getElementById('qrRecipientConfirmModal');
+    if (!modal) return;
+
+    const nameEl = document.getElementById('confirmRecipientName');
+    const upiEl = document.getElementById('confirmRecipientUpi');
+    const accEl = document.getElementById('confirmRecipientAcc');
+
+    if (nameEl) nameEl.textContent = user.name || 'Verified User';
+    if (upiEl) upiEl.textContent = user.upiId || '—';
+    if (accEl) accEl.textContent = `Account ending: ${user.accountNumberMasked || '****'}`;
+
+    modal.classList.add('open');
+    window.SahaayVoice?.announce(
+      `Recipient ${user.name}, UPI ID ${user.upiId} identified. Please confirm before continuing.`,
+      true
+    );
+  }
+
+  function closeRecipientConfirmation() {
+    const modal = document.getElementById('qrRecipientConfirmModal');
+    if (modal) modal.classList.remove('open');
+    pendingScannedUser = null;
+    pendingScannedAmount = null;
+  }
+
+  function proceedToTransferWithScannedRecipient() {
+    if (!pendingScannedUser) return;
+    const user = pendingScannedUser;
+    const amt = pendingScannedAmount;
+    closeRecipientConfirmation();
+
+    if (window.SahaayApp && window.SahaayApp.prepareTransfer) {
+      window.SahaayApp.prepareTransfer(user.upiId, amt, 'QR');
+    } else {
+      // Fallback navigation
+      const navBtn = document.querySelector('[data-section="section-transfer"]');
+      if (navBtn) navBtn.click();
+      const payeeInput = document.getElementById('payee');
+      if (payeeInput) payeeInput.value = user.upiId;
+      const amtInput = document.getElementById('amount');
+      if (amtInput && amt) amtInput.value = amt;
+    }
+  }
+
+  /**
+   * Decodes an image file uploaded by the user with multi-scale & quiet-zone resiliency
+   */
+  async function handleImageUpload(file) {
+    if (!file) return;
+    window.SahaayApp?.showToast('🔍 Analyzing uploaded QR image...');
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = async function() {
+        let detectedCode = null;
+
+        // 1. Try Native BarcodeDetector
+        if ('BarcodeDetector' in window) {
+          try {
+            const detector = new BarcodeDetector({ formats: ['qr_code'] });
+            const barcodes = await detector.detect(img);
+            if (barcodes && barcodes.length > 0 && barcodes[0].rawValue) {
+              detectedCode = barcodes[0].rawValue;
+            }
+          } catch (err) {}
+        }
+
+        // 2. Multi-scale jsQR with quiet-zone padding & contrast enhancement
+        if (!detectedCode && window.jsQR) {
+          const origW = img.naturalWidth || img.width;
+          const origH = img.naturalHeight || img.height;
+          const maxDim = Math.max(origW, origH);
+          
+          // Test scales: original, 480px, 640px, 320px, 800px
+          const targetSizes = [maxDim, 480, 640, 320, 800].filter(s => s >= 60 && s <= 1600);
+          const uniqueSizes = [...new Set(targetSizes)];
+
+          for (const target of uniqueSizes) {
+            if (detectedCode) break;
+            const scale = target / maxDim;
+            const w = Math.round(origW * scale);
+            const h = Math.round(origH * scale);
+
+            for (const padding of [24, 8, 48]) {
+              if (detectedCode) break;
+              const canvas = document.createElement('canvas');
+              canvas.width = w + (padding * 2);
+              canvas.height = h + (padding * 2);
+              const ctx = canvas.getContext('2d', { willReadFrequently: true });
+              if (!ctx) continue;
+
+              // Solid white quiet zone
+              ctx.fillStyle = '#FFFFFF';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.drawImage(img, padding, padding, w, h);
+
+              // Pass 1: direct jsQR
+              try {
+                const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = window.jsQR(imgData.data, canvas.width, canvas.height, {
+                  inversionAttempts: 'attemptBoth'
+                });
+                if (code && code.data) {
+                  detectedCode = code.data;
+                  break;
+                }
+              } catch (err) {}
+
+              // Pass 2: BarcodeDetector on padded canvas
+              if (!detectedCode && 'BarcodeDetector' in window) {
+                try {
+                  const detector = new BarcodeDetector({ formats: ['qr_code'] });
+                  const barcodes = await detector.detect(canvas);
+                  if (barcodes && barcodes.length > 0 && barcodes[0].rawValue) {
+                    detectedCode = barcodes[0].rawValue;
+                    break;
+                  }
+                } catch (err) {}
+              }
+
+              // Pass 3: Contrast / binarization for photos of screens or paper
+              if (!detectedCode) {
+                try {
+                  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                  const d = imgData.data;
+                  for (let p = 0; p < d.length; p += 4) {
+                    const gray = (d[p] * 0.299 + d[p+1] * 0.587 + d[p+2] * 0.114);
+                    const val = gray > 135 ? 255 : 0;
+                    d[p] = val;
+                    d[p+1] = val;
+                    d[p+2] = val;
+                  }
+                  const code = window.jsQR(d, canvas.width, canvas.height, {
+                    inversionAttempts: 'attemptBoth'
+                  });
+                  if (code && code.data) {
+                    detectedCode = code.data;
+                    break;
+                  }
+                } catch (err) {}
+              }
+            }
+          }
+        }
+
+        if (detectedCode) {
+          window.SahaayApp?.showToast('✓ QR Code recognized!');
+          window.SahaayVoice?.announce('QR Code recognized successfully.', true);
+          handleDetectedQr(detectedCode);
+        } else {
+          window.SahaayApp?.showToast('⚠️ No QR code could be detected. Please ensure the QR code is clearly visible.');
+          window.SahaayVoice?.announce('No QR code could be detected in this image. Please upload a clear QR code image.', true);
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function init() {
+    document.getElementById('openMyQrBtn')?.addEventListener('click', () => showMyQr());
+    document.getElementById('openMyQrQuickBtn')?.addEventListener('click', () => showMyQr());
+    document.getElementById('transferShowMyQrBtn')?.addEventListener('click', () => showMyQr());
+    document.getElementById('closeMyQrBtn')?.addEventListener('click', closeMyQr);
+
+    document.getElementById('openScannerBtn')?.addEventListener('click', openScanner);
+    document.getElementById('openScannerQuickBtn')?.addEventListener('click', openScanner);
+    document.getElementById('transferScanQrBtn')?.addEventListener('click', openScanner);
+    document.getElementById('closeScannerModalBtn')?.addEventListener('click', closeScanner);
+
+    // Manual Entry Fallback switches to Send Money section
+    function switchToManualEntry() {
+      closeScanner();
+      const navBtn = document.querySelector('[data-section="section-transfer"]');
+      if (navBtn) navBtn.click();
+      setTimeout(() => {
+        const searchInput = document.getElementById('payeeSearchInput') || document.getElementById('payee');
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 200);
+      window.SahaayVoice?.announce('Switched to manual UPI recipient entry.');
+    }
+
+    document.getElementById('qrFallbackManualBtn')?.addEventListener('click', switchToManualEntry);
+    document.getElementById('qrManualFallbackSecondaryBtn')?.addEventListener('click', switchToManualEntry);
+
+    // Recipient confirmation modal buttons
+    document.getElementById('closeRecipientConfirmBtn')?.addEventListener('click', closeRecipientConfirmation);
+    document.getElementById('cancelRecipientConfirmBtn')?.addEventListener('click', closeRecipientConfirmation);
+    document.getElementById('proceedRecipientConfirmBtn')?.addEventListener('click', proceedToTransferWithScannedRecipient);
+
+    // 1-Tap Demo User selection in QR scanner
+    document.querySelectorAll('.demo-user-qr-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const payee = btn.dataset.payee;
+        handleDetectedQr(payee);
+      });
+    });
+
+    // File upload QR decoding
+    document.getElementById('qrImageUploadInput')?.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleImageUpload(e.target.files[0]);
+        e.target.value = ''; // Reset
+      }
+    });
+
+    document.getElementById('copyUpiIdBtn')?.addEventListener('click', () => {
+      const currentUser = (window.SahaayAPI && window.SahaayAPI.getCurrentUser()) || null;
+      const upi = currentUser?.upiId || window.SahaayConfig?.defaultUpiId || 'asha.patel@sahaay';
+      navigator.clipboard?.writeText(upi);
+      window.SahaayApp?.showToast(`Copied: ${upi}`);
+      window.SahaayVoice?.announce('UPI ID copied to clipboard.');
+    });
+
+    document.getElementById('applyQrAmountBtn')?.addEventListener('click', () => {
+      const amt = document.getElementById('customQrAmount')?.value;
+      renderQr(amt);
+      if (amt && Number(amt) > 0) {
+        window.SahaayApp?.showToast(`QR updated for ₹${amt}`);
+        window.SahaayVoice?.announce(`QR code updated to request ₹${amt}`, true);
+      } else {
+        window.SahaayApp?.showToast('QR code reset to default');
+      }
+    });
+
+    document.getElementById('downloadQrBtn')?.addEventListener('click', downloadQrCode);
+
+    // Render initial QR
+    renderQr();
+  }
+
+  return {
+    init,
+    showMyQr,
+    closeMyQr,
+    openScanner,
+    closeScanner,
+    renderQr,
+    handleDetectedQr,
+    handleImageUpload,
+    downloadQrCode,
+    closeRecipientConfirmation
+  };
+})();

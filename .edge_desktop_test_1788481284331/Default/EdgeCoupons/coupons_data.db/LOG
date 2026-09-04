@@ -1,0 +1,5 @@
+2026/09/04-05:51:26.758 c024 Creating DB C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_desktop_test_1788481284331\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/09/04-05:51:26.764 c024 Reusing MANIFEST C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_desktop_test_1788481284331\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/09/04-05:51:26.856 a468 Level-0 table #5: started
+2026/09/04-05:51:26.859 a468 Level-0 table #5: 683284 bytes OK
+2026/09/04-05:51:26.861 a468 Delete type=0 #3

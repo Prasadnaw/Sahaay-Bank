@@ -1,0 +1,15 @@
+2026/09/04-04:39:49.024 40c4 Reusing MANIFEST C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/09/04-04:39:49.025 40c4 Recovering log #16
+2026/09/04-04:39:49.026 40c4 Reusing old log C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default\EdgeCoupons/coupons_data.db/000016.log 
+2026/09/04-04:39:49.171 5c04 Level-0 table #20: started
+2026/09/04-04:39:49.174 5c04 Level-0 table #20: 683444 bytes OK
+2026/09/04-04:39:49.176 5c04 Delete type=0 #16
+2026/09/04-04:39:49.176 5c04 Compacting 4@0 + 1@1 files
+2026/09/04-04:39:49.179 5c04 Generated table #21@0: 4 keys, 683351 bytes
+2026/09/04-04:39:49.179 5c04 Compacted 4@0 + 1@1 files => 683351 bytes
+2026/09/04-04:39:49.180 5c04 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/09/04-04:39:49.180 5c04 Delete type=2 #8
+2026/09/04-04:39:49.181 5c04 Delete type=2 #11
+2026/09/04-04:39:49.181 5c04 Delete type=2 #14
+2026/09/04-04:39:49.181 5c04 Delete type=2 #17
+2026/09/04-04:39:49.181 5c04 Delete type=2 #20

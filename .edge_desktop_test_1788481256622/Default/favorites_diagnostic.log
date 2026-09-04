@@ -1,0 +1,35 @@
+2026-09-04 00:20:56.871: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_desktop_test_1788481256622\Default
+2026-09-04 00:20:56.871: [INFO] Profiles total count: 1
+2026-09-04 00:20:56.871: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_desktop_test_1788481256622\Default lastActive=null
+2026-09-04 00:20:56.871: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_desktop_test_1788481256622\Default
+2026-09-04 00:20:56.871: [INFO] VisibilityChanged: 0
+2026-09-04 00:20:56.880: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.880: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.880: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.880: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.881: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.882: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.882: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.882: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.883: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.883: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:56.892: [INFO] OnDoneLoading sync enabled: 0
+2026-09-04 00:20:56.892: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-04 00:20:56.892: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-04 00:20:56.892: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-04 00:20:56.937: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:57.606: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-04 00:20:57.608: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.609: [INFO] Primary account changed.
+2026-09-04 00:20:57.609: [INFO] OnPrimaryAccountChanged PrimaryAccountChangeEvent::Type::kSet
+2026-09-04 00:20:57.612: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.623: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.915: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.916: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.916: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.919: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.919: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.919: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-04 00:20:57.920: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4
+2026-09-04 00:20:58.909: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4
+2026-09-04 00:20:58.911: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4

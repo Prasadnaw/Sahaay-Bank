@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-mergeDebugResources-3:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-mergeDebugResources-3:\\layout\\dialog_server_config.xml",
+        "source": "C:\\Users\\dhair\\.gradle\\daemon\\8.2\\com.sahaay.bank.app-main-6:\\layout\\dialog_server_config.xml"
+    },
+    {
+        "merged": "com.sahaay.bank.app-mergeDebugResources-3:/layout/activity_main.xml",
+        "source": "com.sahaay.bank.app-main-6:/layout/activity_main.xml"
+    }
+]

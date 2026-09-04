@@ -1,0 +1,6 @@
+2026/09/04-04:26:25.196 bd28 Reusing MANIFEST C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/09/04-04:26:25.197 bd28 Recovering log #13
+2026/09/04-04:26:25.197 bd28 Reusing old log C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default\EdgeCoupons/coupons_data.db/000013.log 
+2026/09/04-04:26:25.270 b150 Level-0 table #17: started
+2026/09/04-04:26:25.273 b150 Level-0 table #17: 683444 bytes OK
+2026/09/04-04:26:25.275 b150 Delete type=0 #13

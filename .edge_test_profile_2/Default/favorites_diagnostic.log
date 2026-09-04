@@ -1,0 +1,170 @@
+2026-09-03 22:55:02.467: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:02.467: [INFO] Profiles total count: 1
+2026-09-03 22:55:02.467: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:55:02.455Z
+2026-09-03 22:55:02.467: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:02.467: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:55:02.455Z
+2026-09-03 22:55:02.467: [INFO] OnDoneLoading sync enabled: 0
+2026-09-03 22:55:02.467: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-03 22:55:02.467: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-03 22:55:02.467: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-03 22:55:02.499: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-03 22:55:03.973: [INFO] VisibilityChanged: 0
+2026-09-03 22:55:04.400: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-03 22:55:04.402: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:04.403: [INFO] Primary account changed.
+2026-09-03 22:55:04.403: [INFO] OnPrimaryAccountChanged PrimaryAccountChangeEvent::Type::kSet
+2026-09-03 22:55:04.406: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:04.413: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:05.752: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:05.753: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:05.753: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:05.755: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:05.756: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:05.756: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:05.757: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4
+2026-09-03 22:55:06.331: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4
+2026-09-03 22:55:06.333: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 4
+2026-09-03 22:55:21.607: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:21.607: [INFO] Profiles total count: 1
+2026-09-03 22:55:21.607: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=null
+2026-09-03 22:55:21.607: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:21.607: [INFO] OnDoneLoading sync enabled: 0
+2026-09-03 22:55:21.607: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-03 22:55:21.607: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-03 22:55:21.607: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-03 22:55:21.669: [INFO] VisibilityChanged: 0
+2026-09-03 22:55:21.703: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.704: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.970: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.971: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.971: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.975: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.976: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.977: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:21.977: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:21.978: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:23.186: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:23.189: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:23.703: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:24.186: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:24.187: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:24.188: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:26.179: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:26.180: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:26.390: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:39.215: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:39.215: [INFO] Profiles total count: 1
+2026-09-03 22:55:39.215: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:55:39.205Z
+2026-09-03 22:55:39.215: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:39.215: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:55:39.205Z
+2026-09-03 22:55:39.215: [INFO] OnDoneLoading sync enabled: 0
+2026-09-03 22:55:39.215: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-03 22:55:39.215: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-03 22:55:39.215: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-03 22:55:39.227: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.243: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.514: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.514: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.515: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.519: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.520: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.520: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:39.520: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:39.521: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:40.048: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:40.050: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:40.545: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:40.703: [INFO] VisibilityChanged: 0
+2026-09-03 22:55:41.032: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:41.033: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:41.034: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:42.742: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:42.742: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:42.944: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:55:58.008: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:58.008: [INFO] Profiles total count: 1
+2026-09-03 22:55:58.008: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:55:57.998Z
+2026-09-03 22:55:58.008: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:55:58.008: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:55:57.998Z
+2026-09-03 22:55:58.008: [INFO] OnDoneLoading sync enabled: 0
+2026-09-03 22:55:58.008: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-03 22:55:58.008: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-03 22:55:58.008: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-03 22:55:58.019: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.033: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.303: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.303: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.303: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.310: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.310: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.310: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:55:58.310: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:58.311: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:59.228: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:59.230: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:55:59.525: [INFO] VisibilityChanged: 0
+2026-09-03 22:55:59.935: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:00.421: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:00.422: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:00.423: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:02.121: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:02.122: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:02.331: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:21.591: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:56:21.591: [INFO] Profiles total count: 1
+2026-09-03 22:56:21.591: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:56:21.582Z
+2026-09-03 22:56:21.591: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 22:56:21.591: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T22:56:21.582Z
+2026-09-03 22:56:21.591: [INFO] OnDoneLoading sync enabled: 0
+2026-09-03 22:56:21.591: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-03 22:56:21.591: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-03 22:56:21.591: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-03 22:56:21.601: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.615: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.902: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.902: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.902: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.907: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.908: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.908: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 22:56:21.908: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:21.909: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:22.433: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:22.436: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:22.923: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:23.105: [INFO] VisibilityChanged: 0
+2026-09-03 22:56:23.394: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 22:56:23.395: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:23.395: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:25.063: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:25.064: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 22:56:25.266: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 23:09:45.338: [INFO] CurrentProfilePath: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 23:09:45.338: [INFO] Profiles total count: 1
+2026-09-03 23:09:45.338: [INFO] Profile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T23:09:45.327Z
+2026-09-03 23:09:45.338: [INFO] LastUsedProfileDir: C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default
+2026-09-03 23:09:45.338: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\Users\dhair\.gemini\antigravity\scratch\sahaay-bank\.edge_test_profile_2\Default lastActive=2026-09-03T23:09:45.327Z
+2026-09-03 23:09:45.338: [INFO] OnDoneLoading sync enabled: 0
+2026-09-03 23:09:45.338: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-03 23:09:45.338: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-03 23:09:45.338: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-03 23:09:45.351: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:45.364: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:46.825: [INFO] VisibilityChanged: 0
+2026-09-03 23:09:48.190: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:48.191: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:48.192: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:48.196: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:48.197: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:48.197: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 3
+2026-09-03 23:09:48.198: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 23:09:48.199: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 23:09:48.709: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 23:09:48.711: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 23:09:49.239: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 23:09:49.717: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 5
+2026-09-03 23:09:49.718: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 23:09:49.718: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 23:09:51.416: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 23:09:51.417: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
+2026-09-03 23:09:51.628: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 6
